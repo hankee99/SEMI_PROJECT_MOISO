@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.category-div{
+		display: flex;
+		justify-content: center;
+	}
+	.category-box{
+		padding : 0;
+		display: flex;
+	}
+	.category {
+		list-style-type : none;
+		margin: 0 30px;
+		font-size: 22px;
+		color: black;
+		cursor: pointer;
+	}
+	.arrows{
+		cursor : pointer;
+		padding-top : 3px;
+	}
+</style>
+</head>
+<body>
+
+	<th:block th:include="common/header"></th:block>
+	<main>
+		<section>
+			<!-- Hero Start -->
+			<div class="container-fluid bg-light py-6 my-6 mt-0"
+				style="padding-bottom: 1rem;">
+				<div class="container text-center animated bounceInDown">
+					<h1 class="display-1 mb-4">카테고리</h1>
+					<!-- <ol th:each="category : ${list}">
+						<li th:text="${category.name}">
+					</ol> -->
+					<div class="category-div">
+						<span class="material-icons arrows" style="font-size: 30px;">arrow_circle_left</span>
+						<span>
+							<ul class="category-box">
+								<li class="category">운동/스포츠</li>
+								<li class="category">사교/인맥</li>
+								<li class="category">인문/독서</li>
+								<li class="category">게임/오락</li>
+								<li class="category">외국/언어</li>
+								<li class="category">공예/만들기</li>
+							</ul>
+						</span>
+						<span class="material-icons arrows" style="font-size: 30px;">arrow_circle_right</span>
+					</div>
+
+
+				</div>
+			</div>
+			<!-- Hero End -->
+		</section>
+	</main>
+	<th:block th:include="common/footer"></th:block>
+
+</body>
+</html>
