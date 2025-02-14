@@ -30,6 +30,66 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
 
+<style>
+.nav-bar {
+    background: #fff;
+}
+.text-primary {
+    color: #f2836b !important;
+}
+.navbar .navbar-nav .nav-link:hover, .navbar .navbar-nav .nav-link.active {
+
+    color: #f2836b;
+}
+.btn-primary {
+    color: #000;
+    background-color: #f2836b;
+}
+.btn.btn-primary:hover{
+    background: #000 !important;
+    color: #f2836b !important;
+}
+.navbar .navbar-nav .nav-link {
+    padding: 19px 25px;
+}
+.btn-check:focus+.btn-primary, .btn-primary:focus {
+    color: #000;
+    background-color: #f2836b;
+}
+.btn-check:focus+.btn-primary, .btn-primary:focus {
+    box-shadow: 0 0 0 .25rem rgb(255 0 0 / 50%);
+}
+
+.form-control:focus {
+    color: #9a9a9a;
+    background-color: #fff;
+    border-color: #f2836b;
+    box-shadow: 0 0 0 .25rem rgb(255 0 0 / 50%);
+}
+.modal-fullscreen .modal-content {
+    height: 16%;
+}
+.input-group{
+    width: 540px;
+    margin: 0 auto;
+}
+.search-input{
+    width: 500px;
+    height: 34px;
+    border-radius: 3px;
+    margin-left: auto 0;
+    border-width: 1px;
+    border-color: #9a9a9a;
+}
+.serach-button{
+    width: 40px;
+    height: 34px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #9a9a9a;
+}
+</style>
+
     <body>
 
         <!-- Spinner Start -->
@@ -43,56 +103,35 @@
         <div class="container-fluid nav-bar">
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-lg py-4">
-                    <a href="/" class="navbar-brand">
-                        <h1 class="text-primary fw-bold mb-0">MOISO<span class="text-dark"></span> </h1>
+                    <a href="index.html" class="navbar-brand">
+                        <h1 class="text-primary fw-bold mb-0">모이<span class="text-dark">소</span> </h1>
+
                     </a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="/" class="nav-item nav-link active">Home</a>
-                            <a href="/groupList" class="nav-item nav-link">카테고리</a>
-                            <a href="/service" class="nav-item nav-link">Services</a>
-                            <a href="/event" class="nav-item nav-link">Events</a>
-                            <a href="/menu" class="nav-item nav-link">Menu</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu bg-light">
-                                    <a href="/book" class="dropdown-item">Booking</a>
-                                    <a href="/blog" class="dropdown-item">Our Blog</a>
-                                    <a href="/team" class="dropdown-item">Our Team</a>
-                                    <a href="/testimonial" class="dropdown-item">Testimonial</a>
-                                    <a href="/error404" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
-                            <a href="/contact" class="nav-item nav-link">Contact</a>
+                            <a href="/" class="nav-item nav-link">홈</a>
+                            <a href="/" class="nav-item nav-link">카테고리</a>
+                            <a href="/" class="nav-item nav-link active">모임 만들기</a>
+                            <a href="/boardList" class="nav-item nav-link">게시판</a>
+                            <a href="/" class="nav-item nav-link">마이페이지</a>       
                         </div>
-                        <button class="btn-search btn btn-primary btn-md-square me-4 rounded-circle d-none d-lg-inline-flex" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                        <a href="" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">Book Now</a>
+                        <button class="btn-search btn btn-primary btn-md-square me-4 rounded-circle d-none d-lg-inline-flex"><i class="fas fa-search"></i></button>
+                        <a href="" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">로그인</a>
                     </div>
                 </nav>
+            </div>
+            <form>
+            <div class="input-group mx-auto d-flex test-class" style="width:650px; height:35px;">
+                <input type="search" class="form-control bg-transparent search-input" placeholder="keywords" aria-describedby="search-icon-1" style="display: none;">
+                <button type="submit" id="search-icon-1" class="input-group-text serach-button" style="display: none;"><i class="fa fa-search" ></i></button>
+            </div>
+            </form>
             </div>
         </div>
         <!-- Navbar End -->
 
 
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control bg-transparent p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Search End -->
         
