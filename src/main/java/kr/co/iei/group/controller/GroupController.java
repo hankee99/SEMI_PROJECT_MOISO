@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GroupController {
 	@GetMapping(value="/groupList")
 	public String groupList() {
-		return "groupList";
+		return "group/groupList";
 	}
 	
 }
