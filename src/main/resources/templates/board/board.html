@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+
+.board{
+    position: relative;
+}
+.board-wrap{
+    width: 600px;
+    margin: 0 auto;
+}
+.board-content-wrap{
+    padding-top: 25px;
+}
+.board-thumb{
+    margin: 0 auto;
+    text-align: center;
+    overflow: hidden;
+    height: 400px;
+}
+.board-thumb>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.board-info-img{
+    margin: 0 auto;
+    text-align: center;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 3px;
+    position: absolute;
+    top: 375px;
+}
+.board-info-img>img{
+    height: 100%;
+    border-radius: 50px;
+}
+.board-info-user{
+    text-align: center;
+}
+.board-info-user>p{
+    font-size: 11px;
+}
+.board-title{
+    text-align: center;
+    color: #000;
+    font-size: 20px;
+}
+.board-content{
+    white-space: pre-wrap;
+}
+
+.board-like{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:#000
+}
+.board-like .material-icons{
+    color:red;
+    font-size: 20px;
+    margin: 3px;
+    cursor: pointer;
+}
+
+/*게시자 프로필*/
+.board-user{
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.board-user-img{
+    background-color: #f2836b;
+    width: 50px;
+    height: 50px;
+    float: left;
+    border-radius: 25px;
+    overflow: hidden;
+    cursor: pointer;
+
+}
+.board-user-img>img{
+    height: 100%;
+}
+
+.board-user-info{
+    margin-left: 10px;
+    width: 540px;
+    float: left;
+    overflow: hidden;
+}
+
+.board-user-name{
+    margin-bottom: 3px;
+    color: #000;
+    cursor: pointer;
+}
+.board-user-text{
+    height: 15px;
+    font-size: 12px;
+} 
+/*댓글쓰기*/
+.board-comment{
+    
+}
+.board-comment-write{
+    overflow: hidden;
+}
+.comment-img-box{
+    width: 85px;
+    float: left;
+    padding: 17.5px 0px;
+    cursor: pointer;
+}
+.comment-img{
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 25px;
+    overflow: hidden;
+}
+.comment-img>img{
+    height: 100%;
+}
+.comment-content{
+    width: 515px;
+    float: left;
+
+}
+.comment-text{
+    width: 515px;
+    float: left;
+}
+.comment-write{
+    width: 515px;
+    padding: 7px 7px;
+    margin-top: 15px;
+    border: none;
+    border-bottom: 1px solid rgb(184, 184, 184);
+    outline: none;
+    min-height: 30px;
+    color: #000;
+}
+.comment-text>textarea{
+    display: none;
+}
+.comment-write:focus{
+    border-bottom-color: black;
+}
+.submit-box{
+    width: 515px;
+    float: left;
+    text-align: right;
+}
+
+
+/*댓글보기*/
+.board-comment-read{
+    overflow: hidden;
+}
+.read-comment-img-box{
+    width: 85px;
+    float: left;
+    padding: 17.5px 0px;
+}
+.read-comment-img{
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 25px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.read-comment-img>img{
+    height: 100%;
+}
+.read-comment-content{
+    width: 515px;
+    float: left;
+}
+.read-comment-text{
+    width: 515px;
+    float: left;
+}
+.comment-read{
+    width: 515px;
+    border: none;
+    outline: none;
+    min-height: 30px;
+    color: #000;
+    margin-bottom: 0;
+}
+.read-comment-write:focus{
+    border-bottom-color: black;
+}
+.comment-like-box{
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+.comment-like{
+    height: 40px;
+}
+.read-submit-box{
+    width: 475px;
+    float: left;
+    text-align: right;
+}
+.btn-primary-del{
+    height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+}
+.btn-primary-del:hover{
+    background-color: rgb(202, 202, 202);
+}
+.btn-primary-up{
+    height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+}
+.btn-primary-up:hover{
+    background-color: rgb(202, 202, 202);
+}
+.btn-primary-recomment{
+    height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+    margin-right: 290px;
+}
+.btn-primary-recomment:hover{
+    background-color: rgb(202, 202, 202);
+}
+.board-comment-read{
+    overflow: hidden;
+}
+.read-comment-user-name{
+    width: 55px;
+    height: 25px;
+    float: left;
+    margin-top: 15px;
+    color: #000;
+    cursor: pointer;
+}
+.read-comment-user-date{
+    width: 70px;
+    height: 25px;
+    float: left;
+    padding-top: 20px;
+}
+.read-comment-user-date>div{
+    font-size: 12px;
+}
+.read-comment-text{
+    float: left;
+}
+.comment-like{
+    display: flex;
+    align-items: center;
+}
+.comment-like>.material-icons{
+    color:red;
+    font-size: 20px;
+    cursor: pointer;
+}
+.comment-like>span:last-child{
+    font-size: 13px;
+    margin-left: 3px;
+}
+
+/*답글*/
+.board-recomment{
+    
+}
+.board-recomment-write{
+    overflow: hidden;
+    margin-left: 75px;
+}
+.recomment-img-box{
+    width: 85px;
+    float: left;
+    padding: 17.5px 0px;
+    cursor: pointer;
+}
+.recomment-img{
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 25px;
+    overflow: hidden;
+}
+.recomment-img>img{
+    height: 100%;
+}
+.recomment-content{
+    width: 440px;
+    float: left;
+
+}
+.recomment-text{
+    width: 440px;
+    float: left;
+}
+.recomment-write{
+    width: 440px;
+    padding: 7px 7px;
+    margin-top: 15px;
+    border: none;
+    border-bottom: 1px solid rgb(184, 184, 184);
+    outline: none;
+    min-height: 30px;
+    color: #000;
+}
+.recomment-text>textarea{
+    display: none;
+}
+.recomment-write:focus{
+    border-bottom-color: black;
+}
+.recomment-submit-box{
+    width: 440px;
+    float: left;
+    text-align: right;
+}
+.btn-primary-comment{
+    height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+    margin-top: 5px;
+}
+.btn-primary-comment:hover{
+    background-color: rgb(202, 202, 202);
+}
+
+</style>
+<body>
+        <th:block th:include="common/header"></th:block>
+	        
+	        
+		<div class="board-wrap">
+            <div class="board">
+
+                <div class="board-thumb">
+                    <img src="img/about.jpg">
+                </div>
+
+
+
+                <div class="board-info-img">
+                    <img src="img/about.jpg">
+                </div>
+
+                <div class="board-content-wrap">
+        
+                        <div class="board-info-user">
+                            <p>문현준</p>
+                        </div>
+        
+                        <div class="board-title">
+                            <span><b>🧈 버터풍미 스콘 만들기 - 앙버터와 잼 포함!</b></span>
+                        </div>
+        
+                        <div class="board-content">
+                            <p>🚨소셜링에 좋아요를 눌러도, 새 일정 알림 등은 확인이 불가능하셔요😢😢 앞으로 홈베이킹 소셜링을 계속 받아보고 싶으시다면, 꼭 호스트 팔로우를 눌러 주세요!
+        
+        
+📣 소셜링 타입이 클럽 소셜링이거나 일반 소셜링인것과 무관하게, 모든 소셜링은 문토 전체 이용자 분들 자유롭게 신청 가능하세요! 클럽에 가입해야만 신청 가능한 것이 아니니, 관심 있으시다면 자유롭게 소셜링 참가 신청해 주시면 되어요!
+                                
+                                
+🙌 재료가 모두 준비된 상태에서 모집하며, 소셜링 시작 직전 심야 신청도 확인 후 큰 문제 없다면 승인 후 함께 진행해요. 늦참도 가능하니, 부담없이 신청해 주세요!
+                                
+                                </p>
+                        </div>
+        
+                        <div class="board-like">
+                            <span>좋아요</span>
+                            <span class="material-icons">favorite</span>
+                            <span>5</span>
+                        </div>
+                        <div class="board-user">
+                            <div class="board-user-img">
+                                <img src="img/about.jpg">
+                            </div>
+                            <div class="board-user-info">
+                                <div class="board-user-name">문현준</div>
+                                <div class="board-user-text">함께 그리고 혼자서 할 수 있는 홈베이킹을 좋아해요. 베이킹 일정 진행 & 협업관련은 메세지 주세요 😇ㅋㅋㅋㅋㅋㅋㅋ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="board-comment">
+                <div class="board-comment-write">
+                    <div class="comment-img-box">
+                        <div class="comment-img">
+                            <img src="img/about.jpg">
+                        </div>
+                    </div>
+                    <div class="comment-content">
+
+                        <div class="comment-text">
+                            <textarea></textarea>
+                            <div contenteditable="true" class="comment-write"></div>
+                        </div>
+                        <div class="submit-box">
+                            <button type="submit" class="btn-primary-comment">취소</button>
+                            <button type="submit" class="btn-primary-comment">댓글</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="board-comment">
+                <div class="board-comment-read">
+                    <div class="read-comment-img-box">
+                        <div class="read-comment-img">
+                            <img src="img/about.jpg">
+                        </div>
+                    </div>
+                    <div class="read-comment-content">
+                        <div class="read-comment-user-name">
+                            <div>문현준</div>
+                        </div>
+                        <div class="read-comment-user-date">
+                            <div>2025-02-17</div>
+                        </div>
+                        <div class="read-comment-text">
+                            <p class="comment-read">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</p>
+                        </div>
+                        <div class="comment-like-box">
+                            <div class="comment-like">
+                                <span class="material-icons">favorite</span>
+                                <span>5</span>
+                            </div>
+                        </div>
+                        <div class="read-submit-box">
+                            <button type="submit" class="btn-primary-recomment">답글</button>
+                            <button type="submit" class="btn-primary-up">수정</button>
+                            <button type="submit" class="btn-primary-del">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="board-recomment">
+                <div class="board-recomment-write">
+                    <div class="recomment-img-box">
+                        <div class="recomment-img">
+                            <img src="img/about.jpg">
+                        </div>
+                    </div>
+                    <div class="recomment-content">
+
+                        <div class="recomment-text">
+                            <textarea></textarea>
+                            <div contenteditable="true" class="recomment-write"></div>
+                        </div>
+                        <div class="recomment-submit-box">
+                            <button type="submit" class="btn-primary-comment">취소</button>
+                            <button type="submit" class="btn-primary-comment">댓글</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	        
+        <th:block th:include="common/footer"></th:block>	        
+</body>
+</html>

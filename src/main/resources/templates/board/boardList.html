@@ -1,104 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="utf-8">
-        <title>CaterServ - Catering Services Website Template</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
-
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playball&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-        <!-- Libraries Stylesheet -->
-        <link href="lib/animate/animate.min.css" rel="stylesheet">
-        <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-        <link href="lib/owlcarousel/owl.carousel.min.css" rel="stylesheet">
-
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Template Stylesheet -->
-        <link href="css/style.css" rel="stylesheet">
-    </head>
-    <body>
-
-        <!-- Spinner Start -->
-        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" role="status"></div>
-        </div>
-        <!-- Spinner End -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board-list</title>
+</head>
 <style>
-.nav-bar {
-    background: #fff;
-}
-.text-primary {
-    color: #f2836b !important;
-}
-.navbar .navbar-nav .nav-link:hover, .navbar .navbar-nav .nav-link.active {
 
-    color: #f2836b;
-}
-.btn-primary {
-    color: #000;
-    background-color: #f2836b;
-}
-.btn.btn-primary:hover{
-    background: #000 !important;
-    color: #f2836b !important;
-}
-.navbar .navbar-nav .nav-link {
-    padding: 19px 25px;
-}
-.btn-check:focus+.btn-primary, .btn-primary:focus {
-    color: #000;
-    background-color: #f2836b;
-}
-.btn-check:focus+.btn-primary, .btn-primary:focus {
-    box-shadow: 0 0 0 .25rem rgb(255 0 0 / 50%);
-}
-
-.form-control:focus {
-    color: #9a9a9a;
-    background-color: #fff;
-    border-color: #f2836b;
-    box-shadow: 0 0 0 .25rem rgb(255 0 0 / 50%);
-}
-.modal-fullscreen .modal-content {
-    height: 16%;
-}
-.input-group{
-    width: 540px;
-
-}
+/*게시판*/
 .header-bottom{
-    margin-bottom: 0px;
+	width: 1200px;
+    height: 335px;
+    padding: 48px 12px;
+    margin: 0 auto;
+    margin-bottom: 60px;
+}
+.header-title{
+    text-align: center;
+}
+.header-title>h1{
+    font-size: 70px;
+}
+.header-title-content{
+	text-align: center;
+	color: gray;
 }
 .board-search-result{
     text-align: center;
     padding-top: 50px;
 }
 .board-search-result>.material-icons{
-    font-size: 30px;
+    font-size: 25px;
 }
 .material-icons>*{
     color: #727272;
 }
-.py-6 {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+
+
+/*글쓰기*/
+.write-btn-box{
+    background-color: #f2836b;
+    height: 40px;
+    width: 100px;
+    border-radius: 50px;
+    cursor: pointer;
 }
+.write-btn-box:hover{
+    background-color: #000;
+    transition: .5s;
+}
+.write-btn{
+    color: black;
+    font-weight: 1000;
+    text-align: center;
+    line-height: 40px;
+}
+.write-btn:hover{
+    color: #f2836b;
+    transition: .5s;
+}
+
+/*컨텐츠*/
 .content{
     padding: 0;
-    width: 1600px;
+    width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
@@ -111,27 +75,25 @@
     width: 600px;
     display: flex;
     flex-direction: row;
-    margin-bottom: 60px;
-    margin-right: 200px;
+    margin-bottom: 30px;
 }
 .image-box{
-    width: 250px;
-    height: 250px;
+    width: 260px;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 5px;
+    cursor: pointer;
 }
 .text-box{
     width: 700px;
-    height: 250px;
-    padding : 20px 30px;
+    height: 160px;
+    padding : 10px 20px;
 }
 .text-box>div{
-    margin-bottom: 30px;
+    margin-bottom: 8px;
 }
 .text-box>div:last-child{
     margin-bottom: 0;
-}
-.image-box{
-    overflow: hidden;
-    border-radius: 5px;
 }
 .image-box>img{
     width: 100%;
@@ -153,6 +115,7 @@
 .title{
     height: 21px;
     overflow: hidden;
+    cursor: pointer;
 }
 .date{
     height: 20px;
@@ -160,364 +123,153 @@
 .user{
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
 }
 .user>div:first-child{
     width: 40px;
     height: 40px;
     border-radius: 50px;
     overflow: hidden;
-
+    cursor: pointer;
 }
 .user>div:first-child>img{
     width: 100%;
 }
 .user>div:last-child{
     height: 40px;
+    cursor: pointer;
 }
 .user>div:last-child>p{
     line-height: 40px;
 }
 
-.btn-box{
+/*더보기*/
+.read-btn-box{
     background-color: #f2836b;
-
-}
-/*
-.container {
-    text-align: left;
-    display: flex;
-    width: 1200px;
+    height: 55px;
+    width: 140px;
     margin: 0 auto;
-    flex-flow: row wrap;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.read-btn-box:hover{
+    background-color: #000;
+    transition: .5s;
+}
+.read-btn{
+    color: black;
+    font-weight: 1000;
+    text-align: center;
+    line-height: 55px;
+}
+.read-btn:hover{
+    color: #f2836b;
+    transition: .5s;
+}
 
-}
-.board-box{
-    width: 500px;
-    height: 200px;
-
-}
-.board-box>img{
-    height: 200px;
-}
-.img-margin{
-    margin-right: 20px;
-}
-*/
 </style>
 
-        <!-- Navbar start -->
-        <div class="container-fluid nav-bar">
-            <div class="container">
-                <nav class="navbar navbar-light navbar-expand-lg py-4">
-                    <a href="index.html" class="navbar-brand">
-                        <h1 class="text-primary fw-bold mb-0">모이<span class="text-dark">소</span> </h1>
-                   </a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link">홈</a>
-                            <a href="about.html" class="nav-item nav-link">카테고리</a>
-                            <a href="service.html" class="nav-item nav-link active">모임 만들기</a>
-                            <a href="event.html" class="nav-item nav-link">게시판</a>
-                            <a href="menu.html" class="nav-item nav-link">마이페이지</a>       
-                        </div>
-                        <button class="btn-search btn btn-primary btn-md-square me-4 rounded-circle d-none d-lg-inline-flex"><i class="fas fa-search"></i></button>
-                        <a href="" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">로그인</a>
-                    </div>
-                </nav>
-            </div>
-            <form>
-                <div class="input-group mx-auto d-flex test-class" style="width:650px; height:35px;">
-                    <input type="search" class="form-control bg-transparent search-input" placeholder="keywords" aria-describedby="search-icon-1" style="display: none;">
-                    <button type="submit" id="search-icon-1" class="input-group-text serach-button" style="display: none;"><i class="fa fa-search" ></i></button>
-                </div>
-            </form>
-            </div>
-        </div>
-        <!-- Navbar End -->
+<body>
 
-
-        <!-- Hero Start -->
-        <div class="container-fluid bg-light py-6 mt-0">
-            <div class="container text-center animated bounceInDown">
-                <h3 class="display-1 mb-4">게시판</h3>
-            </div>
-            <form>
-                <div class="input-group2 mx-auto d-flex test-class" style="width:650px; height:35px;">
-                    <input type="search" class="form-control bg-transparent board-search" placeholder="게시판 검색" aria-describedby="search-icon-1">
-                    <button type="submit" id="search-icon-1" class="input-group-text serach-button"><i class="fa fa-search" ></i></button>
-                    
-                </div>
-                <div class="board-search-result">
-                    <span class="material-icons">search</span><span class="">"<span></span>"검색결과</span>
-                </div>
-            </form>    
-        </div>
-        <!-- Hero End -->
-
-
-        <!-- About Satrt -->
-
-        <div class="content">
-            <div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5>오늘 너무 재밌고 즐거운 하루였다..!ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ [3]</h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5>오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5>오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5>오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5>오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="btn-box">
-            <div class="read-more">더보기</div>
-        </div>
-        
-
-        <!--
-            <div class="container">
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                <div class="board-box" data-wow-delay="0.3s">
-                    <img src="img/about.jpg" class="img-fluid rounded img-margin" alt="">
-                        <small class="d-inline-block fw-bold text-dark text-uppercase bg-light border border-primary rounded-pill px-4 py-1 mb-3">공지사항</small>
-                            <div>
-                                <h5 class="board-title">오늘 너무 재밌고 즐거운 하루였다..! [3]</h5>
-                            </div>
-                            <p class="board-date">2025-02-14 오후 05:40</p>
-                        <div class="row g-4 text-dark mb-5 ">
-                            <div class="col-sm-6 text-left">
-                                <i class="fas fa-share text-primary me-2"></i>하늘구름
-                            </div>
-                        </div>
-                </div>
-                
-                
-            </div>
-            -->
-        <!-- About End -->
-
-
-        <!-- Book Us Start -->
-        <div class="container-fluid contact py-6 wow bounceInUp" data-wow-delay="0.1s">
-            <div class="container">
-               <button type="submit" class="btn btn-primary px-5 py-3 rounded-pill">더보기</button>
-            </div>
-        </div>
-        <!-- Book Us End -->            
-    
+        <th:block th:include="common/header"></th:block>
         
         
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+        <div class="header-bottom">
+            <div class="header-title">
+                <h1>게시판</h1>
+            </div>
+            <div class="header-title-content">
+            	<p>똑같은 일상을 다채롭게 만들어 줄 커뮤니티</p>
+            	<p>누구나 열고 참여할 수 있는 자유게시판, 게시판으로 가볍고 즐겁게 소통해보세요!</p>
+            </div>
+            
+        	<form>
+	            <div class="input-group2 mx-auto d-flex test-class" style="width:650px; height:35px;">
+	                <input type="search" class="form-control bg-transparent board-search" placeholder="게시판 검색" aria-describedby="search-icon-1">
+	                <button type="submit" id="search-icon-1" class="input-group-text serach-button"><i class="fa fa-search" ></i></button>
+	                
+	            </div>
+        	</form>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+            <div class="board-search-result">
+                <span class="material-icons">search</span><span class="">"<span></span>"검색결과</span>
+            </div>
+            
+            <div class="write-btn-box">
+            	<div class="write-btn">글쓰기</div>
+       		</div> 
+        </div>
+              
+ 		<div class="content">
+            <div class="board-box">
+                <div class="image-box">
+                    <img src="img/about.jpg">
+                </div>
+                <div class="text-box">
+                    <div class="category">
+                        <p>공지사항</p>
+                    </div>
+                    <div class="title">
+                        <h5><span>오늘 너무 재밌고 즐거운 하루였다..!ㅋ</span><span>[3]</span></h5>
+                    </div>
+                    <div class="date">
+                        <p>2025-02-14 오후 05:40</p>
+                    </div>
+                    <div class="user">
+                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
+                    </div>
+                </div>
+            </div>
+			<div class="board-box">
+                <div class="image-box">
+                    <img src="img/about.jpg">
+                </div>
+                <div class="text-box">
+                    <div class="category">
+                        <p>공지사항</p>
+                    </div>
+                    <div class="title">
+                        <h5><span>오늘 너무 재밌고 즐거운 하루였다..!ㅋ</span><span>[3]</span></h5>
+                    </div>
+                    <div class="date">
+                        <p>2025-02-14 오후 05:40</p>
+                    </div>
+                    <div class="user">
+                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="board-box">
+                <div class="image-box">
+                    <img src="img/about.jpg">
+                </div>
+                <div class="text-box">
+                    <div class="category">
+                        <p>공지사항</p>
+                    </div>
+                    <div class="title">
+                        <h5><span>오늘 너무 재밌고 즐거운 하루였다..!ㅋ</span><span>[3]</span></h5>
+                    </div>
+                    <div class="date">
+                        <p>2025-02-14 오후 05:40</p>
+                    </div>
+                    <div class="user">
+                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
+                    </div>
+                </div>
+            </div>    
+        </div>
+
+        <div class="read-btn-box">
+            <div class="read-btn">더보기</div>
+        </div>        
+       	<div id="pageNavi" th:utext="${pageNavi}"></div>
+	<script>
+        
+    $(".write-btn").on("click",function(){
+        location.href="/board";
+    }
+	</script>
+        <th:block th:include="common/footer"></th:block>
     </body>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script>
-        $(".btn-search").on("click",function(){
-            $(".input-group>*").slideToggle();
-        })
-    </script>  
-
 </html>
