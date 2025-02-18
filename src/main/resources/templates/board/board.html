@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>board</title>
 </head>
 <style>
 
@@ -34,9 +34,9 @@
     text-align: center;
     height: 50px;
     width: 100%;
-    margin-bottom: 3px;
     position: absolute;
     top: 375px;
+    cursor: pointer;
 }
 .board-info-img>img{
     height: 100%;
@@ -44,6 +44,8 @@
 }
 .board-info-user{
     text-align: center;
+   	cursor: pointer;
+   	margin-top: 5px;
 }
 .board-info-user>p{
     font-size: 11px;
@@ -346,8 +348,24 @@
     font-size: 13px;
     margin-top: 5px;
 }
+.btn-primary-comment-can{
+	height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+    margin-top: 5px;
+}
 .btn-primary-comment:hover{
     background-color: rgb(202, 202, 202);
+}
+.btn-primary-comment-can:hover{
+    background-color: rgb(202, 202, 202);
+}
+
+.board-recomment{
+	display: none;
 }
 
 </style>
@@ -407,27 +425,31 @@
                     </div>
                 </div>
 
+			<!-- 댓글 입력 -->
             <div class="board-comment">
-                <div class="board-comment-write">
-                    <div class="comment-img-box">
-                        <div class="comment-img">
-                            <img src="img/about.jpg">
-                        </div>
-                    </div>
-                    <div class="comment-content">
-
-                        <div class="comment-text">
-                            <textarea></textarea>
-                            <div contenteditable="true" class="comment-write"></div>
-                        </div>
-                        <div class="submit-box">
-                            <button type="submit" class="btn-primary-comment">취소</button>
-                            <button type="submit" class="btn-primary-comment">댓글</button>
-                        </div>
-                    </div>
-                </div>
+            	<form action="/board/insertComment" method="post">
+	                <div class="board-comment-write">
+	                    <div class="comment-img-box">
+	                        <div class="comment-img">
+	                            <img src="img/about.jpg">
+	                        </div>
+	                    </div>
+	                    <div class="comment-content">
+	
+	                        <div class="comment-text">
+	                            <textarea></textarea>
+	                            <div contenteditable="true" class="comment-write"></div>
+	                        </div>
+	                        <div class="submit-box">
+	                            <button type="button" class="btn-primary-comment-can">취소</button>
+	                            <button type="submit" class="btn-primary-comment">댓글</button>
+	                        </div>
+	                    </div>
+	                </div>
+                </form>
             </div>
 
+			<!-- 댓글 출력 -->
             <div class="board-comment">
                 <div class="board-comment-read">
                     <div class="read-comment-img-box">
@@ -460,28 +482,44 @@
                 </div>
             </div>
 
+			<!-- 대댓글 작성 양식 -->
             <div class="board-recomment">
-                <div class="board-recomment-write">
-                    <div class="recomment-img-box">
-                        <div class="recomment-img">
-                            <img src="img/about.jpg">
-                        </div>
-                    </div>
-                    <div class="recomment-content">
-
-                        <div class="recomment-text">
-                            <textarea></textarea>
-                            <div contenteditable="true" class="recomment-write"></div>
-                        </div>
-                        <div class="recomment-submit-box">
-                            <button type="submit" class="btn-primary-comment">취소</button>
-                            <button type="submit" class="btn-primary-comment">댓글</button>
-                        </div>
-                    </div>
-                </div>
+            	<form action="/board/insertComment" method="post">
+	                <div class="board-recomment-write">
+	                    <div class="recomment-img-box">
+	                        <div class="recomment-img">
+	                            <img src="img/about.jpg">
+	                        </div>
+	                    </div>
+	                    <div class="recomment-content">
+	
+	                        <div class="recomment-text">
+	                            <textarea></textarea>
+	                            <div contenteditable="true" class="recomment-write"></div>
+	                        </div>
+	                        <div class="recomment-submit-box">
+	                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
+	                            <button type="submit" class="btn-primary-comment">댓글</button>
+	                        </div>
+	                    </div>
+	                </div>
+                </form>
             </div>
         </div>
 	        
-        <th:block th:include="common/footer"></th:block>	        
+        <th:block th:include="common/footer"></th:block>
+        
+        <script>
+        $(".btn-primary-recomment").on("click",function(){
+			const index = $(".btn-primary-recomment").index(this);
+			console.log(index);
+        	$(".board-recomment").eq(index).css("display","block");
+        });
+        $(".btn-primary-recomment-can").on("click",function(){
+			const index = $(".btn-primary-recomment-can").index(this);
+			console.log(index);
+        	$(".board-recomment").eq(index).css("display","none");
+        });
+        </script>
 </body>
 </html>
