@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class Member {
 	private int memberNo;
-	private String memberEmail;
+	private String memberId;
 	private String memberPw;
-	private String memberNickname;
+	private String memberName;
 	private String memberPhone;
 	private String memberAddr;
 	private String profileImg;
@@ -20,4 +20,5 @@ public class Member {
 	private String memberIntro;
 	private String memberMbti;
 	private String memberGender;
+	private int memberLevel;
 }
