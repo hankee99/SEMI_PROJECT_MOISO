@@ -470,4 +470,26 @@ h4, h5, h6, .h4, .h5, .h6 {
 
 
 
+.input-item + .input-msg.valid {
+  color: #1065dc;
+}
+.input-item + .input-msg.valid::before {
+  background: url(/image/icon_info_success.svg) no-repeat center / contain;
+}
+.input-item + .input-msg.invalid {
+  color: #ff3d00;
+}
+.input-item + .input-msg.invalid::before {
+  background: url(/image/icon_info_warning.svg) no-repeat center / contain;
+}
+
+
+
+
+
+
+
+
+
+
 
