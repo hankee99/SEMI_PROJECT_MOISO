@@ -116,10 +116,11 @@
 } 
 /*댓글쓰기*/
 .board-comment{
-    
+
 }
 .board-comment-write{
     overflow: hidden;
+
 }
 .comment-img-box{
     width: 85px;
@@ -175,6 +176,7 @@
 /*댓글보기*/
 .board-comment-read{
     overflow: hidden;
+
 }
 .read-comment-img-box{
     width: 85px;
@@ -297,7 +299,6 @@
 
 /*답글*/
 .board-recomment{
-    
 }
 .board-recomment-write{
     overflow: hidden;
@@ -384,45 +385,43 @@
 	        
 	        
 		<div class="board-wrap">
-            <div class="board">
-
-                <div class="board-thumb">
-                    <img src="img/about.jpg">
-                </div>
-
-
-
-                <div class="board-info-img">
-                    <img src="img/about.jpg">
-                </div>
-
-                <div class="board-content-wrap">
-        
-                        <div class="board-info-user">
-                            <p th:text="${b.boardNo}"></p>
-                        </div>
-                        <span class="board-date">
-                        </span>                            
-                             
-                        <div class="board-title">
-                            <span th:text="${b.boardTitle}"><b></b></span>
-                        </div>
-        
-                        <div class="board-content">
-                            <p th:text="${b.boardContent}">
-                                
-                                </p>
-                        </div>
-        
-                        <div class="board-date">
-                            <span th:text="${b.boardDate}">2025-02-18</span>
-                            <span>조회수</span><span th:text="${b.boardboardReadCount}">584</span>                       
-                        </div>
-                        <div class="board-like">
-                            <span>좋아요</span>
-                            <span class="material-icons">favorite</span>
-                            <span>5</span>
-                        </div>
+		    <th:block th:each="b : ${b}">
+	            <div class="board">
+	                <div class="board-thumb">
+	                    <img th:src="'/moisoPhoto/'+${b.boardPicture}">
+	                </div>
+	
+	                <div class="board-info-img">
+	                    <img src="img/about.jpg">
+	                </div>
+	
+	                <div class="board-content-wrap">
+	
+	                    <div class="board-info-user">
+	                         <p th:text="${b.memberNickname}"></p>
+	                    </div>                           
+	                             
+	                    <div class="board-title">
+	                        <span th:text="${b.boardTitle}"><b></b></span>
+	                    </div>
+	        
+	                    <div class="board-content">
+	                        <p th:utext="${b.boardContent}"></p>
+	                    </div>
+	        
+	                    <div class="board-date">
+	                        <span th:text="${b.boardDate}"></span>
+	                        <span>조회수 </span><span th:text="${b.boardReadCount}"></span>                       
+	                    </div>
+	                    <div class="board-like">
+	                        <span>좋아요</span>
+	                       	<span class="material-icons">favorite</span>
+	                        <span>5</span>
+	                    </div>
+	                </div>
+                       
+           </th:block>
+                     
                         
                         <div class="board-up">
                             <button type="submit" class="btn-primary-up">수정</button>
@@ -438,7 +437,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                
 
 			<!-- 댓글 입력 -->
             <div class="board-comment">
@@ -450,9 +449,12 @@
 	                        </div>
 	                    </div>
 	                    <div class="comment-content">
-	
+	                    
+							<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
+							<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
+	                        
 	                        <div class="comment-text">
-	                            <textarea></textarea>
+	                            <textarea name="commentContent"></textarea>
 	                            <div contenteditable="true" class="comment-write"></div>
 	                        </div>
 	                        <div class="submit-box">
@@ -525,6 +527,10 @@
         <th:block th:include="common/footer"></th:block>
         
         <script>
+        $(".comment-write").on("input",function(e){
+            $(".comment-text>textarea").val($(this).text());
+        });
+       
         $(".btn-primary-recomment").on("click",function(){
 			const index = $(".btn-primary-recomment").index(this);
 			console.log(index);

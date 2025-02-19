@@ -137,12 +137,15 @@
 	        
            <div class="board-write-wrap">
     			<form action="/board/boardWrite" method="post" enctype="multipart/form-data">
-    			<input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
+    			<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
 	               <div class="board-write-title">      
 	                   <div class="board-write-category">
 	                       <select class="board-write-category-select" name="categoryName">
 	                           <option>공지사항</option>
-	                           <option>자유게시판</option>
+	                           <option>자유게시판</option> 
+	                           <th:block th:each="category : ${c}">
+	                           		<option th:text="${category.categoryName}"></option> 
+	                           </th:block>
 	                       </select>
 	                   </div>
 	    

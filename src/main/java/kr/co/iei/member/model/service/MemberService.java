@@ -16,6 +16,11 @@ public class MemberService {
 		Member member = memberDao.selectOneMember(m);
 		return member;
 	}
+
+	public int inserMember(Member m) {
+		int result = memberDao.insertMember(m);
+		return result;
+	}
 	
 
 }
