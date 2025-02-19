@@ -15,5 +15,5 @@ public class Board {
 	private int boardReadCount;
 	private	String boardPicture; 
 	private int memberNo;
-	private int categoryNo;
+	private String categoryName;
 }
