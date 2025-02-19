@@ -20,7 +20,7 @@ public class BoardRowMapper implements RowMapper<Board> {
 		b.setBoardReadCount(rs.getInt("board_read_count"));
 		b.setBoardPicture(rs.getString("board_picture"));
 		b.setMemberNo(rs.getInt("member_no"));
-		b.setCategoryNo(rs.getInt("category_no"));
+		b.setCategoryName(rs.getString("category_name"));
 		return b;
 	}
 }

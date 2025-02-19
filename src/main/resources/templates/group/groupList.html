@@ -6,18 +6,24 @@
 <style>
 	.category-div{
 		display: flex;
+		flex-direction : row;
 		justify-content: center;
+	}
+	.hidden-box{
+		min-width: 1320px;
+		overflow: hidden;
 	}
 	.category-box{
 		padding : 0;
 		display: flex;
 		flex-direction: row;
+		transition-duration: 0.6s;
 	}
 	.category {
-	width : 120px;
+		min-width : 120px;
 		list-style-type : none;
 		margin: 0 50px;
-		font-size: 20px;
+		font-size: 18px;
 		color: black;
 		cursor: pointer;
 	}
@@ -80,18 +86,13 @@
 						<li th:text="${category.categoryName}">
 					</ol> -->
 					<div class="category-div">
-						<span class="material-icons arrows" style="font-size: 30px;">arrow_circle_left</span>
-						<span>
-							<ul class="category-box">
-								<li class="category">운동/스포츠</li>
-								<li class="category">사교/인맥</li>
-								<li class="category">인문/독서</li>
-								<li class="category">게임/오락</li>
-								<li class="category">외국/언어</li>
-								<li class="category">공예/만들기</li>
-							</ul>
-						</span>
-						<span class="material-icons arrows" style="font-size: 30px;">arrow_circle_right</span>
+						<div class="material-icons arrows left-arrow" style="font-size: 30px;">arrow_circle_left</div>
+						<div class="hidden-box">
+							<div class="category-box">
+								<div th:each="category : ${categoryList}"  th:text="${category.categoryName}" class="category"  th:onclick="groupList([[${category.categoryNo}]])"></div>
+							</div>
+						</div>
+						<div class="material-icons arrows right-arrow" style="font-size: 30px;">arrow_circle_right</div>
 					</div>
 
 
@@ -101,63 +102,118 @@
 			
 			<div class="content">
 				<div class="group-list-box">
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
-					<div class="group-box">
-						<div class="img-div"></div>
-						<div class="title-div"><h3>조기축구!!</h3></div>
-						<div class="info-div"><p>건전하게 축구하실분 구합니다</p></div>
-					</div>
+					
 				</div>
+				<div class="more-btn" style="cursor: pointer; width: 400px; margin: 0 auto;" th:onclick="moreClick()">더보기</div>
 			</div>
 			
 			
 			
 		</section>
 	</main>
+	<script>
+		let temp = 0;
+		$(".right-arrow").on("click", () => {
+			if(temp === 0){
+				$(".category-box").css("transform","translateX(-1320px)")
+				temp = 1;
+			}
+		});
+		
+		$(".left-arrow").on("click", () => {
+			if(temp === 1){
+				$(".category-box").css("transform","translateX(0)")
+				temp = 0;
+			}
+		});
+		
+		let categoryPage = 0;
+		let totalCnt = 0;
+		
+		let currentCount = 0;
+		let start = 1;	
+		
+		function groupList(categoryNo){
+			console.log(categoryNo);
+			if(categoryPage !== categoryNo){
+				$.ajax({
+					url : "/group/totalCount",
+					type : "get",
+					data : {categoryNo : categoryNo},
+					success : data => {
+						$(".group-list-box>div").remove();
+						categoryPage = categoryNo;
+						
+						start = 1;
+						currentCount = 0;
+						totalCnt = data;
+						
+						moreClick(categoryNo);
+					}
+					
+				});
+				
+				
+				
+			}
+			
+		}
+		
+		
+		function moreClick(categoryNo){
+			const amount = 8;
+			$.ajax({
+				url : "/group/categoryGroup",
+				type : "get",
+				data : {categoryNo : categoryPage, start : start, amount : amount},
+				success : data => {
+					console.log(data);
+					
+					for(let i=0; i<data.length; i++){
+						
+						const group = data[i];
+						
+						const groupBox = $("<div>");
+						groupBox.addClass("group-box");
+						
+						const imgDiv = $("<div>");
+						imgDiv.addClass("img-div");
+						const titleDiv = $("<div>");
+						titleDiv.addClass("title-div");
+						const h3 = $("<h3>");
+						h3.text(group.groupName);
+						titleDiv.append(h3);
+						
+						const infoDiv = $("<div>");
+						infoDiv.addClass("info-div");
+						const p = $("<p>");
+						p.text(group.groupInfo);
+						infoDiv.append(p);
+						
+						groupBox.append(imgDiv);
+						groupBox.append(titleDiv);
+						groupBox.append(infoDiv);
+						
+						$(".group-list-box").append(groupBox);
+						
+					}
+					
+					start += amount;
+					currentCount += data.length;
+					if(currentCount === totalCnt){
+						$(".more-btn").remove();
+					}
+					
+					
+				}
+			});
+		}
+		
+		
+		
+		
+		groupList(1);
+	</script>
 	<th:block th:include="common/footer"></th:block>
 
 </body>
