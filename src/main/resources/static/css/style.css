@@ -1,3 +1,12 @@
+/* 한글font 설정 */
+@font-face {
+    font-family: ptd;
+    src: url(/font/Pretendard-Regular.otf);
+}
+@font-face {
+    font-family: ptd_b;
+    src: url(/font/Pretendard-Regular.otf);
+}
 
 /*** Spinner Start ***/
 #spinner {
@@ -23,13 +32,12 @@
 }
 
 h1, h2, h3, .h1, .h2, .h3 {
-    font-weight: 400 !important;
-    font-family: 'Playball', cursive !important;
+    font-family: ptd;
+
 }
 
 h4, h5, h6, .h4, .h5, .h6 {
-    font-weight: 600 !important;
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: ptd;
 }
 
 .my-6 {
@@ -51,6 +59,7 @@ h4, h5, h6, .h4, .h5, .h6 {
 /*** Button Start ***/
 .btn.btn-primary {
     border: 0;
+    font-family: ptd_b;
 }
 
 .btn.btn-primary:hover {
@@ -59,7 +68,6 @@ h4, h5, h6, .h4, .h5, .h6 {
 }
 
 .btn {
-    font-weight: 600;
     transition: .5s;
 }
 
@@ -91,7 +99,7 @@ h4, h5, h6, .h4, .h5, .h6 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: normal;
+
 }
 /*** Button End ***/
 
@@ -104,9 +112,9 @@ h4, h5, h6, .h4, .h5, .h6 {
 
 .navbar .navbar-nav .nav-link {
     padding: 10px 12px;
-    font-weight: 600;
     font-size: 17px;
     transition: .5s;
+    font-family: ptd_b;
 }
 
 .navbar .navbar-nav .nav-link:hover,
@@ -117,8 +125,7 @@ h4, h5, h6, .h4, .h5, .h6 {
 .navbar .dropdown-toggle::after {
     border: none;
     content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 700;
+    font-family: ptd;
     vertical-align: middle;
     margin-left: 8px;
 }
@@ -354,7 +361,6 @@ h4, h5, h6, .h4, .h5, .h6 {
     top: -30px;
     z-index: 999;
     font-size: 30px;
-    font-weight: normal;
     color: #FFFFFF;
     background: #000000;
     opacity: 1;
@@ -469,6 +475,13 @@ h4, h5, h6, .h4, .h5, .h6 {
 /*** Footer End ***/
 
 
+
+
+
+
+
+
+/**-----------------------------------------------------------------------------------------**/
 
 .input-item + .input-msg.valid {
   color: #1065dc;
