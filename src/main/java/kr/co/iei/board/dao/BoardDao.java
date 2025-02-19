@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.iei.board.vo.Board;
 import kr.co.iei.board.vo.BoardRowMapper;
+import kr.co.iei.group.model.vo.CategoryRowMapper;
 
 @Repository
 public class BoardDao {
@@ -15,6 +16,8 @@ public class BoardDao {
 	private JdbcTemplate jdbc;
 	@Autowired
 	private BoardRowMapper boardRowMapper;
+	@Autowired
+	private CategoryRowMapper categoryRowMapper;
 
 	public int insertBoard(Board b) {
 		String query = "insert into board values(board_seq.nextval,?,?,to_char(sysdate,'yyyy-mm-dd'),0,?,?,?)";
@@ -32,7 +35,7 @@ public class BoardDao {
 
 	public List selectBoardCategory() {
 		String query = "select * from category";
-		List list = jdbc.query(query,boardRowMapper);
+		List list = jdbc.query(query,categoryRowMapper);
 		return list;
 	}
 }
