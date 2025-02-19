@@ -114,8 +114,10 @@ public class BoardService {
 		
 	}
 
-	public Board selectOneBoard(int boardNo) {
+	public Board selectOneBoard(int boardNo,String memberNickname) {
 		Board b = boardDao.selectOneBoard(boardNo);
+		List commentList = boardDao.selectBoardCommentList(boardNo, memberNickname);
+		b.setCommentList(commentList);
 		return b;
 	}
 

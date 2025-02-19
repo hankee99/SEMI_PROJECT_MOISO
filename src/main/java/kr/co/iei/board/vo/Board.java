@@ -1,5 +1,7 @@
 package kr.co.iei.board.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,6 @@ public class Board {
 	private	String boardPicture; 
 	private String memberNickname;
 	private String categoryName;
+	private List<BoardComment> commentList;
+	private List<BoardComment> reCommentList;
 }

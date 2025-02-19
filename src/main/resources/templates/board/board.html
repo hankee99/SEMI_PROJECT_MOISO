@@ -467,22 +467,23 @@
             </div>
 
 			<!-- 댓글 출력 -->
+			<th:block th:each="bc : ${b.commentList}">
             <div class="board-comment">
                 <div class="board-comment-read">
                     <div class="read-comment-img-box">
                         <div class="read-comment-img">
-                            <img src="img/about.jpg">
+                            <img src="">
                         </div>
                     </div>
                     <div class="read-comment-content">
                         <div class="read-comment-user-name">
-                            <div>문현준</div>
+                            <div th:text="${bc.memberNickname}"></div>
                         </div>
                         <div class="read-comment-user-date">
-                            <div>2025-02-17</div>
+                            <div th:text="${nc.commentDate}"></div>
                         </div>
                         <div class="read-comment-text">
-                            <p class="comment-read">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</p>
+                            <p class="comment-read" th:text="${nc.commentContent}"></p>
                         </div>
                         <div class="comment-like-box">
                             <div class="comment-like">
@@ -498,6 +499,7 @@
                     </div>
                 </div>
             </div>
+            </th:block>
 
 			<!-- 대댓글 작성 양식 -->
             <div class="board-recomment">
@@ -526,7 +528,9 @@
 	        
         <th:block th:include="common/footer"></th:block>
         
-        <script>
+        <script>    
+        $(".navbar-nav").children().eq(3).addClass("active");
+        
         $(".comment-write").on("input",function(e){
             $(".comment-text>textarea").val($(this).text());
         });
