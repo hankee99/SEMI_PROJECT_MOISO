@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.iei.board.vo.Board;
 import kr.co.iei.board.vo.BoardRowMapper;
-import kr.co.iei.notice.model.vo.NoticeRowMapper;
 
 @Repository
 public class BoardDao {
