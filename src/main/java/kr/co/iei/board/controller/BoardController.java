@@ -27,13 +27,11 @@ public class BoardController {
 	private FileUtils fileUtils;
 	
 	@GetMapping(value="/boardList")
-	public String boardList(Model model) {
-		/*
-		 * BoardListData bld = boardService.selectBoardList(reqPage);
-		 * model.addAttribute("list",bld.getList());
-		 * model.addAttribute("pageNavi",bld.getPageNavi())
-		 */;
-		return "board/boardList";
+	public String BoardList(Model model, int reqPage) {
+		BoardListData bld = boardService.selectBoardList(reqPage);	
+		model.addAttribute("boardList",bld.getList());
+		model.addAttribute("pageNavi",bld.getPageNavi());
+		return "board/boardlist";
 	}
 	
 	@GetMapping(value="/board")
@@ -43,8 +41,8 @@ public class BoardController {
 	
 	@GetMapping(value="/boardWriteFrm")
 	public String boardWriteFrm(Model model) {
-		List list = boardService.selectCategory();
-		model.addAttribute(list);
+		List category = boardService.selectCategory();
+		model.addAttribute("c",category);
 		return "board/boardWriteFrm";
 	}
 	
@@ -58,7 +56,6 @@ public class BoardController {
 		int result = boardService.insertBoard(b);
 		System.out.println("result");
 		
-		model.addAttribute("b", b);
-		return "board/board";
+		return "redirect:/board/boardList?reqPage=1";
 	}
 }
