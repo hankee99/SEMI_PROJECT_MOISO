@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.iei.board.dao.BoardDao;
 import kr.co.iei.board.vo.Board;
+import kr.co.iei.board.vo.BoardComment;
 import kr.co.iei.board.vo.BoardListData;
 
 @Service
@@ -111,6 +112,18 @@ public class BoardService {
 		BoardListData bld = new BoardListData(list, pageNavi);
 		return bld;
 		
+	}
+
+	public Board selectOneBoard(int boardNo,String memberNickname) {
+		Board b = boardDao.selectOneBoard(boardNo);
+		List commentList = boardDao.selectBoardCommentList(boardNo, memberNickname);
+		b.setCommentList(commentList);
+		return b;
+	}
+
+	public int insertBoardComment(BoardComment bc) {
+		int result = boardDao.insertBoardComment(bc);
+		return result;
 	}
 	
 	

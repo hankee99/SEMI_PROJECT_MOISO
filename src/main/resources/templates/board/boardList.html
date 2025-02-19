@@ -84,6 +84,12 @@
     border-radius: 5px;
     cursor: pointer;
 }
+.image-box>a{
+	display: block;
+}
+.image-box>a>img{
+	width: 100%;
+}
 .text-box{
     width: 700px;
     height: 160px;
@@ -94,9 +100,6 @@
 }
 .text-box>div:last-child{
     margin-bottom: 0;
-}
-.image-box>img{
-    width: 100%;
 }
 .category{
     width: 70px;
@@ -142,7 +145,12 @@
 .user>div:last-child>p{
     line-height: 40px;
 }
-
+.title>h5>a{
+	color: black;
+}
+.title>h5>a:hover{
+	color: gray;
+}
 /*더보기*/
 .read-btn-box{
     background-color: #f2836b;
@@ -181,23 +189,23 @@
         
         
         <div class="header-bottom">
-            <div class="header-title">
+            <div class="header-title animated bounceInDown">
                 <h1>게시판</h1>
             </div>
-            <div class="header-title-content">
+            <div class="header-title-content animated bounceInDown">
             	<p>똑같은 일상을 다채롭게 만들어 줄 커뮤니티</p>
             	<p>누구나 열고 참여할 수 있는 자유게시판, 게시판으로 가볍고 즐겁게 소통해보세요!</p>
             </div>
             
         	<form>
-	            <div class="input-group2 mx-auto d-flex test-class" style="width:650px; height:35px;">
+	            <div class="input-group2 mx-auto d-flex test-class animated bounceInDown" style="width:650px; height:35px;">
 	                <input type="search" class="form-control bg-transparent board-search" placeholder="게시판 검색" aria-describedby="search-icon-1">
 	                <button type="submit" id="search-icon-1" class="input-group-text serach-button"><i class="fa fa-search" ></i></button>
 	                
 	            </div>
         	</form>
 
-            <div class="board-search-result">
+            <div class="board-search-result animated bounceInDown">
                 <span class="material-icons">search</span><span class="">"<span></span>"검색결과</span>
             </div>
             
@@ -209,14 +217,16 @@
  		<div class="content">
             <div class="board-box" th:each="b : ${boardList}">
                 <div class="image-box">
-                    <img th:src="'/moisoPhoto/'+${b.boardPicture}">
+                	<a th:href="@{/board/board(boardNo=${b.boardNo})}">
+                    	<img th:src="'/moisoPhoto/'+${b.boardPicture}">
+                    </a>
                 </div>
                 <div class="text-box">
                     <div class="category">
                         <p th:text="${b.categoryName}"></p>
                     </div>
                     <div class="title">
-                        <h5><span th:text="${b.boardTitle}"></span><span>[3]</span></h5>
+                        <h5><a th:href="@{/board/board(boardNo=${b.boardNo})}" th:text="${b.boardTitle}"></a><span>[3]</span></h5>
                     </div>
                     <div class="date">
                         <p th:text="${b.boardDate}"></p>
@@ -277,10 +287,13 @@
         </div>   
         <th:block th:include="common/footer"></th:block>
 	<script>
-        
+	$(".navbar-nav").children().eq(3).addClass("active");
+	
     $(".write-btn-box").on("click",function(){
         location.href="/board/boardWriteFrm";
     });
+    
+    
 	</script>
     </body>
 </html>

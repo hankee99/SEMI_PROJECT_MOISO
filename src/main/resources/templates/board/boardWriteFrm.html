@@ -183,6 +183,8 @@
     <link rel="stylesheet" href="/summernote/summernote-lite.css">
 
     <script>
+        $(".navbar-nav").children().eq(3).addClass("active");
+            
         $(".write-content").summernote({
             height: 500,
             lang: "ko-KR",
@@ -197,6 +199,7 @@
         });
 
         function loadImg(obj){
+            
 			//매개변수로 받은 obj는 input type="file"인 요소
 			//해당 객체 files속성에 접근하면 첨부파일 정보를 볼 수 있음
 			console.log(obj.files);
