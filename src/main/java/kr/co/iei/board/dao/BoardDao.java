@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.iei.board.vo.Board;
 import kr.co.iei.board.vo.BoardComment;
+import kr.co.iei.board.vo.BoardCommentRowMapper;
 import kr.co.iei.board.vo.BoardRowMapper;
 import kr.co.iei.group.model.vo.CategoryRowMapper;
 
@@ -17,6 +18,8 @@ public class BoardDao {
 	private JdbcTemplate jdbc;
 	@Autowired
 	private BoardRowMapper boardRowMapper;
+	@Autowired
+	private BoardCommentRowMapper boardCommentRowMapper;
 	@Autowired
 	private CategoryRowMapper categoryRowMapper;
 
@@ -63,5 +66,11 @@ public class BoardDao {
 		Object[] params = {bc.getCommentContent(),bc.getMemberNickname(),bc.getBoardNo(),boardCommentRef};
 		int result = jdbc.update(query,params);
 		return result;
+	}
+	public List selectBoardCommentList(int boardNo, String memberNickname) {
+		String query = "select * from board_comment where board_no = ?";
+		Object[] params = {boardNo};
+		List list = jdbc.query(query,boardCommentRowMapper,params);
+		return list;
 	}
 }

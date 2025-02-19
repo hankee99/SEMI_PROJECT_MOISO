@@ -36,8 +36,8 @@ public class BoardController {
 	}
 	
 	@GetMapping(value="/board")
-	public String board(int boardNo, Model model) {
-		Board b = boardService.selectOneBoard(boardNo);
+	public String board(int boardNo, Model model, String memberNickname) {
+		Board b = boardService.selectOneBoard(boardNo,memberNickname);
 		
 		if(b == null) {
 			model.addAttribute("title", "게시글 조회 실패");
