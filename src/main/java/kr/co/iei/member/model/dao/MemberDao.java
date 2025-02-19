@@ -27,6 +27,13 @@ public class MemberDao {
 			return member;
 		}
 	}
+
+	public int insertMember(Member m) {
+		String query = "insert into member values(member_seq.nextval,?,?,?,?,null,null,to_char(sysdate,'yyyy-mm-dd'),'N',NULL,NULL,NULL,1)";
+		Object[] params = {m.getMemberId(), m.getMemberPw(), m.getMemberNickname(), m.getMemberPhone()};
+		int result =jdbc.update(query, params);
+		return result;
+	}
 	
 	
 }

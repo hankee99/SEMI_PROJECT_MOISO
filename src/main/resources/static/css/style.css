@@ -1,11 +1,35 @@
 /* 한글font 설정 */
 @font-face {
-    font-family: ptd;
+    font-family: ptd;	/* 기본 */
     src: url(/font/Pretendard-Regular.otf);
 }
 @font-face {
-    font-family: ptd_b;
-    src: url(/font/Pretendard-Regular.otf);
+    font-family: ptd_b;	/* 두껍게 */
+    src: url(/font/Pretendard-Bold.otf);
+}
+
+@font-face {
+    font-family: ptd_bl;	/* 제일 두껍게 */
+    src: url(/font/Pretendard-Black.otf);
+}
+
+:root {
+/*color*/
+  --main1: #F2836B;		/*메인주황*/
+  --main2: #FDA792;		/*연한주황*/
+  --main3: #FED9A3;		/*연노랑*/
+  --main4: #FFFFFF;		/*화이트*/
+  --main5: #CACACA;		/*연회색(line1)*/
+	
+/*gray*/
+  --gray1: #373737;		/*검정색 글씨*/
+  --gray2: #9a9a9a;		/*서브회색 글씨*/
+  --gray3: #cacaca;		/*제일연한 회색*/
+  
+ /*line-color*/  
+  --line1 : #cacaca;	/*회색 라인*/
+  --line2 : #FDA792;	/*서브2(연주황) 라인*/
+  --line2 : #373737;	/*검정 라인*/
 }
 
 /*** Spinner Start ***/
@@ -21,8 +45,8 @@
      visibility: visible;
      opacity: 1;
  }
-/*** Spinner End ***/
 
+/*** Spinner End ***/
 
 .back-to-top {
     position: fixed;
@@ -63,8 +87,8 @@ h4, h5, h6, .h4, .h5, .h6 {
 }
 
 .btn.btn-primary:hover {
-    background: var(--bs-dark) !important;
-    color: var(--bs-primary) !important;
+    background: #FED9A3 !important;
+    color: #373737 !important;
 }
 
 .btn {
@@ -495,14 +519,3 @@ h4, h5, h6, .h4, .h5, .h6 {
 .input-item + .input-msg.invalid::before {
   background: url(/image/icon_info_warning.svg) no-repeat center / contain;
 }
-
-
-
-
-
-
-
-
-
-
-

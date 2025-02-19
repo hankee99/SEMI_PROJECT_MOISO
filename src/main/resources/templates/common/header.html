@@ -45,21 +45,26 @@
 
     color: #f2836b;
 }
+
 .btn-primary {
-    color: #000;
-    background-color: #f2836b;
+    color: var(--gray1);
+    background-color: var(--main1) !important;
 }
+
 .btn.btn-primary:hover{
-    background: #000 !important;
-    color: #f2836b !important;
+    background: var(--main3) !important;
+    color: var(--gray1) !important;
 }
+
 .navbar .navbar-nav .nav-link {
     padding: 19px 25px;
 }
+
 .btn-check:focus+.btn-primary, .btn-primary:focus {
-    color: #000;
+    color: var(--gray1);
     background-color: #f2836b;
 }
+
 .btn-check:focus+.btn-primary, .btn-primary:focus {
     box-shadow: 0 0 0 .25rem rgb(255 0 0 / 50%);
 }
@@ -67,8 +72,8 @@
 .form-control:focus {
     color: #9a9a9a;
     background-color: #fff;
-    border-color: #f2836b;
-    box-shadow: 0 0 0 .25rem rgb(255 0 0 / 50%);
+    border-color: var(--main2);
+    box-shadow: 0 0 0 .25rem var(--main2);
 }
 .modal-fullscreen .modal-content {
     height: 16%;
@@ -91,6 +96,10 @@
     border-radius: 3px;
     border-width: 1px;
     border-color: #9a9a9a;
+}
+/* 나중에 검토 필.. */
+.collapse>navbar-member>a{
+	padding-left: 5px;
 }
 </style>
 
@@ -123,14 +132,16 @@
                             <a href="/" class="nav-item nav-link">마이페이지</a>       
                         </div>
                         <button class="btn-search btn btn-primary btn-md-square me-4 rounded-circle d-none d-lg-inline-flex"><i class="fas fa-search"></i></button>
+                        <div class="navbar-member">
                         <th:block th:if="${session.member==null}">
 	                        <a href="/member/loginFrm" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">로그인</a>
 	                        <a href="/member/joinFrm" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">회원가입</a>
-	                    </th:block>
+	                    </th:block> 
 	                    <th:block th:if="${session.member!=null}">
 	                        <a href="#" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill" th:text="${session.member.memberNickname}"></a>
 	                        <a href="/member/logout" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">로그아웃</a>
 	                    </th:block>
+	                    </div>
                     </div>
                 </nav>
             </div>
