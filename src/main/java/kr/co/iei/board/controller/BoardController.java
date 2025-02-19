@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.board.service.BoardService;
 import kr.co.iei.board.vo.Board;
+import kr.co.iei.board.vo.BoardComment;
 import kr.co.iei.board.vo.BoardListData;
 import kr.co.iei.util.FileUtils;
 
@@ -35,8 +36,19 @@ public class BoardController {
 	}
 	
 	@GetMapping(value="/board")
-	public String board() {
-		return "board/board";
+	public String board(int boardNo, Model model) {
+		Board b = boardService.selectOneBoard(boardNo);
+		
+		if(b == null) {
+			model.addAttribute("title", "게시글 조회 실패");
+			model.addAttribute("text", "존재하지 않는 게시물 입니다.");
+			model.addAttribute("icon", "warning");
+			model.addAttribute("loc", "/board/boardList?reqPage=1");
+			return "common/msg";
+		}else {
+			model.addAttribute("b", b);
+			return "board/board";
+		}
 	}
 	
 	@GetMapping(value="/boardWriteFrm")
@@ -56,6 +68,17 @@ public class BoardController {
 		int result = boardService.insertBoard(b);
 		System.out.println("result");
 		
-		return "redirect:/board/boardList?reqPage=1";
+		model.addAttribute("title", "작성 완료");
+		model.addAttribute("text", "글쓰기가 등록되었습니다.");
+		model.addAttribute("icon", "success");
+		model.addAttribute("loc", "/board/boardList?reqPage=1");
+		return "common/msg";
+	}
+
+	
+	@PostMapping(value="/insertComment")
+	public String insertComment(BoardComment bc) {
+		int result = boardService.insertBoardComment(bc);
+		return "redirect:/board/board?boardNo="+bc.getBoardNo();
 	}
 }
