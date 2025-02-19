@@ -3,6 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<style>
+	*{
+	font-family: ptd;
+	}
+	.content{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.join-wrap{
+		width: 350px;
+	}
+</style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
@@ -39,8 +52,8 @@
 					</div>
 					<div class="input-wrap">
 						<div class="input-title">
-							<label for="memberName">이름</label>
-							<p>로그인시 활용할 아이디를 입력해주세요.</p>
+							<label for="memberNickname">닉네임</label>
+							<p>로그인시 활용할 닉네임을 입력해주세요.</p>
 						</div>
 						<div class="input-item">
 							<input type="text" name="memberName" id="memberName">
