@@ -9,6 +9,11 @@
 		flex-direction : row;
 		justify-content: center;
 	}
+	.category-head{
+		font-family: ptd_bl;
+		font-size: 48px;
+		margin-bottom: 50px;
+	}
 	.hidden-box{
 		min-width: 1320px;
 		overflow: hidden;
@@ -29,6 +34,7 @@
 	}
 	.arrows{
 		cursor : pointer;
+		color : #f2836b;
 	}
 	.content{
 	
@@ -58,6 +64,8 @@
 		margin-bottom: 5px;
 	}
 	.title-div{
+		max-width : 170px;
+		overflow : hidden;
 		text-align : center;
 		height: 40px;
 	}
@@ -65,6 +73,7 @@
 		line-height: 40px;
 	}
 	.info-div{
+		max-height : 48px;
 		overflow: hidden;
 	}
 	.info-div>p{
@@ -81,7 +90,7 @@
 			<div class="container-fluid bg-light py-6 my-6 mt-0"
 				style="padding-bottom: 1rem;">
 				<div class="container text-center animated bounceInDown">
-					<h1 class="display-1 mb-4">카테고리</h1>
+					<h1 class="category-head">카테고리</h1>
 					<!-- <ol th:each="category : ${list}">
 						<li th:text="${category.categoryName}">
 					</ol> -->
@@ -104,7 +113,7 @@
 				<div class="group-list-box">
 					
 				</div>
-				<div class="more-btn" style="cursor: pointer; width: 400px; margin: 0 auto;" th:onclick="moreClick()">더보기</div>
+				<div class="more-btn" style="cursor: pointer; width: 400px; margin: 0 auto; display: none;" th:onclick="moreClick()">더보기</div>
 			</div>
 			
 			
@@ -112,6 +121,9 @@
 		</section>
 	</main>
 	<script>
+		$(".navbar-nav").children().eq(1).addClass("active");
+		
+	
 		let temp = 0;
 		$(".right-arrow").on("click", () => {
 			if(temp === 0){
@@ -159,6 +171,13 @@
 			
 		}
 		
+		$(window).scroll(function() {
+		    // 페이지 하단에서 100px 이내로 스크롤이 내려가면
+		    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 400) {
+		        moreClick(categoryPage);
+		    }
+		});
+		
 		
 		function moreClick(categoryNo){
 			const amount = 8;
@@ -201,7 +220,7 @@
 					start += amount;
 					currentCount += data.length;
 					if(currentCount === totalCnt){
-						$(".more-btn").remove();
+						
 					}
 					
 					
