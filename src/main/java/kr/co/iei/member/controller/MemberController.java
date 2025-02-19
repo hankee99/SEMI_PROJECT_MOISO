@@ -52,11 +52,17 @@ public class MemberController {
 	@PostMapping(value="/join")
 	public String join(Member m, Model model) {
 		int result = memberService.inserMember(m);
-		model.addAttribute("title", "회원가입 완료!");
-		  model.addAttribute("text", "어서오세용!!!!!");
-		  model.addAttribute("icon", "success");
-		  model.addAttribute("loc", "/member/loginFrm");
-		  return "common/msg";
+			model.addAttribute("title", "회원가입 완료!");
+			model.addAttribute("text", "어서오세용!!!!!");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/member/loginFrm");
+			return "common/msg";
+		
+	}
+	
+	@GetMapping(value="/findAccountFrm")
+	public String fineAccountFrm() {
+		return "member/findAccount";
 	}
 	
 }

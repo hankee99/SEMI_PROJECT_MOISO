@@ -27,17 +27,15 @@
 		border-radius: 10px;
 		border: 1px solid var(--line1);
 	}
-
-	.login-button-box>button{
-		font-family: ptd;
-		font-size:20px;
-		width: 100%;
-		
-	}
 	label{
 		font-size: 20px;
 		color: var(--gray1);
 		padding-bottom: 5px;
+	}
+	.login-button-box>button{
+		font-family: ptd;
+		font-size:20px;
+		width: 100%;
 	}
 	.member-link-box{
 		overflow: hidden;
@@ -57,7 +55,7 @@
 	<th:block th:include="common/header"></th:block>
 	
 	<main class="content login-container">
-		<section class="section login-wrap">
+		<section class="login-wrap">
 			<div class="page-title">로그인</div>
 			<form action="/member/login" method="post" autocomplete="off">
 				<div class="input-wrap">
@@ -65,7 +63,7 @@
 						<label for="memberId">아이디</label>
 					</div>
 					<div class="input-item">
-						<input type="text" name="memberId" id="memberId" class="w-100 form-control p-3 mb-4 bg-light">
+						<input type="text" name="memberId" id="memberId" class="w-100 form-control p-3 mb-4">
 					</div>
 				</div>
 				<div class="input-wrap">	
@@ -73,7 +71,7 @@
 						<label for="memberPw">비밀번호</label>
 					</div>
 					<div class="input-item">
-						<input type="password" name="memberPw" id="memberPw" class="w-100 form-control p-3 mb-4 bg-light">
+						<input type="password" name="memberPw" id="memberPw" class="w-100 form-control p-3 mb-4">
 					</div>
 				</div>
 				<div class="login-button-box">
@@ -84,7 +82,7 @@
 						<a href="/member/joinFrm">회원가입</a>
 					</div>
 					<div class="find-account">
-						<a href="#">아이디 / 비밀번호 찾기</a>
+						<a href="/member/findAccountFrm">아이디 / 비밀번호 찾기</a>
 					</div>
 				</div>
 			</form>

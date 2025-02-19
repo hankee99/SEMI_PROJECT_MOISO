@@ -15,12 +15,34 @@
 	.join-wrap{
 		width: 350px;
 	}
+	.page-title{
+		font-family: ptd_bl;
+		text-align: center;
+		font-size: 40px;
+		color: var(--gray1);
+		padding-top: 15px;
+	}
+	.input-item>input{
+		border-radius: 10px;
+		border: 1px solid var(--line1);
+	}
+	label{
+		font-size: 20px;
+		color: var(--gray1);
+		padding-bottom: 5px;
+	}
+	.join-button-box>button{
+		font-family: ptd;
+		font-size:20px;
+		width: 100%;
+	}
+
 </style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
 	<main class="content">
-			<section class="section join-wrap">
+			<section class="join-wrap">
 				<div class="page-title">회원가입</div>
 				<form action="/member/join" method="post" autocomplete="off">
 					<div class="input-wrap">
@@ -29,7 +51,7 @@
 							<p>로그인시 활용할 아이디를 입력해주세요.</p>
 							</div>
 						<div class="input-item">
-							<input type="text" name="memberId" id="memberId">
+							<input type="text" name="memberId" id="memberId" class="w-100 form-control p-3 mb-4 bg-light">
 						</div>
 						<p class="input-msg id-check-msg"></p>
 					</div>
@@ -38,7 +60,7 @@
 							<label for="memberPw">비밀번호</label>
 						</div>
 						<div class="input-item">
-							<input type="password" name="memberPw" id="memberPw">
+							<input type="password" name="memberPw" id="memberPw" class="w-100 form-control p-3 mb-4 bg-light">
 						</div>
 					</div>
 					<div class="input-wrap">
@@ -46,17 +68,17 @@
 							<label for="memberPwRe">비밀번호 확인</label>
 						</div>
 						<div class="input-item">
-							<input type="password" name="memberPwRe" id="memberPwRe">
+							<input type="password" name="memberPwRe" id="memberPwRe" class="w-100 form-control p-3 mb-4 bg-light">
 						</div>
 						<p class="input-msg pw-check-msg"></p>
 					</div>
 					<div class="input-wrap">
 						<div class="input-title">
 							<label for="memberNickname">닉네임</label>
-							<p>로그인시 활용할 닉네임을 입력해주세요.</p>
+							<p>모이소에서 활용할 닉네임을 입력해주세요.</p>
 						</div>
 						<div class="input-item">
-							<input type="text" name="memberNickname" id="memberNickname">
+							<input type="text" name="memberNickname" id="memberNickname" class="w-100 form-control p-3 mb-4 bg-light">
 						</div>
 					</div>
 					<div class="input-wrap">
@@ -64,15 +86,13 @@
 							<label for="memberPhone">전화번호</label>
 						</div>
 						<div class="input-item">
-							<input type="text" name="memberPhone" id="memberPhone">
+							<input type="text" name="memberPhone" id="memberPhone" class="w-100 form-control p-3 mb-4 bg-light">
 						</div>
 					</div>
 
 					<div class="join-button-box">
-						<button type="submit" class="btn-primary lg join-btn" value="회원가입">회원가입</button>
-					</div>
-					
-				
+						<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">회원가입</button>
+					</div>	
 				</form>
 			</section>
 		
