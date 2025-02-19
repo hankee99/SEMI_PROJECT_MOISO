@@ -1,12 +1,13 @@
 package kr.co.iei.board.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.co.iei.board.vo.Board;
 import kr.co.iei.board.vo.BoardRowMapper;
-import kr.co.iei.notice.model.vo.NoticeRowMapper;
 
 @Repository
 public class BoardDao {
@@ -15,16 +16,23 @@ public class BoardDao {
 	@Autowired
 	private BoardRowMapper boardRowMapper;
 
-	public int newBoardNo() {
-		String query = "select board_seq.nextval from dual";
-		int boardNo = jdbc.queryForObject(query, Integer.class);
-		return boardNo;
-	}
-
 	public int insertBoard(Board b) {
-		String query = "insert into board values(?,?,?,to_char(sysdate,'yyyy-mm-dd'),0,?,?,?)";
-		Object[] params = {b.getBoardNo(),b.getBoardTitle(),b.getBoardContent(),b.getBoardPicture(),b.getMemberNo(),b.getCategoryNo()};
+		String query = "insert into board values(board_seq.nextval,?,?,to_char(sysdate,'yyyy-mm-dd'),0,?,?,?)";
+		Object[] params = {b.getBoardTitle(),b.getBoardContent(),b.getBoardPicture(),b.getMemberNo(),b.getCategoryName()};
 		int result = jdbc.update(query,params);
 		return result;
+	}
+
+	public List selectBoardList(int start, int end) {
+		String query = "select * from (select rownum as rnum, b.* from (select * from board order by board_no desc)b) where rnum between ? and ?";
+		Object[] params = {start,end};
+		List list = jdbc.query(query,boardRowMapper,params);
+		return list;
+	}
+
+	public List selectBoardCategory() {
+		String query = "select * from category";
+		List list = jdbc.query(query,boardRowMapper);
+		return list;
 	}
 }
