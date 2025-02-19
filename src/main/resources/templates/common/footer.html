@@ -7,27 +7,31 @@
 .text-primary {
         color: #f2836b !important;
 }
+
 .btn-primary {
-    color: #000;
-    background-color: #f2836b;
+    color: var(--gray1);
+    background-color: var(--main1) !important;
 }
+
+.btn.btn-primary:hover {
+    background: --main3 !important;
+    color: var(--gray1) !important;
+}
+
 a {
     color: #f2836b;
     text-decoration: none;
 }
-.btn.btn-primary:hover {
-    background: var(--bs-dark) !important;
-    color: #f2836b !important;
-}
+
 .footer .footer-item a.text-body:hover {
     color: #f2836b !important;
 }
 .btn-check:checked+.btn-primary, .btn-check:active+.btn-primary, .btn-primary:active, .btn-primary.active, .show>.btn-primary.dropdown-toggle {
-    color: #000;
+    color: var(--gray1);
     background-color: #f2836b;
 }
 .btn-check:focus+.btn-primary, .btn-primary:focus {
-    color: #000;
+    color: var(--gray1);
     background-color: #f2836b;
 }
 .btn-check:focus+.btn-primary, .btn-primary:focus {
