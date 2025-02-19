@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.new-head{
+		font-family: ptd_bl;
+		font-size: 48px;
+		margin-bottom: 50px;
+	}
+	.content{
+		
+	}
+	.new-group-box{
+		width: 1000px;
+		margin: 0 auto;
+	}
+	.title{
+		color : black;
+		font-family: ptd;
+		font-size: 26px;
+	}
+</style>
+</head>
+<body>
+	<th:block th:include="common/header"></th:block>
+	<main>
+		<section>
+			<!-- Hero Start -->
+			<div class="container-fluid bg-light py-6 my-6 mt-0"
+				style="padding-bottom: 1rem;">
+				<div class="container text-center animated bounceInDown">
+					<h1 class="new-head">모임만들기</h1>
+					<p>생성할 모임의 정보를 입력하세요!</p>
+				</div>
+			</div>
+			<!-- Hero End -->
+			
+			<div class="content">
+				<form action="/group/makeNewGroup" method="get">
+					<div class="new-group-box">
+						<div class="category">
+							<div class="title">
+								<label for="category">카테고리</label>
+							</div>
+							<div class="category-select-box">
+								<select id="category" name="categoryNo">
+								    <option value="1">운동/스포츠</option>
+								    <option value="2">사교/인맥</option>
+								    <option value="3">인문/독서</option>
+								    <option value="4">게임/오락</option>
+								    <option value="5">외국/언어</option>
+								    <option value="6">공예/만들기</option>
+								    <option value="7">아웃도어/여행</option>
+								    <option value="8">음악/악기</option>
+								    <option value="9">업종/직무</option>
+								    <option value="10">댄스/무용</option>
+								    <option value="11">사진/영상</option>
+								    <option value="12">반려동물</option>
+								  </select>
+							</div>
+						</div>
+						<div class="group-title">
+							<div class="title">
+								<label for="groupName">모임 이름</label>
+							</div>
+							<div class="group-name-box">
+								<input type="text" id="groupName" name="groupName">
+							</div>
+						</div>
+						<div class="group-info">
+							<div class="title">
+								<label for="groupInfo">모임 소개</label>
+							</div>
+							<div>
+								<textarea id="groupInfo" name="groupInfo"></textarea>
+							</div>
+						</div>
+						<div class="max-num">
+							<span class="title">
+								<label for="maxNum">인원제한</label>
+							</span>
+							<span>
+								<input type="text" id="maxNum" name="maxNum" value="20">
+							</span>
+						</div>
+						
+						<div class="group-location">
+							<div class="title">
+								<label for="region">지역</label>
+							</div>
+							<div>
+								
+							</div>
+						</div>
+						
+						<div class="meeting-date">
+							<div class="title">일정</div>
+							<div>
+								<input type="date" name="meetingDate">
+							</div>
+						</div>
+						
+						
+						
+						
+						<div class="btn-box">
+							<button type="submit">만들기</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			
+			
+		</section>
+	</main>
+	
+	
+	
+	<script>
+	$(".navbar-nav").children().eq(2).addClass("active");
+	</script>
+	<th:block th:include="common/footer"></th:block>
+</body>
+</html>

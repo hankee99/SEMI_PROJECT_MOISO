@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.iei.group.model.service.GroupService;
+import kr.co.iei.group.model.vo.Group;
 
 
 @Controller
@@ -43,6 +44,19 @@ public class GroupController {
 		List groupList = groupService.selectGroupList(categoryNo,start,amount);
 		return groupList;
 	}
+	
+	@GetMapping(value="/newGroup")
+	public String newGroup() {
+		return "group/newGroup";
+	}
+	
+	@GetMapping("/makeNewGroup")
+	public String makeNewGroup(Group group) {
+		System.out.println(group.toString());
+		return "redirect:/";
+	}
+	
+	
 	
 	
 }
