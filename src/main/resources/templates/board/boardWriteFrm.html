@@ -45,6 +45,15 @@
     transition: .5s;
 }
 .write-btn{
+    background-color: #f2836b;
+    height: 35px;
+    width: 80px;
+    float: right;
+    border: none;
+    border-radius: 50px;
+    margin-left: 20px;
+    margin-top: 11px;
+    cursor: pointer;
     color: black;
     font-weight: 700;
     font-size: 15px;
@@ -53,6 +62,8 @@
 }
 .write-btn:hover{
     color: #f2836b;
+    transition: .5s;
+    background-color: #000;
     transition: .5s;
 }
 .thumb-btn{
@@ -125,24 +136,24 @@
         <th:block th:include="common/header"></th:block>
 	        
            <div class="board-write-wrap">
-    			<form action="/boardWrite" method="post" enctype="multipart/form-data">
-    			<input type="hidden" name="memberNo" th:value="${session.member.memberNo}">
+    			<form action="/board/boardWrite" method="post" enctype="multipart/form-data">
+    			<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
 	               <div class="board-write-title">      
 	                   <div class="board-write-category">
-	                       <select class="board-write-category-select" name="categoryNo">
-	                           <option>자유게시판</option>
+	                       <select class="board-write-category-select" name="categoryName">
 	                           <option>공지사항</option>
+	                           <option>자유게시판</option> 
+	                           <th:block th:each="category : ${c}">
+	                           		<option th:text="${category.categoryName}"></option> 
+	                           </th:block>
 	                       </select>
 	                   </div>
 	    
-	                   <div class="btn-box">
-	                   		<button type="submit" class="write-btn">게시</button>
-
-	                   </div>
+	                   	<button type="submit" class="write-btn">게시</button>
 	                   
 	                   <label class="btn-box" for="thumb">
 	                       <div class="thumb-btn">썸네일</div>
-	                       <input type="file" id="thumb" name="boardPicture" accept="image/*" onchange="loadImg(this);">          
+	                       <input type="file" id="thumb" name="boardPhoto" accept="image/*" onchange="loadImg(this);">          
 	                   </label>
 	               </div>
 	               <div class="board-write-thumb">

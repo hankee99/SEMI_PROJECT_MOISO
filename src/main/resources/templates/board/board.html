@@ -50,6 +50,7 @@
 .board-info-user>p{
     font-size: 11px;
 }
+
 .board-title{
     text-align: center;
     color: #000;
@@ -66,10 +67,17 @@
     color:#000
 }
 .board-like .material-icons{
-    color:red;
+    color: gray;
     font-size: 20px;
     margin: 3px;
     cursor: pointer;
+}
+.board-up{
+	width: 120px;
+	margin-left: 480px;
+}
+.board-date{
+	margin-botton: 10px;
 }
 
 /*게시자 프로필*/
@@ -78,7 +86,6 @@
     margin-bottom: 20px;
 }
 .board-user-img{
-    background-color: #f2836b;
     width: 50px;
     height: 50px;
     float: left;
@@ -160,7 +167,10 @@
     float: left;
     text-align: right;
 }
-
+.board-date>span:first-child{
+	font-size: 12px;
+	margin-right: 5px;
+}
 
 /*댓글보기*/
 .board-comment-read{
@@ -276,7 +286,7 @@
     align-items: center;
 }
 .comment-like>.material-icons{
-    color:red;
+    color: gray;
     font-size: 20px;
     cursor: pointer;
 }
@@ -389,29 +399,34 @@
                 <div class="board-content-wrap">
         
                         <div class="board-info-user">
-                            <p>문현준</p>
+                            <p th:text="${b.memberNickname}"></p>
                         </div>
-        
+                        <span class="board-date">
+                        </span>                            
+                             
                         <div class="board-title">
-                            <span><b>🧈 버터풍미 스콘 만들기 - 앙버터와 잼 포함!</b></span>
+                            <span th:text="${b.boardTitle}"><b></b></span>
                         </div>
         
                         <div class="board-content">
-                            <p>🚨소셜링에 좋아요를 눌러도, 새 일정 알림 등은 확인이 불가능하셔요😢😢 앞으로 홈베이킹 소셜링을 계속 받아보고 싶으시다면, 꼭 호스트 팔로우를 눌러 주세요!
-        
-        
-📣 소셜링 타입이 클럽 소셜링이거나 일반 소셜링인것과 무관하게, 모든 소셜링은 문토 전체 이용자 분들 자유롭게 신청 가능하세요! 클럽에 가입해야만 신청 가능한 것이 아니니, 관심 있으시다면 자유롭게 소셜링 참가 신청해 주시면 되어요!
-                                
-                                
-🙌 재료가 모두 준비된 상태에서 모집하며, 소셜링 시작 직전 심야 신청도 확인 후 큰 문제 없다면 승인 후 함께 진행해요. 늦참도 가능하니, 부담없이 신청해 주세요!
+                            <p th:text="${b.boardContent}">
                                 
                                 </p>
                         </div>
         
+                        <div class="board-date">
+                            <span th:text="${b.boardDate}">2025-02-18</span>
+                            <span>조회수</span><span th:text="${b.boardboardReadCount}">584</span>                       
+                        </div>
                         <div class="board-like">
                             <span>좋아요</span>
                             <span class="material-icons">favorite</span>
                             <span>5</span>
+                        </div>
+                        
+                        <div class="board-up">
+                            <button type="submit" class="btn-primary-up">수정</button>
+                            <button type="submit" class="btn-primary-del">삭제</button>
                         </div>
                         <div class="board-user">
                             <div class="board-user-img">
@@ -441,7 +456,7 @@
 	                            <div contenteditable="true" class="comment-write"></div>
 	                        </div>
 	                        <div class="submit-box">
-	                            <button type="button" class="btn-primary-comment-can">취소</button>
+
 	                            <button type="submit" class="btn-primary-comment">댓글</button>
 	                        </div>
 	                    </div>
@@ -520,6 +535,15 @@
 			console.log(index);
         	$(".board-recomment").eq(index).css("display","none");
         });
+        
+        $(".board-like .material-icons").on("click",function(){       		
+			$(".board-like .material-icons").css("color","red")
+        });
+        
+        $(".comment-like>.material-icons").on("click",function(){
+        	$(".comment-like>.material-icons").css("color","red")
+        });
+        
         </script>
 </body>
 </html>

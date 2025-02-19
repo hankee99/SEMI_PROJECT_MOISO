@@ -14,6 +14,6 @@ public class Board {
 	private String boardDate;
 	private int boardReadCount;
 	private	String boardPicture; 
-	private int memberNo;
-	private int categoryNo;
+	private String memberNickname;
+	private String categoryName;
 }

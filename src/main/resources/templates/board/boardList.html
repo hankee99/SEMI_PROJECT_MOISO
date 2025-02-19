@@ -167,6 +167,12 @@
     transition: .5s;
 }
 
+.page-item>.page-link{
+	color: #f2836b;
+}
+.page-item>.page-link:hover{
+	color: #FDA792
+}
 </style>
 
 <body>
@@ -201,22 +207,23 @@
         </div>
               
  		<div class="content">
-            <div class="board-box">
+            <div class="board-box" th:each="b : ${boardList}">
                 <div class="image-box">
-                    <img src="img/about.jpg">
+                    <img th:src="'/moisoPhoto/'+${b.boardPicture}">
                 </div>
                 <div class="text-box">
                     <div class="category">
-                        <p>공지사항</p>
+                        <p th:text="${b.categoryName}"></p>
                     </div>
                     <div class="title">
-                        <h5><span>오늘 너무 재밌고 즐거운 하루였다..!ㅋ</span><span>[3]</span></h5>
+                        <h5><span th:text="${b.boardTitle}"></span><span>[3]</span></h5>
                     </div>
                     <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
+                        <p th:text="${b.boardDate}"></p>
                     </div>
                     <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
+                        <div><img src="img/about.jpg"></div><div><p th:text="${b.memberNickname}"></p></div>
+                        <span class="material-icons">favorite</span><span>5</span>
                     </div>
                 </div>
             </div>
@@ -236,6 +243,8 @@
                     </div>
                     <div class="user">
                         <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
+                        <span class="material-icons">favorite</span>
+<span>5</span>
                     </div>
                 </div>
             </div>
@@ -255,20 +264,21 @@
                     </div>
                     <div class="user">
                         <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
+                        <span class="material-icons">favorite</span><span>5</span>
                     </div>
                 </div>
             </div>    
         </div>
-
+	
+		<div id="pageNavi" th:utext="${pageNavi}"></div>
+       	
         <div class="read-btn-box">
             <div class="read-btn">더보기</div>
-        </div>        
-       	<div id="pageNavi" th:utext="${pageNavi}"></div>
+        </div>   
         <th:block th:include="common/footer"></th:block>
 	<script>
         
     $(".write-btn-box").on("click",function(){
-    	console.log("11");
         location.href="/board/boardWriteFrm";
     });
 	</script>
