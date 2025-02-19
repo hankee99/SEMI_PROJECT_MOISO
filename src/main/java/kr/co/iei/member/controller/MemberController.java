@@ -39,9 +39,10 @@ public class MemberController {
 	
 	@GetMapping(value="/logout")
 	public String logout(HttpSession session) {
-		session.invalidate();//현재  세션정보 파기
+		session.invalidate();
 		return "redirect:/";
 	}
+	
 	
 	@GetMapping(value="/joinFrm")
 	public String joinFrm() {
@@ -49,3 +50,27 @@ public class MemberController {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
