@@ -472,7 +472,7 @@
                 <div class="board-comment-read">
                     <div class="read-comment-img-box">
                         <div class="read-comment-img">
-                            <img src="">
+                            <img src="img/about.jpg">
                         </div>
                     </div>
                     <div class="read-comment-content">
@@ -480,10 +480,10 @@
                             <div th:text="${bc.memberNickname}"></div>
                         </div>
                         <div class="read-comment-user-date">
-                            <div th:text="${nc.commentDate}"></div>
+                            <div th:text="${bc.commentDate}"></div>
                         </div>
                         <div class="read-comment-text">
-                            <p class="comment-read" th:text="${nc.commentContent}"></p>
+                            <p class="comment-read" th:text="${bc.commentContent}"></p>
                         </div>
                         <div class="comment-like-box">
                             <div class="comment-like">
@@ -528,7 +528,9 @@
 	        
         <th:block th:include="common/footer"></th:block>
         
-        <script>    
+        <script>
+        $(".navbar-nav").children().eq(3).addClass("active");
+        
         $(".navbar-nav").children().eq(3).addClass("active");
         
         $(".comment-write").on("input",function(e){
