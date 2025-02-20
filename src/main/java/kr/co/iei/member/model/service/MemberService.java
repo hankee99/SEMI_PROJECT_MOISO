@@ -21,6 +21,15 @@ public class MemberService {
 		int result = memberDao.insertMember(m);
 		return result;
 	}
-	
+
+	public Member selectOneMember(String memberId) {
+		Member m = memberDao.selectOneMember(memberId);
+		return m;
+	}
+
+	public Member selectOneMemberNickname(String memberNickname) {
+		Member m = memberDao.selectOneMemberNickname(memberNickname);
+		return m;
+	}
 
 }

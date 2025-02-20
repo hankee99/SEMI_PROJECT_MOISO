@@ -3,18 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <title>내 계정 찾기</title>
+<style>
+	*{
+	font-family: ptd;
+	}
+	.content{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.input-wrap{
+		width: 500px;
+		box-shadow: 0 0 45px rgba(0, 0, 0, .08);
+		
+	}
+	.page-title{
+		font-family: ptd_bl;
+		text-align: center;
+		font-size: 40px;
+		color: var(--gray1);
+		padding: 20px 0;
+	}
+	.find-box{
+		overflow: hidden;
+		border: 1px solid var(--line1);
+		margin: 30px 40px;
+		padding: 10px 0px;
+		cursor: pointer;
+	}
+	.find-box>div{
+		float: left;
+		width: 50%;
+	}
+	.icon-box{
+		text-align: right;
+	}
+	.title-box{
+		line-height: 50px;
+		position: relative;
+	}
+	.title-box>.material-icons{
+		position: absolute;
+		left: 10px;
+		top:12px;
+	}
+	.title-box>span:last-child{
+		padding-left: 40px;
+	}
+	.icon-box{
+		position: relative;
+	}
+	.icon-box>span{
+		position: absolute;
+		right: 10px;
+		top:12px;
+	}
+	.blank{
+		height: 10px;
+	}
+	.blank2{
+		background-color: black;
+		height: 500px;
+		
+	}
+	.find-input{
+		/*display: none;*/
+	}
+</style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
 		<main class="content">
 			<section class="find-account-wrap">
-				<div class="page-title">아이디 / 비밀먼호 찾기</div>
+				<div class="page-title">아이디 / 비밀번호 찾기</div>
+				<div class="input-wrap rounded">
+					<div class="blank"></div>
+					<div class="find-box rounded id-find">
+						<div class="title-box">
+							<span class="material-icons">perm_identity</span>
+							<span>아이디 찾기</span>
+						</div>
+						<div class="icon-box">
+							<span class="material-icons">expand_more</span>
+						</div>
+					</div>
+					<div class="find-box rounded find-input">
+						<div class="email-auth-wrap">
+							<div class="input-item">
+								<input type="text" id="email">
+								<button class="btn-primary" id="send-btn">이메일 전송</button>
+							</div>	
+							<div id="auth" class="input-item" style="display:none;">
+								<input type="text" id="auth-code" placeholder="인증번호입력">
+								<button class="btn-primary" id="auth-btn">인증하기</button>
+								<span id="time-zone"></span>
+								<span id="authMsg"></span>
+							</div>
+						</div>
+					</div>
+					<div class="find-box rounded pw-find">
+						<div class="title-box">
+							<span class="material-icons">lock_open</span>
+							<span>비밀번호 찾기</span>
+						</div>
+						<div class="icon-box">
+							<span class="material-icons">expand_more</span>
+						</div>
+					</div>
+					<div class="blank"></div>
+				</div>
+				
+				
 			</section>
 		</main>
-		
+		<script>
+			$(".id-find").on("click", function(){
+				$(".find-input").slideToggle();
+			});
+			
+		</script>
 		
 	
 	
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
