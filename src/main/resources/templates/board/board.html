@@ -495,7 +495,7 @@
                         
                         <div class="board-up">
                         	<th:block th:if="${session.member != null && session.member.memberNickname == b.memberNickname}">
-	                            <button type="submit" class="btn-primary-up" th:onclick="updateBoard([[${b.boardNo}]]);">수정</button>
+	                            <button type="submit" class="btn-primary-up" th:onclick="updateBoard([[${b.boardNo}]],[[${b.memberNickname}]]);">수정</button>
 	                            <button type="submit" class="btn-primary-del" th:onclick="deleteBoard([[${b.boardNo}]]);">삭제</button>
                             </th:block>
                         </div>
@@ -689,7 +689,7 @@
         }
         //게시글 수정
         function updateBoard(boardNo){
-        	location.href="/board/updateFrmBoard?boardNo="+boardNo;
+        	location.href="/board/updateFrmBoard?boardNo="+boardNo+"&memberNickname="+memberNickname;
         }
              
         //댓글 전달
