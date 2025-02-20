@@ -74,6 +74,7 @@
 }
 .board-up{
 	width: 120px;
+	height: 35px;
 	margin-left: 480px;
 }
 .board-date{
@@ -176,7 +177,6 @@
 /*댓글보기*/
 .board-comment-read{
     overflow: hidden;
-
 }
 .read-comment-img-box{
     width: 85px;
@@ -202,6 +202,14 @@
     width: 515px;
     float: left;
 }
+.reRead-comment-content{
+    width: 515px;
+    float: left;
+}
+.reRead-comment-text{
+    width: 515px;
+    float: left;
+}
 .comment-read{
     width: 515px;
     border: none;
@@ -224,7 +232,7 @@
 .read-submit-box{
     width: 475px;
     float: left;
-    text-align: right;
+    text-align: left;
 }
 .btn-primary-del{
     height: 35px;
@@ -245,7 +253,31 @@
     border-radius: 50px;
     font-size: 13px;
 }
+.btn-primary-comment-up{
+    height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+    margin-left: 300px;
+}
+.btn-primary-reComment-up{
+    height: 35px;
+    width: 55px;
+    background-color: aliceblue;
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+    margin-left: 0px;
+}
 .btn-primary-up:hover{
+    background-color: rgb(202, 202, 202);
+}
+.btn-primary-comment-up:hover{
+    background-color: rgb(202, 202, 202);
+}
+.btn-primary-reComment-up:hover{
     background-color: rgb(202, 202, 202);
 }
 .btn-primary-recomment{
@@ -255,7 +287,7 @@
     border: none;
     border-radius: 50px;
     font-size: 13px;
-    margin-right: 290px;
+
 }
 .btn-primary-recomment:hover{
     background-color: rgb(202, 202, 202);
@@ -264,15 +296,20 @@
     overflow: hidden;
 }
 .read-comment-user-name{
-    width: 55px;
+    min-width: 1px;
     height: 25px;
     float: left;
     margin-top: 15px;
+    margin-right: 5px;
     color: #000;
     cursor: pointer;
 }
+.read-comment-user-name>div{
+	font-size: 15px;
+	font-weight: 900;
+}
 .read-comment-user-date{
-    width: 70px;
+    width: min-70px;
     height: 25px;
     float: left;
     padding-top: 20px;
@@ -282,6 +319,9 @@
 }
 .read-comment-text{
     float: left;
+}
+.comment-read{
+	margin-top: 5px;
 }
 .comment-like{
     display: flex;
@@ -379,6 +419,36 @@
 	display: none;
 }
 
+/*대댓글출력*/
+.reBoard-comment-read{
+	width: 525px;
+	margin-left: 75px;
+}
+.reRead-submit-box{
+	width: 440px;
+}
+.reRecomment-text{
+	width: 440px;
+}
+.reRead-comment-content{
+	width: 440px;
+}
+.reRead-comment-text{
+	width: 440px;
+}
+.reRead-submit-box{
+    width: 400px;
+    float: left;
+    text-align: right;
+}
+
+/*댓글수정*/
+.read-comment-text>textarea{
+	display: none;
+}
+.read-comment-text>div{
+	display: none;
+}
 </style>
 <body>
         <th:block th:include="common/header"></th:block>
@@ -424,8 +494,10 @@
                      
                         
                         <div class="board-up">
-                            <button type="submit" class="btn-primary-up">수정</button>
-                            <button type="submit" class="btn-primary-del">삭제</button>
+                        	<th:block th:if="${session.member != null && session.member.memberNickname == b.memberNickname}">
+	                            <button type="submit" class="btn-primary-up" th:onclick="updateBoard([[${b.boardNo}]]);">수정</button>
+	                            <button type="submit" class="btn-primary-del" th:onclick="deleteBoard([[${b.boardNo}]]);">삭제</button>
+                            </th:block>
                         </div>
                         <div class="board-user">
                             <div class="board-user-img">
@@ -440,7 +512,7 @@
                 
 
 			<!-- 댓글 입력 -->
-            <div class="board-comment">
+            <div class="board-comment" th:if="${session.member != null}">
             	<form action="/board/insertComment" method="post">
 	                <div class="board-comment-write">
 	                    <div class="comment-img-box">
@@ -468,73 +540,167 @@
 
 			<!-- 댓글 출력 -->
 			<th:block th:each="bc : ${b.commentList}">
-            <div class="board-comment">
-                <div class="board-comment-read">
-                    <div class="read-comment-img-box">
-                        <div class="read-comment-img">
-                            <img src="">
-                        </div>
-                    </div>
-                    <div class="read-comment-content">
-                        <div class="read-comment-user-name">
-                            <div th:text="${bc.memberNickname}"></div>
-                        </div>
-                        <div class="read-comment-user-date">
-                            <div th:text="${nc.commentDate}"></div>
-                        </div>
-                        <div class="read-comment-text">
-                            <p class="comment-read" th:text="${nc.commentContent}"></p>
-                        </div>
-                        <div class="comment-like-box">
-                            <div class="comment-like">
-                                <span class="material-icons">favorite</span>
-                                <span>5</span>
-                            </div>
-                        </div>
-                        <div class="read-submit-box">
-                            <button type="submit" class="btn-primary-recomment">답글</button>
-                            <button type="submit" class="btn-primary-up">수정</button>
-                            <button type="submit" class="btn-primary-del">삭제</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </th:block>
-
-			<!-- 대댓글 작성 양식 -->
-            <div class="board-recomment">
-            	<form action="/board/insertComment" method="post">
-	                <div class="board-recomment-write">
-	                    <div class="recomment-img-box">
-	                        <div class="recomment-img">
+	            <div class="board-comment">
+	                <div class="board-comment-read">
+	                    <div class="read-comment-img-box">
+	                        <div class="read-comment-img">
 	                            <img src="img/about.jpg">
 	                        </div>
 	                    </div>
-	                    <div class="recomment-content">
-	
-	                        <div class="recomment-text">
-	                            <textarea></textarea>
-	                            <div contenteditable="true" class="recomment-write"></div>
+	                    <div class="read-comment-content">
+	                        <div class="read-comment-user-name">
+	                            <div th:text="${bc.memberNickname}"></div>
 	                        </div>
-	                        <div class="recomment-submit-box">
-	                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
-	                            <button type="submit" class="btn-primary-comment">댓글</button>
+	                        <div class="read-comment-user-date">
+	                            <div th:text="${bc.commentDate}"></div>
+	                        </div>
+	                        <div class="read-comment-text">
+	                            <p class="comment-read" th:text="${bc.commentContent}"></p>
+	                            <textarea name="commentContent"></textarea>
+	                            <div contenteditable="true" class="comment-write"></div>
+	                           
+	                        </div>
+	                        <div class="comment-like-box">
+	                            <div class="comment-like">
+	                                <span class="material-icons">favorite</span>
+	                                <span>5</span>
+	                            </div>
+	                        </div>
+	                        <div class="read-submit-box">
+	                        <th:block th:if="${session.member != null}">
+		                            <button type="button" class="btn-primary-recomment">답글</button>
+		                        <th:block th:if="${session.member.memberNickname == bc.memberNickname}">
+		                            <button type="button" class="btn-primary-comment-up" th:onclick="modifyComment(this,[[${b.boardNo}]],[[${bc.commentNo}]])">수정</button>
+		                            <button type="button" class="btn-primary-del" th:onclick="deleteComment([[${b.boardNo}]],[[${bc.commentNo}]]);">삭제</button>
+		                        </th:block>  
+	                        </th:block>    
 	                        </div>
 	                    </div>
 	                </div>
-                </form>
-            </div>
-        </div>
+	            </div>
+	            
+	            
+	            <!-- 대댓글 출력 -->
+				<div class="board-comment" th:each="bcc : ${b.reCommentList}" th:if="${bc.commentNo == bcc.commentRef}">
+	                <div class="board-comment-read reBoard-comment-read">
+	                    <div class="read-comment-img-box">
+	                        <div class="read-comment-img">
+	                            <img src="img/about.jpg">
+	                        </div>
+	                    </div>
+	                    <div class="read-comment-content reRead-comment-content">
+	                        <div class="read-comment-user-name">
+	                            <div th:text="${bcc.memberNickname}"></div>
+	                        </div>
+	                        <div class="read-comment-user-date">
+	                            <div th:text="${bcc.commentDate}"></div>
+	                        </div>
+	                        <div class="read-comment-text reRead-comment-text">
+	                            <p class="comment-read reComment-read" th:text="${bcc.commentContent}"></p>
+	                            <textarea name="commentContent"></textarea>
+		                        <div contenteditable="true" class="recomment-write"></div>
+	                        </div>
+	                        <div class="comment-like-box">
+	                            <div class="comment-like">
+	                                <span class="material-icons">favorite</span>
+	                                <span>5</span>
+	                            </div>
+	                        </div>
+	                        <div class="reRead-submit-box">
+	                        <th:block th:if="${session.member != null && session.member.memberNickname == bcc.memberNickname}">
+	                            <button type="button" class="btn-primary-reComment-up" th:onclick="modifyComment(this,[[${b.boardNo}]],[[${bcc.commentNo}]])">수정</button>
+	                            <button type="button" class="btn-primary-del" th:onclick="deleteComment([[${b.boardNo}]],[[${bcc.commentNo}]]);">삭제</button>
+	                        </th:block>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>	            
+	            
+
+			<!-- 대댓글 입력 -->
+	            <div class="board-recomment" th:if="${session.member != null}">
+	            	<form action="/board/insertComment" method="post">
+		                <div class="board-recomment-write">
+		                    <div class="recomment-img-box">
+		                        <div class="recomment-img">
+		                            <img src="img/about.jpg">
+		                        </div>
+		                    </div>
+		                    <div class="recomment-content">
+		                    
+							<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
+							<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
+							<input type="hidden" name="commentRef" th:value="${bc.CommentNo}">		
+		
+		                        <div class="recomment-text reRecomment-text">
+		                            <textarea name="commentContent"></textarea>
+		                            <div contenteditable="true" class="recomment-write"></div>
+		                        </div>
+		                        <div class="comment-submit-box reComment-submit-box">
+		                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
+		                            <button type="submit" class="btn-primary-comment">댓글</button>
+		                        </div>
+		                    </div>
+		                </div>
+	                </form>
+	            </div>
+            </th:block>
+            
+        </div>   
+        
 	        
         <th:block th:include="common/footer"></th:block>
         
-        <script>    
+        <script src="/js/sweetalert.min.js"></script>
+        <script>
         $(".navbar-nav").children().eq(3).addClass("active");
         
+        $(".navbar-nav").children().eq(3).addClass("active");
+        
+        
+        
+        //게시글 삭제
+        function deleteBoard(boardNo){
+			swal({
+				title : "게시글 삭제",
+				text : "게시글을 삭제하시겠습니까?",
+				icon : "warning",
+				buttons : {
+					cancel : {
+						text : "취소",
+						value : false,
+						visible : true,
+						className : "btn-secondary",
+						closeModal : true
+					},
+					confirm : {
+						text : "삭제",
+						value : true,
+						visible : true,
+						className : "btn-primary",
+						closeModal : true
+					}
+				}
+			}).then(function(isConfirm){
+				if(isConfirm){
+					location.href="/board/deleteBoard?boardNo="+boardNo;
+				}
+			});        	
+        }
+        //게시글 수정
+        function updateBoard(boardNo){
+        	location.href="/board/updateFrmBoard?boardNo="+boardNo;
+        }
+             
+        //댓글 전달
+        $(".recomment-write").on("input",function(e){
+            $(".recomment-text>textarea").val($(this).text());
+        });
         $(".comment-write").on("input",function(e){
             $(".comment-text>textarea").val($(this).text());
         });
        
+        //답글 출력
         $(".btn-primary-recomment").on("click",function(){
 			const index = $(".btn-primary-recomment").index(this);
 			console.log(index);
@@ -553,6 +719,84 @@
         $(".comment-like>.material-icons").on("click",function(){
         	$(".comment-like>.material-icons").css("color","red")
         });
+        
+        //댓글 수정
+        function modifyComment(obj,boardNo,commentNo){
+        	//댓글 내용 문자열로
+        	const commentContent = $(obj).parent().parent().children().eq(2).children().eq(0).text();
+        	//textarea에 담기
+        	$(obj).parent().parent().children().eq(2).children().eq(1).text(commentContent);
+        	//댓글 내용 수정란에 입력
+        	$(obj).parent().parent().children().eq(2).children().last().text(commentContent);
+        	
+        
+        	
+        	//댓글 감추기
+        	$(obj).parent().parent().children().eq(2).children().eq(0).hide();
+        	//댓글 수정란 출력
+        	$(obj).parent().parent().children().eq(2).children().eq(2).show(); 
+        	
+        	//수정 -> 완료
+        	$(obj).text("완료");
+        	$(obj).attr("onclick","modifyComplete(this,"+boardNo+","+commentNo+");");
+        	
+        	//삭제 -> 취소
+        	$(obj).next().text("취소");
+        	$(obj).next().attr("onclick","modifyCancel(this,"+boardNo+","+commentNo+");");
+        }
+        $(".read-comment-text>.comment-write").on("input",function(e){
+        	$(this).prev().val($(this).text());
+        });
+        
+        $(".read-comment-text>.recomment-write").on("input",function(e){
+        	$(this).prev().val($(this).text());
+        });
+            
+        //댓글 취소
+        function modifyCancel(obj,boardNo,commentNo){
+        	//댓글 출력
+        	$(obj).parent().parent().children().eq(2).children().eq(0).show();
+        	//댓글 수정란 감추기
+        	$(obj).parent().parent().children().eq(2).children().eq(2).hide();
+        	
+        	//완료 -> 수정
+        	$(obj).prev().text("수정");
+        	$(obj).prev().attr("onclick","modifyComment(this,"+boardNo+","+commentNo+");");
+        	
+        	//취소 -> 삭제
+        	$(obj).text("삭제");
+        	$(obj).attr("onclick","deleteComment(this,"+boardNo+","+commentNo+");");
+        }
+        //댓글 삭제
+        function deleteComment(boardNo,commentNo){
+        	if(confirm("댓글을 삭제하시겠습니까?")){
+            	location.href="/board/deleteComment?boardNo="+boardNo+"&commentNo="+commentNo;
+        	}
+        }
+        
+  		//댓글 완료
+  		function modifyComplete(obj,boardNo,commentNo){
+  			//form
+  			const form = $("<form>");
+  			form.attr("action","/board/updateComment");
+  			form.attr("method","post");
+  			form.hide();
+  			//boardNo
+  			const boardCommentNoInput = $("<input>");
+  			boardCommentNoInput.attr("type","text");
+  			boardCommentNoInput.attr("name","commentNo")
+  			boardCommentNoInput.val(commentNo);
+  			//commentNo
+  			const boardNoInput = $("<input type='text' name='boardNo'>");
+  			boardNoInput.val(boardNo);
+  			//textarea
+  			const boardCommentContent = $(obj).parent().parent().children().eq(2).children().eq(1)
+  			
+  			form.append(boardCommentNoInput).append(boardNoInput).append(boardCommentContent);
+  			
+			$("body").append(form);
+			form.submit();
+  		}
         
         </script>
 </body>

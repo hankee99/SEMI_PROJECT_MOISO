@@ -60,6 +60,14 @@ public class BoardDao {
 			return b;
 		}
 	}
+	public int deleteBoard(int boardNo) {
+		String query = "delete from board where board_no = ?";
+		Object[] params = {boardNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	
+	//댓글
 	public int insertBoardComment(BoardComment bc) {
 		String query = "insert into board_comment values(board_comment_seq.nextval,?,to_char(sysdate,'yyyy-mm-dd pm\" \"hh:mi\"'),?,?,?)";
 		String boardCommentRef = bc.getCommentRef() == 0 ? null : String.valueOf(bc.getCommentRef());
@@ -68,9 +76,27 @@ public class BoardDao {
 		return result;
 	}
 	public List selectBoardCommentList(int boardNo, String memberNickname) {
-		String query = "select * from board_comment where board_no = ?";
+		String query = "select * from board_comment where board_no = ? and comment_ref is null";
 		Object[] params = {boardNo};
 		List list = jdbc.query(query,boardCommentRowMapper,params);
 		return list;
+	}
+	public List selectBoardReCommentList(int boardNo, String memberNickname) {
+		String query = "select * from board_comment where board_no = ? and comment_ref is not null";
+		Object[] params = {boardNo};
+		List list = jdbc.query(query,boardCommentRowMapper,params);
+		return list;
+	}
+	public int updateBoardComment(BoardComment bc) {
+		String query = "update board_comment set comment_content = ? where comment_no = ?";
+		Object[] params = {bc.getCommentContent(),bc.getCommentNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	public int deleteComment(int commentNo) {
+		String query = "delete from board_comment where comment_no = ?";
+		Object[] params = {commentNo};
+		int result = jdbc.update(query,params);
+		return result;
 	}
 }
