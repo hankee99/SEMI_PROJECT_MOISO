@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 import kr.co.iei.member.model.service.MemberService;
@@ -65,6 +66,24 @@ public class MemberController {
 		return "member/findAccount";
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/ajaxCheckId")
+	public boolean ajaxCheckId(String memberId) {
+		Member m = memberService.selectOneMember(memberId);
+		if(m == null){
+		 	return true;
+		 }else{
+		 	return false;
+		 } 
+	}
+	
+	//메소드이름 같고, 파라미터도 문자열 하나로 같으면 오버로딩 불가능(같은 이름의 메소드 사용하려면 매개변수 타입이나 개수가 달라야 함)
+	@ResponseBody
+	@GetMapping(value="/ajaxCheckNickname")
+	public boolean ajaxCheckNickname(String memberNickname) {
+		Member m = memberService.selectOneMemberNickname(memberNickname);
+		return m==null;
+	}
 }
 
 
