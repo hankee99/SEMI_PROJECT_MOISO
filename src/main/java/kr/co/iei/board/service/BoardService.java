@@ -116,8 +116,21 @@ public class BoardService {
 
 	public Board selectOneBoard(int boardNo,String memberNickname) {
 		Board b = boardDao.selectOneBoard(boardNo);
+		
+		//댓글조회
 		List commentList = boardDao.selectBoardCommentList(boardNo, memberNickname);
 		b.setCommentList(commentList);
+		
+		//대댓글조회
+		List reCommentList = boardDao.selectBoardReCommentList(boardNo, memberNickname);
+		b.setReCommentList(reCommentList);
+		
+		return b;
+	}
+	
+	public Board deleteBoard(int boardNo) {
+		Board b = boardDao.selectOneBoard(boardNo);
+		int result = boardDao.deleteBoard(boardNo);
 		return b;
 	}
 
@@ -125,6 +138,19 @@ public class BoardService {
 		int result = boardDao.insertBoardComment(bc);
 		return result;
 	}
+
+	public int updateBoardComment(BoardComment bc) {
+		int result = boardDao.updateBoardComment(bc);
+		return result;
+	}
+	
+	public int deleteComment(int commentNo) {
+		int result = boardDao.deleteComment(commentNo);
+		return result;
+	}
+
+
+
 	
 	
 
