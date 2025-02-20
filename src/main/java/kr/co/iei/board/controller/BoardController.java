@@ -89,7 +89,8 @@ public class BoardController {
 	public String deleteBoard(int boardNo, Model modele) {
 		Board b = boardService.deleteBoard(boardNo);
 		String savepath = root+"/moisoPhoto/";
-
+		
+		//사진삭제
 		File delFile = new File(savepath+b.getBoardPicture());
 		delFile.delete();
 		
