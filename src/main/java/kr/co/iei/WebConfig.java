@@ -22,5 +22,8 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 			.addResourceHandler("/moisoPhoto/**")
 			.addResourceLocations("file:///"+root+"/moisoPhoto/");
+		registry
+			.addResourceHandler("/groupThumb/**")
+			.addResourceLocations("file:///"+root+"/groupThumb/");
 	}
 }
