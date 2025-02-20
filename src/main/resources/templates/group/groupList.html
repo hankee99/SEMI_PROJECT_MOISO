@@ -73,7 +73,8 @@
 		line-height: 40px;
 	}
 	.info-div{
-		max-height : 48px;
+		height : 48px;
+		word-break: break-all; 
 		overflow: hidden;
 	}
 	.info-div>p{
@@ -91,9 +92,6 @@
 				style="padding-bottom: 1rem;">
 				<div class="container text-center animated bounceInDown">
 					<h1 class="category-head">카테고리</h1>
-					<!-- <ol th:each="category : ${list}">
-						<li th:text="${category.categoryName}">
-					</ol> -->
 					<div class="category-div">
 						<div class="material-icons arrows left-arrow" style="font-size: 30px;">arrow_circle_left</div>
 						<div class="hidden-box">
@@ -115,7 +113,6 @@
 				</div>
 				<div class="more-btn" style="cursor: pointer; width: 400px; margin: 0 auto; display: none;" th:onclick="moreClick()">더보기</div>
 			</div>
-			
 			
 			
 		</section>
@@ -165,15 +162,12 @@
 					
 				});
 				
-				
-				
 			}
 			
 		}
 		
 		$(window).scroll(function() {
-		    // 페이지 하단에서 100px 이내로 스크롤이 내려가면
-		    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 400) {
+		    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
 		        moreClick(categoryPage);
 		    }
 		});
@@ -197,6 +191,13 @@
 						
 						const imgDiv = $("<div>");
 						imgDiv.addClass("img-div");
+						if(group.thumbImage != null){
+							const img = $("<img>");
+							img.attr("src","/groupThumb/"+group.thumbImage).css("width","100%");
+							imgDiv.append(img);
+						}
+						
+						
 						const titleDiv = $("<div>");
 						titleDiv.addClass("title-div");
 						const h3 = $("<h3>");

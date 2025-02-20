@@ -21,6 +21,46 @@
 		font-family: ptd;
 		font-size: 26px;
 	}
+	.new-group-box>div{
+		margin-bottom: 50px;
+	}
+	.group-name-box>input{
+		width : 500px;
+		border : none;
+		border-bottom: 1px solid black;
+	}
+	#category{
+		width: 150px;
+	}
+	.region-api-div{
+		display: flex;
+		flex-direction: row;
+	}
+	.region-api-div>div{
+		text-align : center;
+		border : 1px solid black;
+		width : 150px;
+		height: 120px;
+		overflow-y: scroll;
+	}
+	.region-api-div>div:first-child{
+		border-right: 0;
+	}
+	.region-api-div>div>div{
+		margin-bottom: 5px;
+	}
+	.selected{
+		color : black;
+		font-weight: 900;
+	}
+	[name=imageFile]{
+		font-size: 15px;
+	}
+	.image-zone{
+		margin-top : 20px;
+		width: 300px;
+		height: 300px;
+	}
 </style>
 </head>
 <body>
@@ -38,7 +78,7 @@
 			<!-- Hero End -->
 			
 			<div class="content">
-				<form action="/group/makeNewGroup" method="get">
+				<form action="/group/makeNewGroup" method="post" enctype="multipart/form-data">
 					<div class="new-group-box">
 						<div class="category">
 							<div class="title">
@@ -90,9 +130,15 @@
 							<div class="title">
 								<label for="region">지역</label>
 							</div>
-							<div>
+							<div class="region-api-div">
+								<div class="sido">
+									
+								</div>
+								<div class="sigungu">
 								
+								</div>
 							</div>
+							<input type="hidden" id="groupLocation" name="groupLocation">
 						</div>
 						
 						<div class="meeting-date">
@@ -101,7 +147,18 @@
 								<input type="date" name="meetingDate">
 							</div>
 						</div>
-						
+						<div class="thumb-image">
+							<div class="title">
+							<span>썸네일</span>
+							<span><input type="file" name="imageFile" accept="image/*" onchange="loadImg(this);"></span>
+							</div>
+							<div class="image-zone">
+								<img id="img-view" src="/myimage/default.png" style="width: 100%;">
+							</div>
+						</div>
+						<div class="join-fee">
+							<span class="title">가입비: </span><span><input type="text" id="joinFee" name="joinFee"></span>
+						</div>
 						
 						
 						
@@ -120,7 +177,89 @@
 	
 	
 	<script>
-	$(".navbar-nav").children().eq(2).addClass("active");
+		$(".navbar-nav").children().eq(2).addClass("active");
+		
+		$.ajax({
+			url : "/group/sido",
+			type : "get",
+			success : data => {
+				
+				for(let i=0; i<data.length; i++){
+					const sido = data[i];
+					const div = $("<div>");
+					div.text(sido);
+					$(".sido").append(div);
+					
+					div.on("click", function() {
+						printSigungu(this,sido);
+					})
+				}
+				
+				$(".sido>div:first-child").click();
+				
+			}
+		});
+		
+		
+		function printSigungu(obj,sido){
+			$.ajax({
+				url : "/group/sigungu",
+				type : "get",
+				data : {sido : sido},
+				success : data => {
+					$(".sido>div").removeClass("selected");
+					$(obj).addClass("selected");
+					const sggDiv = $(".sigungu");
+					sggDiv.children().remove();
+					
+					for(let i=0; i<data.length; i++){
+						const sigungu = data[i];
+						const div = $("<div>");
+						div.text(sigungu);
+						sggDiv.append(div);
+						
+						div.on("click", function() {
+							$(".sigungu>div").removeClass("selected");
+							$(this).addClass("selected");
+						})
+					}
+					
+				}
+			});
+		}
+		
+		function loadImg(obj){
+			if(obj.files.length !== 0){
+				const reader = new FileReader();
+				reader.readAsDataURL(obj.files[0]);
+				reader.onload = function(e) {
+					$("#img-view").attr("src", e.target.result);
+				}
+			}else{
+				$("#img-view").attr("src", "/image/default.png");
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		//최종 입력값 확인하고 서브밋 동작할지 말지
+		$(".btn-box>button").on("click", (e) => {
+			const arr = $(".selected");
+			if(arr.length === 2){
+				const addr = arr.eq(0).text() + "/" + arr.eq(1).text();
+				$("#groupLocation").val(addr);
+			}else{
+				alert("입력 정보를 확인하세요");
+				e.preventDefault();
+			}
+			
+		});
+		
+		
 	</script>
 	<th:block th:include="common/footer"></th:block>
 </body>
