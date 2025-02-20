@@ -209,7 +209,7 @@
                 <span class="material-icons">search</span><span class="">"<span></span>"검색결과</span>
             </div>
             
-            <div class="write-btn-box">
+            <div class="write-btn-box" th:if="${session.member != null}">
             	<div class="write-btn">글쓰기</div>
        		</div> 
         </div>

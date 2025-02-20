@@ -1,11 +1,16 @@
 package kr.co.iei.group.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.iei.group.model.dao.GroupDao;
+import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.Region;
 
 @Service
 public class GroupService {
@@ -28,5 +33,40 @@ public class GroupService {
 	public int selectGroupTotalCount(int categoryNo) {
 		int totalCount = groupDao.selectGroupTotalCount(categoryNo);
 		return totalCount;
+	}
+	
+	//api로 불러온거 db에 집어넣는 1회용
+	@Transactional
+	public int insertRegion(HashMap<String, ArrayList<String>> map) {
+		int result = 0;
+		for(String sido : map.keySet()) {
+			for(String sigungu : map.get(sido)) {
+				Region region = new Region();
+				region.setSido(sido);
+				region.setSigungu(sigungu);
+				
+				result += groupDao.insertRegion(region);
+			}
+		}
+		
+		
+		
+		return result;
+	}
+
+	public List selectSido() {
+		List list = groupDao.selectSido();
+		return list;
+	}
+
+	public List selectSigungu(String sido) {
+		List list = groupDao.selectSigungu(sido);
+		return list;
+	}
+	
+	@Transactional
+	public int insertGroup(Group group) {
+		int result = groupDao.insertGroup(group);
+		return result;
 	}
 }
