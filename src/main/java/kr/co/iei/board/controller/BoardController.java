@@ -16,7 +16,6 @@ import kr.co.iei.board.service.BoardService;
 import kr.co.iei.board.vo.Board;
 import kr.co.iei.board.vo.BoardComment;
 import kr.co.iei.board.vo.BoardListData;
-import kr.co.iei.notice.model.vo.Notice;
 import kr.co.iei.util.FileUtils;
 
 @Controller
@@ -86,7 +85,7 @@ public class BoardController {
 	}
 	
 	@GetMapping(value="/deleteBoard")
-	public String deleteBoard(int boardNo, Model modele) {
+	public String deleteBoard(int boardNo, Model model) {
 		Board b = boardService.deleteBoard(boardNo);
 		String savepath = root+"/moisoPhoto/";
 		
