@@ -264,24 +264,35 @@
     overflow: hidden;
 }
 .read-comment-user-name{
-    width: 55px;
+    min-width: 1px;
     height: 25px;
     float: left;
     margin-top: 15px;
+    margin-right: 5px;
     color: #000;
     cursor: pointer;
 }
+.read-comment-user-name>div{
+	font-size: 15px;
+	font-weight: 900;
+}
 .read-comment-user-date{
-    width: 70px;
+    width: min-70px;
     height: 25px;
     float: left;
     padding-top: 20px;
+}
+.read-comment-user-date>div{
+
 }
 .read-comment-user-date>div{
     font-size: 12px;
 }
 .read-comment-text{
     float: left;
+}
+.comment-read{
+	margin-top: 5px;
 }
 .comment-like{
     display: flex;
@@ -468,63 +479,68 @@
 
 			<!-- 댓글 출력 -->
 			<th:block th:each="bc : ${b.commentList}">
-            <div class="board-comment">
-                <div class="board-comment-read">
-                    <div class="read-comment-img-box">
-                        <div class="read-comment-img">
-                            <img src="img/about.jpg">
-                        </div>
-                    </div>
-                    <div class="read-comment-content">
-                        <div class="read-comment-user-name">
-                            <div th:text="${bc.memberNickname}"></div>
-                        </div>
-                        <div class="read-comment-user-date">
-                            <div th:text="${bc.commentDate}"></div>
-                        </div>
-                        <div class="read-comment-text">
-                            <p class="comment-read" th:text="${bc.commentContent}"></p>
-                        </div>
-                        <div class="comment-like-box">
-                            <div class="comment-like">
-                                <span class="material-icons">favorite</span>
-                                <span>5</span>
-                            </div>
-                        </div>
-                        <div class="read-submit-box">
-                            <button type="submit" class="btn-primary-recomment">답글</button>
-                            <button type="submit" class="btn-primary-up">수정</button>
-                            <button type="submit" class="btn-primary-del">삭제</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </th:block>
-
-			<!-- 대댓글 작성 양식 -->
-            <div class="board-recomment">
-            	<form action="/board/insertComment" method="post">
-	                <div class="board-recomment-write">
-	                    <div class="recomment-img-box">
-	                        <div class="recomment-img">
+	            <div class="board-comment">
+	                <div class="board-comment-read">
+	                    <div class="read-comment-img-box">
+	                        <div class="read-comment-img">
 	                            <img src="img/about.jpg">
 	                        </div>
 	                    </div>
-	                    <div class="recomment-content">
-	
-	                        <div class="recomment-text">
-	                            <textarea></textarea>
-	                            <div contenteditable="true" class="recomment-write"></div>
+	                    <div class="read-comment-content">
+	                        <div class="read-comment-user-name">
+	                            <div th:text="${bc.memberNickname}"></div>
 	                        </div>
-	                        <div class="recomment-submit-box">
-	                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
-	                            <button type="submit" class="btn-primary-comment">댓글</button>
+	                        <div class="read-comment-user-date">
+	                            <div th:text="${bc.commentDate}"></div>
+	                        </div>
+	                        <div class="read-comment-text">
+	                            <p class="comment-read" th:text="${bc.commentContent}"></p>
+	                        </div>
+	                        <div class="comment-like-box">
+	                            <div class="comment-like">
+	                                <span class="material-icons">favorite</span>
+	                                <span>5</span>
+	                            </div>
+	                        </div>
+	                        <div class="read-submit-box">
+	                            <button type="submit" class="btn-primary-recomment">답글</button>
+	                            <button type="submit" class="btn-primary-up">수정</button>
+	                            <button type="submit" class="btn-primary-del">삭제</button>
 	                        </div>
 	                    </div>
 	                </div>
-                </form>
-            </div>
-        </div>
+	            </div>
+
+			<!-- 대댓글 입력 -->
+	            <div class="board-recomment">
+	            	<form action="/board/insertComment" method="post">
+		                <div class="board-recomment-write">
+		                    <div class="recomment-img-box">
+		                        <div class="recomment-img">
+		                            <img src="img/about.jpg">
+		                        </div>
+		                    </div>
+		                    <div class="recomment-content">
+		                    
+							<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
+							<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
+							<input type="hidden" name="commentNo" th:value="${bc.CommentNo}">		
+		
+		                        <div class="recomment-text">
+		                            <textarea name="commentContent"></textarea>
+		                            <div contenteditable="true" class="recomment-write"></div>
+		                        </div>
+		                        <div class="recomment-submit-box">
+		                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
+		                            <button type="submit" class="btn-primary-comment">댓글</button>
+		                        </div>
+		                    </div>
+		                </div>
+	                </form>
+	            </div>
+            </th:block>
+            
+        
 	        
         <th:block th:include="common/footer"></th:block>
         
