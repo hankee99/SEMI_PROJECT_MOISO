@@ -99,8 +99,10 @@
 		width: 500px;
 		height: 120px;
 	}
-	
-	.btn-box>button {
+	.btn-box{
+		text-align: right;
+	}
+	.btn-box button {
 		color : white;
 		font-size : 26px;
 		font-family : ptd_bl;
@@ -190,6 +192,9 @@
 		margin-bottom: 10px;
 		padding: 5px 10px;
 	}
+	.member-box:last-child{
+		margin-bottom: 0;
+	}
 	.member-box>div{
 		margin-right: 20px;
 	}
@@ -264,10 +269,10 @@
 						</div>
 						<div class="btn-zone">
 							<div class="btn-box">
-								<button>가입하기</button>
-								<button>소통게시판</button>
+								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);" th:if="${session.member != null}">가입하기</button>
+								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"><button>소통게시판</button></a>
 							</div>
-							<div class="join-fee">
+							<div class="join-fee" th:if="${session.member != null}">
 								<span>가입비: </span>
 								<span th:text="${group.joinFee}"></span>
 								<span>원</span>
@@ -286,7 +291,7 @@
 							<div class="staff-info" th:each="gm : ${groupMembers}" th:if="${gm.groupMemberLevel<3}">
 								<div class="staff-img">
 									<div class="profile-img-box">
-										<img src="/myimage/칠할매.jpg">
+										<img src="/myimage/defaultProfile.png">
 									</div>
 								</div>
 								<div class="grade" th:text="${gm.groupMemberLevel == 1 ? '모임장' : '운영자'}"></div>
@@ -301,7 +306,7 @@
 							<div class="member-box" th:each="gm : ${groupMembers}">
 								<div class="profile-hidden-box">
 									<div class="profile-box">
-										<img src="/myimage/칠할매.jpg">
+										<img src="/myimage/defaultProfile.png">
 									</div>
 								</div>
 								<div class="nick-box"><p th:text="${gm.memberNickname}"></p></div>
@@ -311,7 +316,7 @@
 						</div>
 					</div>
 					
-					<div class="more-btn">멤버 더보기</div>
+					<div class="more-btn" th:if="${numOfMembers>4}">멤버 더보기</div>
 					
 					
 				</div>
@@ -331,6 +336,11 @@
 				moreBtn.text("멤버 더보기");
 			}
 		});
+		
+		function joinGroup(memberNo){
+			
+		}
+		
 	</script>
 	
 	<th:block th:include="common/footer"></th:block>

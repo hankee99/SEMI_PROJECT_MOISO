@@ -25,5 +25,8 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 			.addResourceHandler("/groupThumb/**")
 			.addResourceLocations("file:///"+root+"/groupThumb/");
+		registry
+		.addResourceHandler("/profile/**")
+		.addResourceLocations("file:///"+root+"/profile/");
 	}
 }

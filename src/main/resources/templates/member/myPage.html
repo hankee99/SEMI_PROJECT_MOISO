@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div  class="test">
+		<img src="/myimage/칠할매.jpg"  th:if="${session.member.profileImg == null}">
+		<img src="/profile/default.png"  th:if="${session.member.profileImg != null}">
+	</div>
+
+
+	<script>
+	
+	</script>
+</body>
+</html>
