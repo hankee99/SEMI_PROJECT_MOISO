@@ -28,6 +28,8 @@
 	}
 	
 	.main {
+		width : 900px;
+		margin : 0 auto;
 		color: black;
 		font-family : ptd;
 		padding: 60px 80px;
@@ -80,6 +82,7 @@
 	}
 	
 	.text-box>div:first-child {
+		font-weight : 600;
 		font-size : 24px;
 		margin-bottom: 45px;
 	}
@@ -91,35 +94,38 @@
 	}
 	
 	.text-box>div:last-child {
+		font-weight : 600;
 		margin-bottom: 0;
 	}
 	
 	.btn-zone {
-		padding-left: 160px;
-		width: 500px;
+		padding-left: 0px;
+		width: 600px;
 		height: 120px;
 	}
 	.btn-box{
+		width : 100%;
 		text-align: right;
 	}
 	.btn-box button {
 		color : white;
-		font-size : 26px;
-		font-family : ptd_bl;
+		font-size : 22px;
+		font-family : ptd;
+		font-weight : 600;
 		border : none;
 		border-radius : 50px;
-		width: 150px;
+		width: 120px;
 		height: 50px;
 		background-color : var(--main1);
 		margin-bottom: 5px;
 	}
 	
 	.btn-box>button:first-child {
-		margin-right: 30px;
+		margin-right: 10px;
 	}
 	
 	.join-fee {
-		padding-left: 27px;
+		padding-left: 155px;
 	}
 	
 	.title {
@@ -139,6 +145,7 @@
 		box-shadow: 0 0 15px rgba(0, 0, 0, .15);
 		margin-right: 20px;
 		padding : 15px 0;
+		border-radius: 8px;
 	}
 	.staff-info>div{
 		margin: 0 auto;
@@ -267,12 +274,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="btn-zone">
+						<div class="btn-zone" th:if="${session.member != null}">
 							<div class="btn-box">
-								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);" th:if="${session.member != null}">가입하기</button>
+								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);">가입하기</button>
 								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"><button>소통게시판</button></a>
 							</div>
-							<div class="join-fee" th:if="${session.member != null}">
+							<div class="join-fee">
 								<span>가입비: </span>
 								<span th:text="${group.joinFee}"></span>
 								<span>원</span>

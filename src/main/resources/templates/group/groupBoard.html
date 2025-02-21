@@ -7,6 +7,30 @@
 <body>
 	<th:block th:include="common/header"></th:block>
 	
+	<main>
+		<section>
+			<!-- Hero Start -->
+			<div class="container-fluid bg-light py-6 my-6 mt-0"
+				style="padding-bottom: 1rem;">
+				<div class="container text-center animated bounceInDown">
+					<h1 class="category-head">소통게시판</h1>
+					<div class="category-div">
+						<div class="material-icons arrows left-arrow" style="font-size: 30px;">arrow_circle_left</div>
+						<div class="hidden-box">
+							<div class="category-box">
+								<div th:each="category : ${categoryList}"  th:text="${category.categoryName}" class="category"  th:onclick="groupList([[${category.categoryNo}]])"></div>
+							</div>
+						</div>
+						<div class="material-icons arrows right-arrow" style="font-size: 30px;">arrow_circle_right</div>
+					</div>
+
+
+				</div>
+			</div>
+			<!-- Hero End -->
+		</section>
+	</main>
+	
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>
