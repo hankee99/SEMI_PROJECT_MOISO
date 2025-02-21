@@ -56,6 +56,24 @@
     color: #000;
     font-size: 20px;
 }
+.category{
+	height: 50px;
+}
+.category-box{
+    width: 70px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 2px solid #f2836b;
+    border-radius: 15px;
+    text-align: center;
+    margin: 0 auto;
+}
+.category-box>p{
+    font-size: 12px;
+    font-weight: 400px;
+    color: black;
+    line-height: 30px;
+}
 .board-content{
     white-space: pre-wrap;
 }
@@ -449,6 +467,12 @@
 .read-comment-text>div{
 	display: none;
 }
+.board-like>.islike{
+	color: red;
+}
+.comment-like>.islike{
+	color: red;
+}
 </style>
 <body>
         <th:block th:include="common/header"></th:block>
@@ -470,6 +494,12 @@
 	                    <div class="board-info-user">
 	                         <p th:text="${b.memberNickname}"></p>
 	                    </div>                           
+	                   
+	                   <div class="category">
+	                    	<div class="category-box">
+                       			<p th:text="${b.categoryName}"></p>
+                    		</div>     
+	                   </div>
 	                             
 	                    <div class="board-title">
 	                        <span th:text="${b.boardTitle}"><b></b></span>
@@ -485,8 +515,10 @@
 	                    </div>
 	                    <div class="board-like">
 	                        <span>좋아요</span>
-	                       	<span class="material-icons">favorite</span>
-	                        <span>5</span>
+	                       	<span th:if="${b.isLike == 1}" class="material-icons islike" th:onclick="likepush(this,[[${b.boardNo}]]);">favorite</span>
+							<span th:if="${session.member != null && b.isLike == 0}" class="material-icons" th:onclick="likepush(this,[[${b.boardNo}]]);">favorite</span>
+							<span th:if="${session.member == null && b.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
+	                        <span th:text="${b.likeCount}"></span>
 	                    </div>
 	                </div>
                        
@@ -504,7 +536,7 @@
                                 <img src="img/about.jpg">
                             </div>
                             <div class="board-user-info">
-                                <div class="board-user-name">문현준</div>
+                                <div class="board-user-name" th:text="${b.memberNickname}"></div>
                                 <div class="board-user-text">함께 그리고 혼자서 할 수 있는 홈베이킹을 좋아해요. 베이킹 일정 진행 & 협업관련은 메세지 주세요 😇ㅋㅋㅋㅋㅋㅋㅋ</div>
                             </div>
                         </div>
@@ -562,8 +594,10 @@
 	                        </div>
 	                        <div class="comment-like-box">
 	                            <div class="comment-like">
-	                                <span class="material-icons">favorite</span>
-	                                <span>5</span>
+									<span th:if="${bc.isLike == 1}" class="material-icons islike" th:onclick="likepushComment(this,[[${bc.commentNo}]]);">favorite</span>
+									<span th:if="${session.member != null && bc.isLike == 0}" class="material-icons" th:onclick="likepushComment(this,[[${bc.commentNo}]]);">favorite</span>
+									<span th:if="${session.member == null && bc.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
+	                                <span th:text="${bc.likeCount}"></span>
 	                            </div>
 	                        </div>
 	                        <div class="read-submit-box">
@@ -602,8 +636,10 @@
 	                        </div>
 	                        <div class="comment-like-box">
 	                            <div class="comment-like">
-	                                <span class="material-icons">favorite</span>
-	                                <span>5</span>
+	                                <span th:if="${bcc.isLike == 1}" class="material-icons islike" th:onclick="likepushComment(this,[[${bcc.commentNo}]]);">favorite</span>
+									<span th:if="${session.member != null && bcc.isLike == 0}" class="material-icons" th:onclick="likepushComment(this,[[${bcc.commentNo}]]);">favorite</span>
+									<span th:if="${session.member == null && bcc.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
+	                                <span th:text="${bcc.likeCount}"></span>
 	                            </div>
 	                        </div>
 	                        <div class="reRead-submit-box">
@@ -689,7 +725,7 @@
         }
         //게시글 수정
         function updateBoard(boardNo, memberNickname){
-        	location.href="/board/updateFrmBoard?boardNo="+boardNo+"&memberNickname="+memberNickname;
+        	location.href="/board/boardUpdateFrm?boardNo="+boardNo+"&memberNickname="+memberNickname;
         }
              
         //댓글 전달
@@ -712,13 +748,6 @@
         	$(".board-recomment").eq(index).css("display","none");
         });
         
-        $(".board-like .material-icons").on("click",function(){       		
-			$(".board-like .material-icons").css("color","red")
-        });
-        
-        $(".comment-like>.material-icons").on("click",function(){
-        	$(".comment-like>.material-icons").css("color","red")
-        });
         
         //댓글 수정
         function modifyComment(obj,boardNo,commentNo){
@@ -798,6 +827,60 @@
 			form.submit();
   		}
         
+		function loginMsg(){
+			alert("로그인 하시오.")
+		}
+		
+		function likepush(obj, boardNo){
+			const withIslike = $(obj).hasClass("islike");
+			const isLike = (withIslike)?1:0;
+			$.ajax({
+				url : "/board/likepush",
+				data : {boardNo : boardNo, isLike : isLike},
+				type : "post",
+				success : function(data){
+					//아이콘변경
+					if(isLike === 0){
+						$(obj).addClass("islike");
+					}else{
+						$(obj).removeClass("islike");
+					}	
+					//좋아요 갯수 변경
+					$(obj).next().text(data);
+				}
+			})
+		}
+		function likepushComment(obj, commentNo){
+			const withIslike = $(obj).hasClass("islike");
+			const isLike = (withIslike)?1:0;
+			$.ajax({
+				url : "/board/likepushComment",
+				data : {commentNo : commentNo, isLike : isLike},
+				type : "post",
+				success : function(data){
+					//아이콘변경
+					if(isLike === 0){
+						$(obj).addClass("islike");
+					}else{
+						$(obj).removeClass("islike");
+					}	
+					//좋아요 갯수 변경
+					$(obj).next().text(data);
+				}
+			})	
+		}
+	
+		
+		
+        /*
+        $(".board-like .material-icons").on("click",function(){       		
+			$(".board-like .material-icons").css("color","red")
+        });
+        
+        $(".comment-like>.material-icons").on("click",function(){
+        	$(".comment-like>.material-icons").css("color","red")
+        });
+        */
         </script>
 </body>
 </html>

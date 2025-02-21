@@ -25,7 +25,7 @@ public class BoardService {
 		return result;
 	}
 
-	public BoardListData selectBoardList(int reqPage) {
+	public BoardListData selectBoardList(int reqPage, String memberNickname) {
 		//reqPage : 사용자가 요청한 페이지 번호
 		//한 페이지에 보여줄 게시물 수(지정) : 10개
 		int numPerPage = 10;
@@ -38,7 +38,7 @@ public class BoardService {
 		int end = reqPage * numPerPage;
 		int start = end - numPerPage + 1;
 		//해당 요청 페이지의 게시물을 조회 
-		List list = boardDao.selectBoardList(start,end);
+		List list = boardDao.selectBoardList(start,end,memberNickname);
 		
 		//페이지 네비게이션(사용자가 클릭해서 다른 페이지를 요청할 수 있도록 하는 요소)
 		//페이지 네비게이션은 Service에서 만드는 이유 -> 총게시물수, reqPage같은 데이터를 이용해서 만들어야하기 때문에
@@ -114,9 +114,14 @@ public class BoardService {
 		
 	}
 
-	public Board selectOneBoard(int boardNo,String memberNickname) {
-		Board b = boardDao.selectOneBoard(boardNo);
-		
+	public Board selectOneBoard(int boardNo,String memberNickname, String check) {
+		Board b = boardDao.selectOneBoard(boardNo, memberNickname);
+		if(b != null){
+			if(check == null) {
+				int result = boardDao.updateReadCount(boardNo);
+			}
+		}
+			
 		//댓글조회
 		List commentList = boardDao.selectBoardCommentList(boardNo, memberNickname);
 		b.setCommentList(commentList);
@@ -128,8 +133,13 @@ public class BoardService {
 		return b;
 	}
 	
+	public int updateBoard(Board b) {
+		int result = boardDao.updateBoard(b);
+		return result;
+	}
+	
 	public Board deleteBoard(int boardNo) {
-		Board b = boardDao.selectOneBoard(boardNo);
+		Board b = boardDao.selectOneBoard(boardNo, null);
 		int result = boardDao.deleteBoard(boardNo);
 		return b;
 	}
@@ -149,10 +159,32 @@ public class BoardService {
 		return result;
 	}
 
+	public int likepush(Board b, String memberNickname) {
 
+		if(b.getIsLike() == 0) {
+			//현재값이 0 -> 좋아요를 누르겠다 -> insert
+			int result = boardDao.insertBoardLike(b.getBoardNo(), memberNickname);
+		}else {
+			//현재값이 1 -> 좋아요를 취소하겠다 -> delete
+			int result = boardDao.deleteBoardLike(b.getBoardNo(), memberNickname);
+		}
+		//좋아요, 좋아요 취소 로직을 수행하고나면 현재 좋아요 갯수 조회해서 리턴
+		int likeCount = boardDao.selectBoardLikeCount(b.getBoardNo());
+		return likeCount;
+	}
 
-	
-	
+	public int likepushComment(BoardComment bc, String memberNickname) {
 
+		if(bc.getIsLike() == 0) {
+			//현재값이 0 -> 좋아요를 누르겠다 -> insert
+			int result = boardDao.insertCommentLike(bc.getCommentNo(), memberNickname);
+		}else {
+			//현재값이 1 -> 좋아요를 취소하겠다 -> delete
+			int result = boardDao.deleteCommentLike(bc.getCommentNo(), memberNickname);
+		}
+		//좋아요, 좋아요 취소 로직을 수행하고나면 현재 좋아요 갯수 조회해서 리턴
+		int likeCount = boardDao.selectCommentLikeCount(bc.getCommentNo());
+		return likeCount;
+	}
 
 }

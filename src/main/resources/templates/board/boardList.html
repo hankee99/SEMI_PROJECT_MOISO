@@ -116,7 +116,7 @@
     line-height: 30px;
 }
 .title{
-    height: 21px;
+    height: 23px;
     overflow: hidden;
     cursor: pointer;
 }
@@ -151,6 +151,10 @@
 .title>h5>a:hover{
 	color: gray;
 }
+#countComment{
+	color: #f2836b;
+}
+
 /*더보기*/
 .read-btn-box{
     background-color: #f2836b;
@@ -159,6 +163,7 @@
     margin: 0 auto;
     border-radius: 50px;
     cursor: pointer;
+    display: none;
 }
 .read-btn-box:hover{
     background-color: #000;
@@ -180,6 +185,9 @@
 }
 .page-item>.page-link:hover{
 	color: #FDA792
+}
+.islike{
+	color: red;
 }
 </style>
 
@@ -226,58 +234,20 @@
                         <p th:text="${b.categoryName}"></p>
                     </div>
                     <div class="title">
-                        <h5><a th:href="@{/board/board(boardNo=${b.boardNo})}" th:text="${b.boardTitle}"></a><span>[3]</span></h5>
+                        <h5><a th:href="@{/board/board(boardNo=${b.boardNo})}" th:text="${b.boardTitle}"></a><span id="countComment">[<span th:text="${b.commentCount}"></span>]</span></h5>
                     </div>
                     <div class="date">
                         <p th:text="${b.boardDate}"></p>
                     </div>
                     <div class="user">
                         <div><img src="img/about.jpg"></div><div><p th:text="${b.memberNickname}"></p></div>
-                        <span class="material-icons">favorite</span><span>5</span>
+                        	<span th:if="${b.isLike == 1}" class="material-icons islike">favorite</span>
+							<span th:if="${session.member != null && b.isLike == 0}" class="material-icons">favorite</span>
+							<span th:if="${session.member == null && b.isLike == 0}" class="material-icons">favorite</span>
+							<span th:text="${b.likeCount}"></span>
                     </div>
                 </div>
             </div>
-			<div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5><span>오늘 너무 재밌고 즐거운 하루였다..!ㅋ</span><span>[3]</span></h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                        <span class="material-icons">favorite</span>
-<span>5</span>
-                    </div>
-                </div>
-            </div>
-            <div class="board-box">
-                <div class="image-box">
-                    <img src="img/about.jpg">
-                </div>
-                <div class="text-box">
-                    <div class="category">
-                        <p>공지사항</p>
-                    </div>
-                    <div class="title">
-                        <h5><span>오늘 너무 재밌고 즐거운 하루였다..!ㅋ</span><span>[3]</span></h5>
-                    </div>
-                    <div class="date">
-                        <p>2025-02-14 오후 05:40</p>
-                    </div>
-                    <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p>하늘구름</p></div>
-                        <span class="material-icons">favorite</span><span>5</span>
-                    </div>
-                </div>
-            </div>    
         </div>
 	
 		<div id="pageNavi" th:utext="${pageNavi}"></div>

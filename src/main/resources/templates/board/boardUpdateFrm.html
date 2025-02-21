@@ -136,44 +136,46 @@
         <th:block th:include="common/header"></th:block>
 	        
            <div class="board-write-wrap">
-    			<form action="/board/boardWrite" method="post" enctype="multipart/form-data">
-    			<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
-	               <div class="board-write-title">      
-	                   <div class="board-write-category">
-	                       <select class="board-write-category-select" name="categoryName">
-	                           <option>공지사항</option>
-	                           <option>자유게시판</option> 
-	                           <th:block th:each="category : ${c}">
-	                           		<option th:text="${category.categoryName}"></option> 
-	                           </th:block>
-	                       </select>
-	                   </div>
-	    
-	                   	<button type="submit" class="write-btn">게시</button>
-	                   
-	                   <label class="btn-box" for="thumb">
-	                       <div class="thumb-btn">썸네일</div>
-	                       <input type="file" id="thumb" name="boardPhoto" accept="image/*" onchange="loadImg(this);">          
-	                   </label>
-	               </div>
-	               <div class="board-write-thumb">
-	                       	<label class="img-view" for="thumb">
-								<img src="/img/thumb.png" id="default-img">
-								<img src="" id="thumb-img">  
-							</label>
-	               </div>
-	          
-	               <div class="board-write-content"> 
-	                   <div class="board-write-name">
-	                       <input type="text" class="write-title" placeholder="제목" name="boardTitle"></div>
-	               </div>
-	                   <div class="board-write-text">
-	                       <textarea class="write-content" name="boardContent"></textarea>
-	                   </div>
-	                   </div>
-	           </div>
+    			<form action="/board/boardUpdate" method="post" enctype="multipart/form-data">
+    			
+	    			<input type="hidden" name="boardNo" th:value="${b.boardNo}">
+		               <div class="board-write-title">      
+		                   <div class="board-write-category">
+		                       	                       
+		                       <select class="board-write-category-select" name="categoryName">   
+		                           <option value="공지사항" th:selected="${b.categoryName == '공지사항'}">공지사항</option>
+		                           <option value="자유게시판" th:selected="${b.categoryName == '자유게시판'}">자유게시판</option> 
+		                           <th:block th:each="category : ${c}">
+		                           		<option value="" th:text="${category.categoryName}" th:selected="${b.categoryName == category.categoryName}"></option> 
+		                           </th:block>
+		                       </select>	                       
+		                   </div>
+		    
+		                   	<button type="submit" class="write-btn">게시</button>
+		                   
+		                   <label class="btn-box" for="thumb">
+		                       <div class="thumb-btn">썸네일</div>
+		                       <input type="file" id="thumb" name="boardPhoto" accept="image/*" onchange="loadImg(this);">          
+		                   </label>
+		               </div>
+		               <div class="board-write-thumb">
+		                       	<label class="img-view" for="thumb">
+									<img th:src="'/moisoPhoto/'+${b.boardPicture}" id="thumb-img">
+									<img src="/img/thumb.png" id="default-img">  
+									<input type="hidden" name="boardPicture" th:value="${b.boardPicture}">
+								</label>
+		               </div>
+		          
+		               <div class="board-write-content"> 
+		                   <div class="board-write-name">
+		                       <input type="text" class="write-title" th:value="${b.boardTitle}" name="boardTitle"></div>
+		               </div>
+		                   <div class="board-write-text">
+		                       <textarea class="write-content" name="boardContent" th:text="${b.boardContent}"></textarea>
+		                   </div>
            </form>
-       </div>	        
+       </div>
+    
 		
 	        
        <th:block th:include="common/footer"></th:block>	
@@ -199,7 +201,7 @@
         });
 
         function loadImg(obj){
-        	$(".img-view").removeClass("valid").removeClass("invalid");
+            
 			//매개변수로 받은 obj는 input type="file"인 요소
 			//해당 객체 files속성에 접근하면 첨부파일 정보를 볼 수 있음
 			console.log(obj.files);
@@ -218,25 +220,14 @@
 					$("#thumb-img").attr("src",e.target.result);
 					$("#default-img").hide();
 					$("#thumb-img").show();
-					$(".img-view").addClass("valid");
 				}
 			}else{
 				//첨부파일이 사라졌을 때
 				$("#default-img").attr("src","/img/thumb.png");
 				$("#thumb-img").hide();
 				$("#default-img").show();
-				$(".img-view").addClass("invalid");
 			}
 		}
-        
-        
-        $(".write-btn").on("click", function(e){
-			const valid = $(".valid");
-			if(valid.length !== 1){
-				alert("썸네일을 입력하세요.");
-				e.preventDefault();//기본이벤트제거()	
-			}
-		});
     </script>         
 </body>
 </html>
