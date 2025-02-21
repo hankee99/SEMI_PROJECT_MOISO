@@ -241,6 +241,16 @@
 						
 						$(".group-list-box").append(groupBox);
 						
+						
+						groupBox.on("click", () => {
+							const no = group.groupNo;
+							console.log(no);
+							const url = "/group/groupInfoPage?groupNo="+no;
+							location.href = url;
+						});
+						
+						
+						
 					}
 					
 					start += amount;

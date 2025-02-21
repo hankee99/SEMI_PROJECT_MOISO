@@ -17,4 +17,5 @@ public class Group {
 	private String thumbImage;
 	private int categoryNo;
 	private int joinFee;
+	private int readCount;
 }
