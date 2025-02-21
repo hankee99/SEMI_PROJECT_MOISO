@@ -138,7 +138,7 @@
 	                        <a href="/member/joinFrm" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">회원가입</a>
 	                    </th:block> 
 	                    <th:block th:if="${session.member!=null}">
-	                        <a href="#" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill" th:text="${session.member.memberNickname}"></a>
+	                        <a href="/member/myPage" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill" th:text="${session.member.memberNickname}"></a>
 	                        <a href="/member/logout" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block rounded-pill">로그아웃</a>
 	                    </th:block>
 	                    </div>

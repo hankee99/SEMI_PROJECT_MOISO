@@ -21,4 +21,5 @@ public class Member {
 	private String memberMbti;
 	private String memberGender;
 	private int memberLevel;
+	private String memberEmail;
 }
