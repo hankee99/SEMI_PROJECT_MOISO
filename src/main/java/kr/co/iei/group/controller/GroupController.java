@@ -171,6 +171,11 @@ public class GroupController {
 		return "group/groupInfoPage";
 	}
 	
+	@GetMapping(value="/groupBoard")
+	public String groupBoard(int groupNo) {
+		return "group/groupBoard";
+	}
+	
 	
 	
 	
