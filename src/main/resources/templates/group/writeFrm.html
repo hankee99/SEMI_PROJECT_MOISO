@@ -30,13 +30,10 @@
 		font-size: 22px;
 		font-weight: 600;
 	}
-	.top-div>div:last-child{
-		margin-left: 367px;
-	}
-	
-	.top-div>div:last-child>a{
+	.top-div>div>a{
 		color: white;
 	}
+	
 	.content{
 		border-right : 1px solid rgba(0, 0, 0, 0.05);
 		border-left : 1px solid rgba(0, 0, 0, 0.05);
@@ -55,13 +52,10 @@
 			<div class="container-fluid bg-light py-6 my-6 mt-0"
 				style="padding-bottom: 1rem;">
 				<div class="container text-center animated bounceInDown">
-					<h1 class="board-head">소통게시판</h1>
-					<h3>멤버들과 자유롭게 소통해보세요!</h3>
+					<h1 class="board-head">글쓰기</h1>
 					<div class="top-div">
-						<div class="all">전체</div>
-						<div class="notice">공지</div>
-						<div class="free">자유</div>
-						<div><a th:href="${'/group/writeFrm?groupNo='+group.groupNo}">글쓰기</a></div>
+						<div class="to-list"><a th:href="${'/group/groupBoard?groupNo='+groupNo}">취소</a></div>
+						<div class="complete">작성</div>
 					</div>
 
 				</div>
