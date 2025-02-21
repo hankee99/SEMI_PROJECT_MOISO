@@ -10,12 +10,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.board.service.BoardService;
 import kr.co.iei.board.vo.Board;
 import kr.co.iei.board.vo.BoardComment;
 import kr.co.iei.board.vo.BoardListData;
+import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.util.FileUtils;
 
 @Controller
@@ -28,17 +31,27 @@ public class BoardController {
 	@Autowired
 	private FileUtils fileUtils;
 	
+	//게시글 리스트
 	@GetMapping(value="/boardList")
-	public String BoardList(Model model, int reqPage) {
-		BoardListData bld = boardService.selectBoardList(reqPage);	
+	public String BoardList(Model model, int reqPage, @SessionAttribute(required=false) Member member) {
+		String memberNickname = null;
+		if(member != null) {
+			memberNickname = member.getMemberNickname();
+		}
+		BoardListData bld = boardService.selectBoardList(reqPage, memberNickname);	
 		model.addAttribute("boardList",bld.getList());
 		model.addAttribute("pageNavi",bld.getPageNavi());
 		return "board/boardlist";
 	}
 	
+	//게시글
 	@GetMapping(value="/board")
-	public String board(int boardNo, Model model, String memberNickname) {
-		Board b = boardService.selectOneBoard(boardNo, memberNickname);
+	public String board(int boardNo, Model model, String check, @SessionAttribute(required=false) Member member) {
+		String memberNickname = null;
+		if(member != null) {
+			memberNickname = member.getMemberNickname();
+		}
+		Board b = boardService.selectOneBoard(boardNo, memberNickname, check);
 		
 		if(b == null) {
 			model.addAttribute("title", "게시글 조회 실패");
@@ -52,6 +65,7 @@ public class BoardController {
 		}
 	}
 	
+	//게시글 쓰기
 	@GetMapping(value="/boardWriteFrm")
 	public String boardWriteFrm(Model model) {
 		List category = boardService.selectCategory();
@@ -59,6 +73,7 @@ public class BoardController {
 		return "board/boardWriteFrm";
 	}
 	
+	//게시글 쓰기
 	@PostMapping(value="/boardWrite")
 	public String boardWrite(Board b, MultipartFile boardPhoto, Model model) {
 		if(!boardPhoto.isEmpty()) {
@@ -66,24 +81,45 @@ public class BoardController {
 			String filepath = fileUtils.upload(savepath, boardPhoto);
 			b.setBoardPicture(filepath);
 		}
-		//사진 삭제
 		int result = boardService.insertBoard(b);
 		System.out.println("result");
 		
 		model.addAttribute("title", "작성 완료");
-		model.addAttribute("text", "글쓰기가 등록되었습니다.");
+		model.addAttribute("text", "게시글이 등록되었습니다.");
 		model.addAttribute("icon", "success");
 		model.addAttribute("loc", "/board/boardList?reqPage=1");
 		return "common/msg";
 	}
 
-	@GetMapping(value="/updateFrmBoard")
-	public String updateFrmBoard(int boardNo,Model model, String memberNicknam) {
-		Board n = boardService.selectOneBoard(boardNo, memberNicknam);
-		model.addAttribute("n", n);
-		return "notice/updateFrm";
+	//게시글 수정
+	@GetMapping(value="/boardUpdateFrm")
+	public String boardUpdateFrm(int boardNo,Model model, String memberNickname) {
+		List category = boardService.selectCategory();
+		Board b = boardService.selectOneBoard(boardNo, memberNickname, "1");
+		
+		model.addAttribute("c",category);
+		model.addAttribute("b", b);
+		return "board/boardUpdateFrm";
 	}
 	
+	//게시글 수정
+	@PostMapping(value="/boardUpdate")
+	public String boardUpdate(Board b, MultipartFile boardPhoto, Model model) {
+		if(!boardPhoto.isEmpty()) {
+			String savepath = root+"/moisoPhoto/";
+			String filepath = fileUtils.upload(savepath, boardPhoto);
+			b.setBoardPicture(filepath);
+		}
+		int result = boardService.updateBoard(b);
+		
+		model.addAttribute("title", "수정 완료");
+		model.addAttribute("text", "게시글이 수정되었습니다.");
+		model.addAttribute("icon", "success");
+		model.addAttribute("loc", "/board/boardList?reqPage=1");
+		return "common/msg";
+	}
+	
+	//게시글 삭제
 	@GetMapping(value="/deleteBoard")
 	public String deleteBoard(int boardNo, Model model) {
 		Board b = boardService.deleteBoard(boardNo);
@@ -99,24 +135,41 @@ public class BoardController {
 		model.addAttribute("loc","/board/boardList?reqPage=1");
 		return "common/msg";
 	}
-	
-	
-	
+		
+	//댓글 입력
 	@PostMapping(value="/insertComment")
 	public String insertComment(BoardComment bc) {
 		int result = boardService.insertBoardComment(bc);
 		return "redirect:/board/board?boardNo="+bc.getBoardNo();
 	}
 	
+	//댓글 수정
 	@PostMapping(value="/updateComment")
 	public String updateComment(BoardComment bc) {
 		int result = boardService.updateBoardComment(bc);
 		return "redirect:/board/board?boardNo="+bc.getBoardNo();
 	}
 	
+	//댓글 삭제
 	@GetMapping(value="deleteComment")
 	public String deleteComment(BoardComment bc) {
 		int result = boardService.deleteComment(bc.getCommentNo());
 		return "redirect:/board/board?boardNo="+bc.getBoardNo();
 	}
+	
+	//게시글 좋아요
+	@ResponseBody
+	@PostMapping(value="/likepush")
+	public int likepush(Board b, @SessionAttribute Member member) {
+		int result = boardService.likepush(b,member.getMemberNickname());
+		return result;
+	}
+	//댓글 좋아요
+	@ResponseBody
+	@PostMapping(value="/likepushComment")
+	public int likepushComment(BoardComment bc, @SessionAttribute Member member) {
+		int result = boardService.likepushComment(bc,member.getMemberNickname());
+		return result;
+	}
+	
 }

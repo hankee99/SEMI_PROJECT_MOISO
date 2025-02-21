@@ -12,7 +12,7 @@ public class GroupRowMapper implements RowMapper<Group>{
 	@Override
 	public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Group g = new Group();
-		g.setCategoryNo(rs.getInt("group_no"));
+		g.setGroupNo(rs.getInt("group_no"));
 		g.setGroupName(rs.getString("group_name"));
 		g.setGroupInfo(rs.getString("group_info"));
 		g.setMaxNum(rs.getInt("max_num"));
@@ -21,6 +21,7 @@ public class GroupRowMapper implements RowMapper<Group>{
 		g.setThumbImage(rs.getString("thumb_image"));
 		g.setCategoryNo(rs.getInt("category_no"));
 		g.setJoinFee(rs.getInt("join_fee"));
+		g.setReadCount(rs.getInt("read_count"));
 		return g;
 	}
 	

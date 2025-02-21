@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	section{
+		padding-top: 30px;
+	}
+	.content {
+		width: 1200px;
+		margin: 0 auto;
+	}
+	
+	.thumb-zone {
+		width: 1200px;
+		height: 300px;
+		overflow: hidden;
+		border-radius: 30px;
+	}
+	
+	.thumb-zone>img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		top: 0;
+		left: 0;
+	}
+	
+	.main {
+		color: black;
+		font-family : ptd;
+		padding: 60px 80px;
+		font-family: ptd;
+		padding-bottom: 10px;
+	}
+	
+	.main>div {
+		margin-bottom: 40px;
+	}
+	
+	.main>div:nth-child(4) {
+		margin-bottom: 10px;
+	}
+	
+	.top-zone {
+		height: 180px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	
+	.info-zone {
+		width: 500px;
+		height: 180px;
+		display: flex;
+		flex-direction: row;
+	}
+	
+	.img-box {
+		border-radius : 15px;
+		width: 180px;
+		height: 180px;
+		overflow: hidden;
+		margin-right: 20px;
+	}
+	
+	.img-box>img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		top: 0;
+		left: 0;
+	}
+	
+	.text-box>div {
+		color: black;
+		font-family: ptd;
+		font-size: 20px;
+	}
+	
+	.text-box>div:first-child {
+		font-size : 24px;
+		margin-bottom: 45px;
+	}
+	
+	.text-box>div:nth-child(2) {
+		margin-bottom: 20px;
+		font-size: 30px;
+		font-family: ptd_bl;
+	}
+	
+	.text-box>div:last-child {
+		margin-bottom: 0;
+	}
+	
+	.btn-zone {
+		padding-left: 160px;
+		width: 500px;
+		height: 120px;
+	}
+	.btn-box{
+		text-align: right;
+	}
+	.btn-box button {
+		color : white;
+		font-size : 26px;
+		font-family : ptd_bl;
+		border : none;
+		border-radius : 50px;
+		width: 150px;
+		height: 50px;
+		background-color : var(--main1);
+		margin-bottom: 5px;
+	}
+	
+	.btn-box>button:first-child {
+		margin-right: 30px;
+	}
+	
+	.join-fee {
+		padding-left: 27px;
+	}
+	
+	.title {
+		font-family: ptd_bl;
+		font-size: 28px;
+		margin-bottom: 10px;
+	}
+	
+	.staff-list {
+		display: flex;
+		flex-direction: row;
+	}
+	
+	.staff-info {
+		width: 120px;
+		height: 150px;
+		box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+		margin-right: 20px;
+		padding : 15px 0;
+	}
+	.staff-info>div{
+		margin: 0 auto;
+	}
+	
+	.staff-info>div:not(:first-child){
+		text-align: center;
+	}
+	.staff-info>.staff-img {
+		width: 70px;
+		height: 70px;
+		overflow: hidden;
+		border-radius: 70px;
+		margin-bottom: 10px;
+	}
+	.profile-img-box{
+		width : 100%;
+		height : 100%;
+	}
+	.profile-img-box>img{
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		top: 0;
+		left: 0;
+	}
+	
+	.grade{
+		font-family : ptd_bl;
+		width: 60px;
+		height: 24px;
+		font-size: 20px;
+	}
+	.nickname{
+		width: 100px;
+		height: 24px;
+		overflow: hidden;
+	}
+	
+	.member-list{
+		width: 1200px;
+	}
+	.mh{
+		max-height: 270px;
+		overflow: hidden;
+	}
+	.member-box{
+		height : 60px;
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 10px;
+		padding: 5px 10px;
+	}
+	.member-box:last-child{
+		margin-bottom: 0;
+	}
+	.member-box>div{
+		margin-right: 20px;
+	}
+	.member-box>div:not(:first-child)>*{
+		line-height: 50px;
+		font-size: 24px;
+	}
+	.profile-hidden-box{
+		width: 50px;
+		height: 50px;
+		border-radius: 50px;
+		overflow: hidden;
+	}
+	.profile-box{
+		width : 100%;
+		height : 100%;
+	}
+	.profile-box>img{
+		width : 100%;
+		height : 100%;
+		object-fit: cover;
+		top: 0;
+		left: 0;
+	}
+	
+	.star1{
+		width : 30px;
+		color : #FFCC00;
+	}
+	.star2{
+		width : 30px;
+		color : #B700FF;
+	}
+	.more-btn{
+		cursor : pointer;
+		color : white;
+		width: 800px;
+		height: 40px;
+		background-color: var(--main1);
+		margin: 0 auto;
+		text-align: center;
+		font-size: 26px;
+		line-height: 40px;
+		border-radius: 40px;
+	}
+</style>
+</head>
+<body>
+	<th:block th:include="common/header"></th:block>
+	
+	<main>
+		<section>
+			<div class="content">
+				<div class="thumb-zone">
+					<img th:if="${group.thumbImage != null}" th:src="${img}">
+				</div>
+				
+				<div class="main">
+					<div class="top-zone">
+						<div class="info-zone">
+							<div class="img-box">
+								<img th:if="${group.thumbImage != null}" th:src="${img}">
+							</div>
+							<div class="text-box">
+								<div class="category" th:text="${categoryName}"></div>
+								<div class="group-name" th:text="${group.groupName}"></div>
+								<div>
+									<span>멤버</span><span th:text="${numOfMembers}"></span>
+									<span>/정원</span><span th:text="${group.maxNum}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="btn-zone">
+							<div class="btn-box">
+								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);" th:if="${session.member != null}">가입하기</button>
+								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"><button>소통게시판</button></a>
+							</div>
+							<div class="join-fee" th:if="${session.member != null}">
+								<span>가입비: </span>
+								<span th:text="${group.joinFee}"></span>
+								<span>원</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="group-info">
+						<div class="title">모임 소개</div>
+						<div th:text="${group.groupInfo}"></div>
+					</div>
+					
+					<div class="staff">
+						<div class="title">운영진</div>
+						<div class="staff-list">
+							<div class="staff-info" th:each="gm : ${groupMembers}" th:if="${gm.groupMemberLevel<3}">
+								<div class="staff-img">
+									<div class="profile-img-box">
+										<img src="/myimage/defaultProfile.png">
+									</div>
+								</div>
+								<div class="grade" th:text="${gm.groupMemberLevel == 1 ? '모임장' : '운영자'}"></div>
+								<div class="nickname" th:text="${gm.memberNickname}"></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="member">
+						<div class="title">멤버</div>
+						<div class="member-list mh">
+							<div class="member-box" th:each="gm : ${groupMembers}">
+								<div class="profile-hidden-box">
+									<div class="profile-box">
+										<img src="/myimage/defaultProfile.png">
+									</div>
+								</div>
+								<div class="nick-box"><p th:text="${gm.memberNickname}"></p></div>
+								<div class="star1" th:if="${gm.groupMemberLevel == 1}"><span class="material-icons">star</span></div>
+								<div class="star2" th:if="${gm.groupMemberLevel == 2}"><span class="material-icons">star</span></div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="more-btn" th:if="${numOfMembers>4}">멤버 더보기</div>
+					
+					
+				</div>
+				
+			</div>
+		</section>
+	</main>
+	
+	<script>
+		const moreBtn = $(".more-btn");
+	
+		moreBtn.on("click", () => {
+			$(".member-list").toggleClass("mh");
+			if(moreBtn.text() === "멤버 더보기"){
+				moreBtn.text("접기");
+			}else{
+				moreBtn.text("멤버 더보기");
+			}
+		});
+		
+		function joinGroup(memberNo){
+			
+		}
+		
+	</script>
+	
+	<th:block th:include="common/footer"></th:block>
+</body>
+</html>

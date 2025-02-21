@@ -38,9 +38,17 @@ public class BoardDao {
 	}
 
 	//게시글리스트
-	public List selectBoardList(int start, int end) {
-		String query = "select * from (select rownum as rnum, b.* from (select * from board order by board_no desc)b) where rnum between ? and ?";
-		Object[] params = {start,end};
+	public List selectBoardList(int start, int end, String memberNickname) {
+		System.out.println(start);
+		System.out.println(end);
+		System.out.println(memberNickname);
+		String query = "select * \r\n"
+				+ "from (select rownum as rnum, b.*,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
+				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
+				+ "from (select * from board order by board_no desc)b) where rnum between ? and ?";
+		Object[] params = {memberNickname,start,end};
 		List list = jdbc.query(query,boardRowMapper,params);
 		return list;
 	}
@@ -49,9 +57,14 @@ public class BoardDao {
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
 	}
-	public Board selectOneBoard(int boardNo) {
-		String query = "select * from board where board_no = ?";
-		Object[] params = {boardNo};
+	public Board selectOneBoard(int boardNo, String memberNickname) {
+		String query = "select \r\n"
+				+ "    b.*,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
+				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
+				+ "from board b where board_no = ?";
+		Object[] params = {memberNickname, boardNo};
 		List list = jdbc.query(query,boardRowMapper,params);
 		if(list.isEmpty()) {
 			return null;
@@ -60,6 +73,19 @@ public class BoardDao {
 			return b;
 		}
 	}
+	public int updateReadCount(int boardNo) {
+		String query = "update board set board_read_count = board_read_count + 1 where board_no = ?";
+		Object[] params = {boardNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	public int updateBoard(Board b) {
+		String query = "update board set board_title = ?, board_content = ?, board_picture = ? where board_no = ?";
+		Object[] params = {b.getBoardTitle(),b.getBoardContent(),b.getBoardPicture(),b.getBoardNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	
 	public int deleteBoard(int boardNo) {
 		String query = "delete from board where board_no = ?";
 		Object[] params = {boardNo};
@@ -76,14 +102,22 @@ public class BoardDao {
 		return result;
 	}
 	public List selectBoardCommentList(int boardNo, String memberNickname) {
-		String query = "select * from board_comment where board_no = ? and comment_ref is null";
-		Object[] params = {boardNo};
+		String query = "select \r\n"
+				+ "    bc.*,\r\n"
+				+ "    (select count(*) from comment_like where comment_no = bc.comment_no) like_count,\r\n"
+				+ "    (select count(*) from comment_like where comment_no = bc.comment_no and member_nickname = ?) is_like\r\n"
+				+ "from board_comment bc where board_no = ? and comment_ref is null";
+		Object[] params = {memberNickname, boardNo};
 		List list = jdbc.query(query,boardCommentRowMapper,params);
 		return list;
 	}
 	public List selectBoardReCommentList(int boardNo, String memberNickname) {
-		String query = "select * from board_comment where board_no = ? and comment_ref is not null";
-		Object[] params = {boardNo};
+		String query = "select \r\n"
+				+ "    bc.*,\r\n"
+				+ "    (select count(*) from comment_like where comment_no = bc.comment_no) like_count,\r\n"
+				+ "    (select count(*) from comment_like where comment_no = bc.comment_no and member_nickname = ?) is_like\r\n"
+				+ "from board_comment bc where board_no = ? and comment_ref is not null";
+		Object[] params = {memberNickname,boardNo};
 		List list = jdbc.query(query,boardCommentRowMapper,params);
 		return list;
 	}
@@ -98,5 +132,41 @@ public class BoardDao {
 		Object[] params = {commentNo};
 		int result = jdbc.update(query,params);
 		return result;
+	}
+	public int insertBoardLike(int boardNo, String memberNickname) {
+		String query = "insert into board_like values(board_like_seq.nextval,?,?)";
+		Object[] params = {boardNo, memberNickname};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	public int deleteBoardLike(int boardNo, String memberNickname) {
+		String query = "delete from board_like where board_no = ? and member_nickname = ?";
+		Object[] params = {boardNo, memberNickname};
+		int result = jdbc.update(query,params);
+		return result;
+		}
+	public int selectBoardLikeCount(int boardNo) {
+		String query = "select count(*) from board_like where board_no = ?";
+		Object[] params = {boardNo};
+		int likeCount = jdbc.queryForObject(query, Integer.class, params);
+		return likeCount;
+	}
+	public int insertCommentLike(int commentNo, String memberNickname) {
+		String query = "insert into comment_like values(?,?)";
+		Object[] params = {commentNo, memberNickname};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	public int deleteCommentLike(int commentNo, String memberNickname) {
+		String query = "delete from comment_like where comment_no = ? and member_nickname = ?";
+		Object[] params = {commentNo, memberNickname};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	public int selectCommentLikeCount(int commentNo) {
+		String query = "select count(*) from comment_like where comment_no = ?";
+		Object[] params = {commentNo};
+		int likeCount = jdbc.queryForObject(query, Integer.class, params);
+		return likeCount;
 	}
 }

@@ -14,4 +14,6 @@ public class BoardComment {
 	private String memberNickname;
 	private int boardNo;
 	private int commentRef;
+	private int isLike;
+	private int likeCount;
 }

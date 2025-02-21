@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.iei.group.model.dao.GroupDao;
+import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.group.model.vo.Region;
 
@@ -69,4 +70,28 @@ public class GroupService {
 		int result = groupDao.insertGroup(group);
 		return result;
 	}
+
+	public Group selectGroupDetail(int groupNo) {
+		List list = groupDao.selectGroupDetail(groupNo);
+		Group group = (Group)list.get(0);
+		return group;
+	}
+
+	public Category selectOneCategory(Group group) {
+		List list = groupDao.selectOneCategory(group);
+		Category category = (Category)list.get(0);
+		return category;
+	}
+
+	public List selectGroupMembers(int groupNo) {
+		List list = groupDao.selectGroupMembers(groupNo);
+		return list;
+	}
+
+	public int selectGroupMemberCount(int groupNo) {
+		int count = groupDao.selectGroupMemberCount(groupNo);
+		return count;
+	}
+
+	
 }

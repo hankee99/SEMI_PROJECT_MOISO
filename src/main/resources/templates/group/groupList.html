@@ -213,7 +213,7 @@
 							img.attr("src","/groupThumb/"+group.thumbImage).css("width","100%");
 							imgDiv.append(img);
 						}else{
-							img.attr("src","/myimage/default.png").css("width","100%");
+							img.attr("src","/myimage/defaultProfile.png").css("width","100%");
 							imgDiv.append(img);
 						}
 						
@@ -240,6 +240,16 @@
 						groupBox.append(cateDiv);
 						
 						$(".group-list-box").append(groupBox);
+						
+						
+						groupBox.on("click", () => {
+							const no = group.groupNo;
+							console.log(no);
+							const url = "/group/groupInfoPage?groupNo="+no;
+							location.href = url;
+						});
+						
+						
 						
 					}
 					

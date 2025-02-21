@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import kr.co.iei.group.model.service.GroupService;
+import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.util.FileUtils;
 
@@ -142,18 +143,39 @@ public class GroupController {
 //	}
 	
 	@ResponseBody
-	@GetMapping(value="sido")
+	@GetMapping(value="/sido")
 	public List sido() {
 		List list = groupService.selectSido();
 		return list;
 	}
 	
 	@ResponseBody
-	@GetMapping(value="sigungu")
+	@GetMapping(value="/sigungu")
 	public List sigungu(String sido) {
 		List list = groupService.selectSigungu(sido);
 		return list;
 	}
+	
+	@GetMapping("/groupInfoPage")
+	public String groupInfoPage(int groupNo, Model model) {
+		Group group = groupService.selectGroupDetail(groupNo);
+		Category category = groupService.selectOneCategory(group);
+		List groupMembers = groupService.selectGroupMembers(groupNo);
+		int numOfMembers = groupService.selectGroupMemberCount(groupNo);
+		
+		model.addAttribute("group", group);
+		model.addAttribute("img","/groupThumb/"+group.getThumbImage());
+		model.addAttribute("categoryName", category.getCategoryName());
+		model.addAttribute("groupMembers", groupMembers);
+		model.addAttribute("numOfMembers", numOfMembers);
+		return "group/groupInfoPage";
+	}
+	
+	@GetMapping(value="/groupBoard")
+	public String groupBoard(int groupNo) {
+		return "group/groupBoard";
+	}
+	
 	
 	
 	

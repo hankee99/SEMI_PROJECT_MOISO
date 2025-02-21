@@ -20,4 +20,7 @@ public class Board {
 	private String categoryName;
 	private List<BoardComment> commentList;
 	private List<BoardComment> reCommentList;
+	private int likeCount;
+	private int isLike;
+	private int commentCount;
 }

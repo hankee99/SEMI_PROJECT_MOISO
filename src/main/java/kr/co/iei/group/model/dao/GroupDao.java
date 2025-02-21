@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.iei.group.model.vo.CategoryRowMapper;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.GroupMemberRowMapper;
 import kr.co.iei.group.model.vo.GroupRowMapper;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.group.model.vo.RegionRowMapper;
@@ -28,6 +29,8 @@ public class GroupDao {
 	private SidoRowMapper sidoRowMapper;
 	@Autowired
 	private SigunguRowMapper sigunguRowMapper;
+	@Autowired
+	private GroupMemberRowMapper groupMemberRowMapper;
 	
 	@Autowired
 	private JdbcTemplate jdbc;
@@ -73,7 +76,7 @@ public class GroupDao {
 	}
 
 	public int insertGroup(Group group) {
-		String query = "insert into group_tbl values(group_seq.nextval,?,?,?,?,?,?,?,?)";
+		String query = "insert into group_tbl values(group_seq.nextval,?,?,?,?,?,?,?,?,0)";
 		Object[] params = {
 				group.getGroupName()
 				,group.getGroupInfo()
@@ -86,6 +89,34 @@ public class GroupDao {
 		};
 		int result = jdbc.update(query,params);
 		return result;
+	}
+
+	public List selectGroupDetail(int groupNo) {
+		String query = "select * from group_tbl where group_no=?";
+		Object[] params = {groupNo};
+		List list = jdbc.query(query, groupRowMapper, params);
+		return list;
+	}
+
+	public List selectOneCategory(Group group) {
+		String query = "select * from category where category_no = ?";
+		Object[] params = {group.getCategoryNo()};
+		List list = jdbc.query(query, categoryRowMapper, params);
+		return list;
+	}
+
+	public List selectGroupMembers(int groupNo) {
+		String query = "select group_no,member_no,group_member_level,join_date,member_nickname from group_member join MEMBER using(member_no) where group_no = ? order by member_no";
+		Object[] params = {groupNo};
+		List list = jdbc.query(query, groupMemberRowMapper, params);
+		return list;
+	}
+
+	public int selectGroupMemberCount(int groupNo) {
+		String query = "select count(*) from GROUP_MEMBER where group_no = ?";
+		Object[] params = {groupNo};
+		int count = jdbc.queryForObject(query, Integer.class, params);
+		return count;
 	}
 
 	
