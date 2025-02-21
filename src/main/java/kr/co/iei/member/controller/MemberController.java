@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpSession;
 import kr.co.iei.member.model.service.MemberService;
 import kr.co.iei.member.model.vo.Member;
+import kr.co.iei.util.EmailSender;
 
 @Controller
 @RequestMapping(value="/member")
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private EmailSender emailSender;
 	
 	@GetMapping(value="/loginFrm")
 	public String loginFrm() {
@@ -83,6 +86,17 @@ public class MemberController {
 	public boolean ajaxCheckNickname(String memberNickname) {
 		Member m = memberService.selectOneMemberNickname(memberNickname);
 		return m==null;
+	}
+	
+	@PostMapping(value="/sendMail")
+	public String sendMail(String emailTitle, String receiver, String emailContent) {
+		System.out.println("제목: "+emailTitle);
+		System.out.println("받는사람: "+receiver);
+		System.out.println("내용: "+emailContent);
+		
+		emailSender.sendMail(emailTitle, receiver, emailContent);
+		
+		return "redirect:/member/findAccountFrm";
 	}
 }
 

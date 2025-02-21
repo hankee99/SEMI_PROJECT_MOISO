@@ -11,6 +11,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		z-index: 1;
+		
 	}
 	.input-wrap{
 		width: 500px;
@@ -69,6 +71,44 @@
 	.find-input{
 		/*display: none;*/
 	}
+	.cs-service{
+		text-align: right;
+		margin: 20px 40px;
+	}
+	.modal-open{
+		cursor: pointer;
+	}
+	
+
+	#modal{
+		display: none;
+		position: relative;
+		width: 100%;
+		height: 100%;
+		
+	}
+	#modal .modal-wrap{
+		position: fixed; /*z-index는 position absolute나 fixed에만 할 수 있음 없으면 의미가 없음*/
+		top:300px;
+
+		width: 500px;
+		margin: 0 auto;
+		padding: 20px 10px;
+		background: var(--main4);
+		z-index: 3;
+	}
+	#modal .modal-layer{
+		position: fixed;
+		top:0;
+		left:0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,0.5);
+		z-index: 2;
+		
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -90,14 +130,12 @@
 					<div class="find-box rounded find-input">
 						<div class="email-auth-wrap">
 							<div class="input-item">
-								<input type="text" id="email">
+								<input type="text" id="email"placeholder="example@moiso.com">
 								<button class="btn-primary" id="send-btn">이메일 전송</button>
 							</div>	
-							<div id="auth" class="input-item" style="display:none;">
-								<input type="text" id="auth-code" placeholder="인증번호입력">
+							<div id="find-id" class="input-item" style="display:none;">
+								<input type="text" id="find-id-email">
 								<button class="btn-primary" id="auth-btn">인증하기</button>
-								<span id="time-zone"></span>
-								<span id="authMsg"></span>
 							</div>
 						</div>
 					</div>
@@ -109,8 +147,55 @@
 						<div class="icon-box">
 							<span class="material-icons">expand_more</span>
 						</div>
+						<div id="auth" class="input-item" style="display:none;">
+								<input type="text" id="auth-code" placeholder="인증번호입력">
+								<button class="btn-primary" id="auth-btn">인증하기</button>
+								<span id="time-zone"></span>
+								<span id="authMsg"></span>
+						</div>
+					</div>
+					<div class="cs-service">
+						<span class="modal-open">고객센터 문의</span>
 					</div>
 					<div class="blank"></div>
+				</div>
+				
+				
+				<div id="modal">
+					<div class="modal-wrap rounded">
+						<div class="page-title">이메일 전송하기</div>
+			
+							<form action="/member/sendMail" method="post">
+								<table class="tbl">
+									<tr>
+										<th style="width:20%;">제목</th>
+										<td>
+											<div class="input-item">
+												<input type="text" name="emailTitle">
+												</div>
+										</td>
+									</tr>
+						
+										<input type="hidden" name="receiver" value="congbii94@gmail.com">
+
+									<tr>
+										<th>내용</th>
+										<td>
+											<div class="input-item">
+												<textarea name="emailContent"></textarea>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<button class="btn-primary lg" type="submit">메일전송</button>
+											<button type="button" id="modal-close">닫기</button>
+										</td>
+									</tr>
+								</table>
+							</form>
+					</div>
+					<div class="modal-layer"></div>
 				</div>
 				
 				
@@ -120,6 +205,15 @@
 			$(".id-find").on("click", function(){
 				$(".find-input").slideToggle();
 			});
+			
+			$(".modal-open").on("click", function(){
+				$("#modal").css("display","block");
+			});
+			$("#modal-close").on("click", function(){
+				$("#modal").css("display","none");
+			});
+			
+			
 			
 		</script>
 		
