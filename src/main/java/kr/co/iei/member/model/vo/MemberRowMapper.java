@@ -24,6 +24,7 @@ public class MemberRowMapper implements RowMapper<Member>{
 		m.setMemberPw(rs.getString("member_pw"));
 		m.setProfileImg(rs.getString("profile_img"));
 		m.setMemberLevel(rs.getInt("member_level"));
+		m.setMemberEmail(rs.getString("member_email"));
 		return m;
 	}
 

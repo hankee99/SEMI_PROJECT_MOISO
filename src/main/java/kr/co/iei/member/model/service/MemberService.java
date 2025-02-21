@@ -1,5 +1,7 @@
 package kr.co.iei.member.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,11 @@ public class MemberService {
 	public Member selectOneMemberNickname(String memberNickname) {
 		Member m = memberDao.selectOneMemberNickname(memberNickname);
 		return m;
+	}
+
+	public List ajaxIdSelect(String memberEmail) {
+		List list = memberDao.ajaxIdSelect(memberEmail);
+		return list;
 	}
 
 }

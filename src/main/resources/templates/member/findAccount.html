@@ -11,13 +11,11 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		z-index: 1;
-		
+		z-index: 1;		
 	}
 	.input-wrap{
 		width: 500px;
-		box-shadow: 0 0 45px rgba(0, 0, 0, .08);
-		
+		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
 	}
 	.page-title{
 		font-family: ptd_bl;
@@ -27,22 +25,26 @@
 		padding: 20px 0;
 	}
 	.find-box{
-		overflow: hidden;
 		border: 1px solid var(--line1);
 		margin: 30px 40px;
 		padding: 10px 0px;
 		cursor: pointer;
 	}
-	.find-box>div{
+	.find-title-box{
+		overflow: hidden;
+	}
+	.find-title-box>div{
 		float: left;
-		width: 50%;
 	}
 	.icon-box{
 		text-align: right;
+		position: relative;
+		width: 50%;
 	}
 	.title-box{
 		line-height: 50px;
 		position: relative;
+		width: 50%;
 	}
 	.title-box>.material-icons{
 		position: absolute;
@@ -51,9 +53,6 @@
 	}
 	.title-box>span:last-child{
 		padding-left: 40px;
-	}
-	.icon-box{
-		position: relative;
 	}
 	.icon-box>span{
 		position: absolute;
@@ -74,11 +73,15 @@
 	.cs-service{
 		text-align: right;
 		margin: 20px 40px;
-	}
+	}	
 	.modal-open{
 		cursor: pointer;
 	}
-	
+	.input-item{
+		width: 75%;
+		margin: 0 auto;
+		padding: 20px 0;
+	}
 
 	#modal{
 		display: none;
@@ -119,39 +122,46 @@
 				<div class="input-wrap rounded">
 					<div class="blank"></div>
 					<div class="find-box rounded id-find">
-						<div class="title-box">
-							<span class="material-icons">perm_identity</span>
-							<span>아이디 찾기</span>
+						<div class="find-title-box">
+							<div class="title-box">
+								<span class="material-icons">perm_identity</span>
+								<span>아이디 찾기</span>
+							</div>
+							<div class="icon-box">
+								<span class="material-icons">expand_more</span>
+							</div>
 						</div>
-						<div class="icon-box">
-							<span class="material-icons">expand_more</span>
-						</div>
-					</div>
-					<div class="find-box rounded find-input">
-						<div class="email-auth-wrap">
+						<div class="email-id-auth">
 							<div class="input-item">
-								<input type="text" id="email"placeholder="example@moiso.com">
-								<button class="btn-primary" id="send-btn">이메일 전송</button>
-							</div>	
-							<div id="find-id" class="input-item" style="display:none;">
-								<input type="text" id="find-id-email">
-								<button class="btn-primary" id="auth-btn">인증하기</button>
+								<input type="text" id="email" placeholder="example@moiso.com">
+								<button class="btn-primary" id="id-select-btn">아이디 조회</button>
+							</div>
+							<div class="id-select-result">
+								<p class="ajaxResult" id="id-result"></p>
 							</div>
 						</div>
 					</div>
 					<div class="find-box rounded pw-find">
-						<div class="title-box">
-							<span class="material-icons">lock_open</span>
-							<span>비밀번호 찾기</span>
+						<div class="find-title-box">
+							<div class="title-box">
+								<span class="material-icons">lock_open</span>
+								<span>비밀번호 찾기</span>
+							</div> 
+							<div class="icon-box">
+								<span class="material-icons">expand_more</span>
+							</div>
 						</div>
-						<div class="icon-box">
-							<span class="material-icons">expand_more</span>
-						</div>
-						<div id="auth" class="input-item" style="display:none;">
-								<input type="text" id="auth-code" placeholder="인증번호입력">
-								<button class="btn-primary" id="auth-btn">인증하기</button>
-								<span id="time-zone"></span>
-								<span id="authMsg"></span>
+						<div class="email-pw-auth">
+							<div class="input-item">
+									<input type="text" id="email"placeholder="example@moiso.com">
+									<button class="btn-primary" id="send-btn">이메일 인증</button>
+							</div>
+							<div id="auth" class="input-item" style="display:none;">
+									<input type="text" id="auth-code" placeholder="인증번호입력">
+									<button class="btn-primary" id="auth-btn">인증하기</button>
+									<span id="time-zone"></span>
+									<span id="authMsg"></span>
+							</div>
 						</div>
 					</div>
 					<div class="cs-service">
@@ -159,7 +169,6 @@
 					</div>
 					<div class="blank"></div>
 				</div>
-				
 				
 				<div id="modal">
 					<div class="modal-wrap rounded">
@@ -213,6 +222,26 @@
 				$("#modal").css("display","none");
 			});
 			
+			
+			$("#id-select-btn").on("click",function(){
+				const memberEmail = $("#email").val();
+				$.ajax({
+					url : "/member/ajaxIdSelect",
+					type : "post",
+					data : {memberEmail : memberEmail},
+					success : function(result){
+						console.log(result, typeof result);
+						for(let i=0;i<result.length;i++){
+							const div = $("<div>");
+							div.append(result[i].memberId);
+							$("#id-result").append(div);
+						}
+					},
+					error : function(){
+						console.log("error");
+					}
+				})
+			});
 			
 			
 		</script>

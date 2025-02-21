@@ -1,6 +1,9 @@
 package kr.co.iei.member.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import jakarta.servlet.http.HttpSession;
 import kr.co.iei.member.model.service.MemberService;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.util.EmailSender;
+import kr.co.iei.util.FileUtils;
 
 @Controller
 @RequestMapping(value="/member")
@@ -20,6 +26,10 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private EmailSender emailSender;
+	@Value(value="${file.root}")
+	private String root;
+	@Autowired
+	private FileUtils fileUtils;
 	
 	@GetMapping(value="/loginFrm")
 	public String loginFrm() {
@@ -98,6 +108,23 @@ public class MemberController {
 		
 		return "redirect:/member/findAccountFrm";
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/ajaxIdSelect")
+	public List ajaxIdSelect(String memberEmail) {
+		List list = memberService.ajaxIdSelect(memberEmail);
+		return list;
+	}
+	
+	@GetMapping(value="/myPage")
+	public String mypage() {
+		return "member/mypage";
+	}
+	
+
+	
+	
+	
 }
 
 

@@ -56,6 +56,29 @@ public class MemberDao {
 			return (Member)list.get(0);
 		}
 	}
+
+	public List ajaxIdSelect(String memberEmail) {
+		String query = "select member_id from member where member_email = ?";
+		Object[] params = {memberEmail};
+		List list = jdbc.query(query, memberRowMapper, params);
+		if(list.isEmpty()) {
+			return null;
+		}else {
+			return list;
+		}
+	}
 	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
