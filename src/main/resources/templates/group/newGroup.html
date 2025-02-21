@@ -47,7 +47,8 @@
 		border-right: 0;
 	}
 	.region-api-div>div>div{
-		margin-bottom: 5px;
+		cursor : pointer;
+		margin-bottom: 7px;
 	}
 	.selected{
 		color : black;
@@ -60,6 +61,9 @@
 		margin-top : 20px;
 		width: 300px;
 		height: 300px;
+	}
+	.join-fee>span>input{
+		margin-right: 5px;
 	}
 </style>
 </head>
@@ -144,7 +148,7 @@
 						<div class="meeting-date">
 							<div class="title">일정</div>
 							<div>
-								<input type="date" name="meetingDate">
+								<input type="date" id="meetingDate" name="meetingDate">
 							</div>
 						</div>
 						<div class="thumb-image">
@@ -157,7 +161,7 @@
 							</div>
 						</div>
 						<div class="join-fee">
-							<span class="title">가입비: </span><span><input type="text" id="joinFee" name="joinFee"></span>
+							<span class="title">가입비: </span><span><input type="text" id="joinFee" name="joinFee" value="1000"></span><span style="color: black;">원</span>
 						</div>
 						
 						
@@ -178,6 +182,7 @@
 	
 	<script>
 		$(".navbar-nav").children().eq(2).addClass("active");
+		
 		
 		$.ajax({
 			url : "/group/sido",
@@ -249,7 +254,15 @@
 		//최종 입력값 확인하고 서브밋 동작할지 말지
 		$(".btn-box>button").on("click", (e) => {
 			const arr = $(".selected");
-			if(arr.length === 2){
+			
+			const name = $("#groupName").val().length > 0;
+			const info = $("#groupInfo").val().length > 0;
+			const maxnum = $("#maxNum").val() > 1;
+			const location = arr.length === 2;
+			const meetingDate = $("#meetingDate").val() !== "";
+			const joinFee = $("#joinFee").val() >= 0;
+			
+			if(name && info && maxnum && location && meetingDate && joinFee){
 				const addr = arr.eq(0).text() + "/" + arr.eq(1).text();
 				$("#groupLocation").val(addr);
 			}else{
