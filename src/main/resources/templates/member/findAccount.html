@@ -78,7 +78,7 @@
 		cursor: pointer;
 	}
 	.input-item{
-		width: 75%;
+		width: 85%;
 		margin: 0 auto;
 		padding: 20px 0;
 	}
@@ -111,6 +111,10 @@
 		
 	}
 	
+	.id-result>div{
+		padding-left: 15px;
+	}
+	
 	
 </style>
 </head>
@@ -134,10 +138,10 @@
 						<div class="email-id-auth">
 							<div class="input-item">
 								<input type="text" id="email" placeholder="example@moiso.com">
-								<button class="btn-primary" id="id-select-btn">아이디 조회</button>
+								<button class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4" id="id-select-btn">아이디 조회</button>
 							</div>
 							<div class="id-select-result">
-								<p class="ajaxResult" id="id-result"></p>
+								<p class="id-result" id="id-result"></p>
 							</div>
 						</div>
 					</div>
@@ -154,11 +158,11 @@
 						<div class="email-pw-auth">
 							<div class="input-item">
 									<input type="text" id="email"placeholder="example@moiso.com">
-									<button class="btn-primary" id="send-btn">이메일 인증</button>
+									<button class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4" id="send-btn">이메일 인증</button>
 							</div>
 							<div id="auth" class="input-item" style="display:none;">
 									<input type="text" id="auth-code" placeholder="인증번호입력">
-									<button class="btn-primary" id="auth-btn">인증하기</button>
+									<button class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4" id="auth-btn">인증하기</button>
 									<span id="time-zone"></span>
 									<span id="authMsg"></span>
 							</div>
@@ -215,6 +219,7 @@
 				$(".find-input").slideToggle();
 			});
 			
+			//modal관련
 			$(".modal-open").on("click", function(){
 				$("#modal").css("display","block");
 			});
@@ -223,6 +228,7 @@
 			});
 			
 			
+			//이메일로 아이디 select
 			$("#id-select-btn").on("click",function(){
 				const memberEmail = $("#email").val();
 				$.ajax({
@@ -230,18 +236,43 @@
 					type : "post",
 					data : {memberEmail : memberEmail},
 					success : function(result){
-						console.log(result, typeof result);
-						for(let i=0;i<result.length;i++){
+						if(result){
+							for(let i=0;i<result.length;i++){
+								const div = $("<div>");
+								div.append(result[i]);
+								$("#id-result").append(div);
+							}	
+						}else{
 							const div = $("<div>");
-							div.append(result[i].memberId);
+							div.append("이메일을 확인해주세요.");
 							$("#id-result").append(div);
 						}
 					},
 					error : function(){
 						console.log("error");
 					}
-				})
+				});
 			});
+			
+			
+			//이메일 인증
+			//1. 이메일 발송
+			let mailCode = null;
+			$("#send-btn").on("click",function(){
+				const receiver = $("#email").val();
+				$.ajax({
+					url : "/member/sendCode",
+					data : {receiver : receiver},
+					success : function(data){
+						mailCode = data; 
+						$("#auth").show();
+						authTime();
+					}
+				});
+			});
+			
+			
+			
 			
 			
 		</script>
