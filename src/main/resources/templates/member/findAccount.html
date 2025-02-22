@@ -135,15 +135,15 @@
 								<span class="material-icons">expand_more</span>
 							</div>
 						</div>
-						<div class="email-id-auth">
+						<div class="email-id-select">
 							<div class="input-item">
-								<input type="text" id="email" placeholder="example@moiso.com">
+								<input type="text" id="id-find-email" placeholder="example@moiso.com">
 								<button class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4" id="id-select-btn">아이디 조회</button>
 							</div>
 							<div class="id-select-result">
 								<p class="id-result" id="id-result"></p>
 							</div>
-						</div>
+						</div> 
 					</div>
 					<div class="find-box rounded pw-find">
 						<div class="find-title-box">
@@ -157,7 +157,7 @@
 						</div>
 						<div class="email-pw-auth">
 							<div class="input-item">
-									<input type="text" id="email"placeholder="example@moiso.com">
+									<input type="text" id="pw-auth-email"placeholder="example@moiso.com">
 									<button class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4" id="send-btn">이메일 인증</button>
 							</div>
 							<div id="auth" class="input-item" style="display:none;">
@@ -230,9 +230,9 @@
 			
 			//이메일로 아이디 select
 			$("#id-select-btn").on("click",function(){
-				const memberEmail = $("#email").val();
+				const memberEmail = $("#id-find-email").val();
 				$.ajax({
-					url : "/member/ajaxIdSelect",
+					url : "/member/idSelect",
 					type : "post",
 					data : {memberEmail : memberEmail},
 					success : function(result){
@@ -259,7 +259,7 @@
 			//1. 이메일 발송
 			let mailCode = null;
 			$("#send-btn").on("click",function(){
-				const receiver = $("#email").val();
+				const receiver = $("#pw-auth-email").val();
 				$.ajax({
 					url : "/member/sendCode",
 					data : {receiver : receiver},
@@ -270,10 +270,55 @@
 					}
 				});
 			});
+			$("#auth-btn").on("click",function(){
+				const inputCode = $("#auth-code").val();
+				if(inputCode === mailCode){
+					//인증시간 완료
+					window.clearInterval(intervalId);
+					mailCode = null;
+					$("#authMsg").text("인증완료");
+					$("#authMsg").css("color","blue");
+					
+					$("#email").prop("readonly",true);
+					$("#send-btn").prop("disabled",true);
+					$("#auth-code").prop("readonly",true);
+					$("#auth-btn").prop("disabled",true);
+					$("#time-zone").remove();
+				}else{
+					$("#authMsg").text("인증번호를 확인하세요.");
+					$("#authMsg").css("color","red");
+				}
+			});
 			
+			let intervalId = null;
 			
-			
-			
+			function authTime(){
+				$("#time-zone").html("<span id='min'>3</span> : <span id='sec'>00</span>");
+				
+				intervalId = window.setInterval(function(){
+					const min = $("#min").text();
+					const sec = $("#sec").text();
+					if(sec === "00"){
+						if(min === "0"){
+							window.clearInterval(intervalId);
+							mailCode = null;
+							$("#authMsg").text("인증시간이 만료되었습니다.");
+							$("#authMsg").css("color","red");
+						}else{
+						const newMin = Number(min) - 1;
+						$("#min").text(newMin);
+						$("#sec").text(59);							
+						}
+					}else{
+						const newSec = Number(sec) -1;
+						if(newSec < 10){
+							$("#sec").text("0"+newSec);
+						}else{
+							$("#sec").text(newSec);							
+						}
+					}
+				},1000);
+			}
 			
 		</script>
 		

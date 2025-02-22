@@ -2,17 +2,192 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Mypage</title>
 </head>
+<style>
+	.test-box{
+		background-color: red;
+		width: 100px;
+		height: 100px;
+	}
+	.region-api-div{
+		display: flex;
+		flex-direction: row;
+	}
+	.region-api-div>div{
+		text-align : center;
+		border : 1px solid black;
+		width : 150px;
+		height: 120px;
+		overflow-y: scroll;
+	}
+	.region-api-div>div:first-child{
+		border-right: 0;
+	}
+	.region-api-div>div>div{
+		cursor : pointer;
+		margin-bottom: 7px;
+	}
+	.selected{
+		color : black;
+		font-weight: 900;
+	}
+	
+	
+	    .gender-toggle-box {
+            display: flex;
+            align-items: center;
+            background: #eee;
+            border-radius: 20px;
+            padding: 5px;
+            width: 100px;
+            justify-content: space-between;
+        }
+
+        .toggle-button {
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .selected {
+            background: white;
+            font-weight: bold;
+        }
+</style>
 <body>
+	<th:block th:include="common/header"></th:block>
+		<main class="content">
+			<section class="mypage-wrap">
+				<div class="page-title">Mypage</div>
+				<form action="/member/update" method="post" autocomplete="off">
+					<div class="profile-img">
+						<img src="/myimage/defaultProfile.png"  th:if="${session.member.profileImg == null}">
+						<img src="/profile/default.png"  th:if="${session.member.profileImg != null}">
+					</div>
+					<table class="mypage-tbl">
+						<tr>
+							<th>이름</th>
+							<td class="left">
+								<div class="test-box rounded" th:text="${session.member.memberNickname}"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>소개</th>
+							<td class="left">
+								<div class="test-box rounded" th:text="${session.member.memberIntro}"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>MBTI</th>
+							<td class="left">
+								<div th:text="${session.member.memberMbti}"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>관심사</th>
+							<td class="left">
+								<div ></div>
+							</td>
+						</tr>
+						<tr>
+							<th>지역</th>
+							<td>
+								<div class="group-location">
+								<div class="title">
+									<label for="region">지역</label>
+								</div>
+								<div class="region-api-div">
+									<div class="sido">
+										
+									</div>
+									<div class="sigungu">
+									
+									</div>
+								</div>
+								<input type="hidden" id="groupLocation" name="groupLocation">
+							</div>
+							</td>
+						</tr>
+						<tr>
+							<th>성별</th>
+							<td class="left">								
+						        <div class="gender-toggle-box">
+						            <div id="toggle-button maleBtn" class="toggle-button">남</div>
+						            <div id="toggle-button femaleBtn" class="toggle-button selected">여</div>
+						        </div>
+						        	<input type="hidden" name="gender" id="gender">				        					      
+							</td>
+						</tr>
+				
+					</table>
+				
+					<div class="blank"></div>
+					<button type="submit">수정완료</button>
+				</form>
+			</section>
+		</main>
+				
 
-	<div  class="test">
-		<img src="/myimage/defaultProfile.png"  th:if="${session.member.profileImg == null}">
-		<img src="/profile/default.png"  th:if="${session.member.profileImg != null}">
-	</div>
 
+	<th:block th:include="common/footer"></th:block>
 
 	<script>
+	$.ajax({
+		url : "/member/sido",
+		type : "get",
+		success : data => {
+			
+			for(let i=0; i<data.length; i++){
+				const sido = data[i];
+				const div = $("<div>");
+				div.text(sido);
+				$(".sido").append(div);
+				
+				div.on("click", function() {
+					printSigungu(this,sido);
+				})
+			}
+			
+			$(".sido>div:first-child").click();
+			
+		}
+	});
+		
+	function printSigungu(obj,sido){
+		$.ajax({
+			url : "/member/sigungu",
+			type : "get",
+			data : {sido : sido},
+			success : data => {
+				$(".sido>div").removeClass("selected");
+				$(obj).addClass("selected");
+				const sggDiv = $(".sigungu");
+				sggDiv.children().remove();
+				
+				for(let i=0; i<data.length; i++){
+					const sigungu = data[i];
+					const div = $("<div>");
+					div.text(sigungu);
+					sggDiv.append(div);
+					
+					div.on("click", function() {
+						$(".sigungu>div").removeClass("selected");
+						$(this).addClass("selected");
+					})
+				}
+				
+			}
+		});
+	}
+	$(".toggle-button").click(function () {
+        $(".toggle-button").removeClass("selected");
+        $(this).addClass("selected");
+        $("#gender").val($(this).text());
+		
+	});
+	
+	
 	
 	</script>
 </body>

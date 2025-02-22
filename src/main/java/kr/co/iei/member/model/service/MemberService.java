@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import kr.co.iei.member.model.dao.MemberDao;
@@ -19,6 +20,7 @@ public class MemberService {
 		return member;
 	}
 
+	@Transactional
 	public int inserMember(Member m) {
 		int result = memberDao.insertMember(m);
 		return result;
@@ -34,10 +36,21 @@ public class MemberService {
 		return m;
 	}
 
-	public List ajaxIdSelect(String memberEmail) {
-		List list = memberDao.ajaxIdSelect(memberEmail);
+	public List idSelect(String memberEmail) {
+		List list = memberDao.idSelect(memberEmail);
 		return list;
 	}
+	
+	public List selectSido() {
+		List list = memberDao.selectSido();
+		return list;
+	}
+	
+	public List selectSigungu(String sido) {
+		List list = memberDao.selectSigungu(sido);
+		return list;
+	}
+
 	
 
 }
