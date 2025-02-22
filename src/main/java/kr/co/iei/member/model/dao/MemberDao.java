@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.co.iei.member.model.vo.Member;
+import kr.co.iei.member.model.vo.MemberIdRowMapper;
 import kr.co.iei.member.model.vo.MemberRowMapper;
 
 @Repository
@@ -15,6 +16,8 @@ public class MemberDao {
 	private JdbcTemplate jdbc;
 	@Autowired
 	private MemberRowMapper memberRowMapper;
+	@Autowired
+	private MemberIdRowMapper memberIdRowMapper;
 	
 	public Member selectOneMember(Member m) {
 		String query = "Select * from member where member_id=? and member_pw=?";
@@ -60,7 +63,7 @@ public class MemberDao {
 	public List ajaxIdSelect(String memberEmail) {
 		String query = "select member_id from member where member_email = ?";
 		Object[] params = {memberEmail};
-		List list = jdbc.query(query, memberRowMapper, params);
+		List list = jdbc.query(query, memberIdRowMapper, params);
 		if(list.isEmpty()) {
 			return null;
 		}else {
@@ -70,6 +73,8 @@ public class MemberDao {
 	
 	
 }
+
+
 
 
 

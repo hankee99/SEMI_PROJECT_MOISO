@@ -7,7 +7,7 @@
 <body>
 
 	<div  class="test">
-		<img src="/myimage/칠할매.jpg"  th:if="${session.member.profileImg == null}">
+		<img src="/myimage/defaultProfile.png"  th:if="${session.member.profileImg == null}">
 		<img src="/profile/default.png"  th:if="${session.member.profileImg != null}">
 	</div>
 

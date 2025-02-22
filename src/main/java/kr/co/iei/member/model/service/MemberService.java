@@ -38,5 +38,19 @@ public class MemberService {
 		List list = memberDao.ajaxIdSelect(memberEmail);
 		return list;
 	}
+	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

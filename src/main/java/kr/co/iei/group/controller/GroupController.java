@@ -21,10 +21,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.iei.group.model.service.GroupService;
 import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.GroupMember;
+import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.util.FileUtils;
+import java.util.stream.*;
 
 
 @Controller
@@ -157,23 +161,45 @@ public class GroupController {
 	}
 	
 	@GetMapping("/groupInfoPage")
-	public String groupInfoPage(int groupNo, Model model) {
+	public String groupInfoPage(int groupNo, Model model,HttpSession session) {
 		Group group = groupService.selectGroupDetail(groupNo);
 		Category category = groupService.selectOneCategory(group);
 		List groupMembers = groupService.selectGroupMembers(groupNo);
 		int numOfMembers = groupService.selectGroupMemberCount(groupNo);
+		boolean flag = false;
+		if(session.getAttribute("member") != null) {
+			Member member = (Member)session.getAttribute("member");
+			int memberNo = member.getMemberNo();
+			
+			for(GroupMember gm : (ArrayList<GroupMember>)groupMembers) {
+				if(gm.getMemberNo() == memberNo) {
+					flag = true;
+					break;
+				}
+			}
+		}
+		
 		
 		model.addAttribute("group", group);
 		model.addAttribute("img","/groupThumb/"+group.getThumbImage());
 		model.addAttribute("categoryName", category.getCategoryName());
 		model.addAttribute("groupMembers", groupMembers);
 		model.addAttribute("numOfMembers", numOfMembers);
+		model.addAttribute("flag", flag);
 		return "group/groupInfoPage";
 	}
 	
 	@GetMapping(value="/groupBoard")
-	public String groupBoard(int groupNo) {
+	public String groupBoard(int groupNo,Model model) {
+		Group group = groupService.selectGroupDetail(groupNo);
+		model.addAttribute("group", group);
 		return "group/groupBoard";
+	}
+	
+	@GetMapping(value="/writeFrm")
+	public String writeFrm(int groupNo,Model model) {
+		model.addAttribute("groupNo", groupNo);
+		return "group/writeFrm";
 	}
 	
 	

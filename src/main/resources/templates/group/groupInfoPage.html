@@ -274,7 +274,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="btn-zone" th:if="${session.member != null}">
+						<div class="btn-zone" th:if="${flag}">
 							<div class="btn-box">
 								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);">가입하기</button>
 								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"><button>소통게시판</button></a>
