@@ -38,7 +38,12 @@ public class BoardController {
 		if(member != null) {
 			memberNickname = member.getMemberNickname();
 		}
-		BoardListData bld = boardService.selectBoardList(reqPage, memberNickname);	
+		List noticeList = boardService.selectBoardNoticeList(memberNickname);			
+		int noticeCount = noticeList.size();
+		if(reqPage == 1) {
+			model.addAttribute("noticeList",noticeList);
+		}
+		BoardListData bld = boardService.selectBoardList(reqPage, memberNickname, noticeCount);	
 		model.addAttribute("boardList",bld.getList());
 		model.addAttribute("pageNavi",bld.getPageNavi());
 		return "board/boardlist";

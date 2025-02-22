@@ -161,6 +161,15 @@
 #countComment{
 	color: #f2836b;
 }
+#countComment:hover{
+	color: #FDA792;
+}
+#category-title{
+	color: #f2836b;
+}
+#category-title:hover{
+	color: #FDA792;
+}
 
 /*더보기*/
 .read-btn-box{
@@ -233,8 +242,36 @@
             	<div class="write-btn">글쓰기</div>
        		</div> 
         </div>
-              
+        
  		<div class="content">
+        	<!-- 공지사항 리스트 -->      
+            <div class="board-box" th:each="n : ${noticeList}">
+                <div class="image-box">
+                	<a th:href="@{/board/board(boardNo=${n.boardNo})}">
+                    	<img th:src="'/moisoPhoto/'+${n.boardPicture}">
+                    </a>
+                </div>
+                <div class="text-box">
+                    <div class="category">
+                        <p th:text="${n.categoryName}"></p>
+                    </div>
+                    <div class="title">
+                        <h5><a th:href="@{/board/board(boardNo=${n.boardNo})}" id="category-title" th:text="${n.boardTitle}"></a>
+                        <span th:if="${n.commentCount != 0}" id="countComment">[<span th:text="${n.commentCount}"></span>]</span></h5>
+                    </div>
+                    <div class="date">
+                        <p th:text="${n.boardDate}"></p>
+                    </div>
+                    <div class="user">
+                        <div><img src="img/about.jpg"></div><div><p th:text="${n.memberNickname}"></p></div>
+                        	<span th:if="${n.isLike == 1}" class="material-icons islike">favorite</span>
+							<span th:if="${session.member != null && n.isLike == 0}" class="material-icons">favorite</span>
+							<span th:if="${session.member == null && n.isLike == 0}" class="material-icons">favorite</span>
+							<span th:text="${n.likeCount}"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 게시글 리스트 -->   
             <div class="board-box" th:each="b : ${boardList}">
                 <div class="image-box">
                 	<a th:href="@{/board/board(boardNo=${b.boardNo})}">
@@ -246,7 +283,8 @@
                         <p th:text="${b.categoryName}"></p>
                     </div>
                     <div class="title">
-                        <h5><a th:href="@{/board/board(boardNo=${b.boardNo})}" th:text="${b.boardTitle}"></a><span id="countComment">[<span th:text="${b.commentCount}"></span>]</span></h5>
+                        <h5><a th:href="@{/board/board(boardNo=${b.boardNo})}" th:text="${b.boardTitle}"></a>
+                        <span th:if="${b.commentCount != 0}" id="countComment">[<span th:text="${b.commentCount}"></span>]</span></h5>
                     </div>
                     <div class="date">
                         <p th:text="${b.boardDate}"></p>
@@ -260,6 +298,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+           
+ 		<div class="content">
         </div>
 	
 		<div id="pageNavi" th:utext="${pageNavi}"></div>

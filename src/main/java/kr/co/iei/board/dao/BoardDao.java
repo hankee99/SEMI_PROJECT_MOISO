@@ -39,21 +39,31 @@ public class BoardDao {
 
 	//게시글리스트
 	public List selectBoardList(int start, int end, String memberNickname) {
-		System.out.println(start);
-		System.out.println(end);
-		System.out.println(memberNickname);
 		String query = "select * \r\n"
 				+ "from (select rownum as rnum, b.*,\r\n"
 				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
 				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
 				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
-				+ "from (select * from board order by board_no desc)b) where rnum between ? and ?";
+				+ "from (select * from board where category_name != '공지사항' order by board_no desc)b) where rnum between ? and ?";
 		Object[] params = {memberNickname,start,end};
 		List list = jdbc.query(query,boardRowMapper,params);
 		return list;
 	}
+	//공지사항리스트
+	public List selectBoardNoticeList(String memberNickname) {
+		String query = "select * \r\n"
+				+ "from (select rownum as rnum, b.*,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
+				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
+				+ "from (select * from board where category_name = '공지사항' order by board_no desc)b)";
+		Object[] params = {memberNickname};
+		List list = jdbc.query(query,boardRowMapper,params);
+		return list;
+	}
+	
 	public int selectBoardTotalCount() {
-		String query = "select count(*) from board";
+		String query = "select count(*) from board where category_name != '공지사항'";
 		int totalCount = jdbc.queryForObject(query, Integer.class);
 		return totalCount;
 	}
