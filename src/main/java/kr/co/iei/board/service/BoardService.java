@@ -25,18 +25,34 @@ public class BoardService {
 		return result;
 	}
 
-	public BoardListData selectBoardList(int reqPage, String memberNickname) {
+	public BoardListData selectBoardList(int reqPage, String memberNickname, int noticeCount) {
 		//reqPage : 사용자가 요청한 페이지 번호
 		//한 페이지에 보여줄 게시물 수(지정) : 10개
 		int numPerPage = 10;
+		if(noticeCount != 0) {
+			if(reqPage == 1 && noticeCount % 2 != 0) {
+				numPerPage = 9;
+			}
+		}
+		
 		//쿼리문은 변경되지 않고 조회의 시작값과 끝값만 변경(start, end)
 		//사용자가 요청한 페이지에 따라서 게시물의 시작번호와 끝번호가 변경 -> 계산
 		//reqPage == 1 -> start = 1		/ end = 10
 		//reqPage == 2 -> start = 11	/ end = 20
 		//reqPage == 3 -> start = 21	/ end = 30
 		//reqPage == 4 -> start = 31	/ end = 40
-		int end = reqPage * numPerPage;
-		int start = end - numPerPage + 1;
+		int end = reqPage * numPerPage;//9, 20
+		int start = end - numPerPage + 1;//0, 11	
+		if(noticeCount % 2 != 0 && reqPage != 1) {
+			System.out.println(end + " " + start);
+			end = end - 1;//19 //29
+			start = start - 1;//10 //20
+			System.out.println(end + " " + start);
+		}
+//		if(reqPage == 2) {
+//			end = 19;
+//			start = 10;
+//		}
 		//해당 요청 페이지의 게시물을 조회 
 		List list = boardDao.selectBoardList(start,end,memberNickname);
 		
@@ -54,8 +70,8 @@ public class BoardService {
 			totalPage = totalCount/numPerPage + 1;
 		}
 		*/
-		int totalPage = totalCount/numPerPage;
-		if(totalCount%numPerPage != 0) {
+		int totalPage = totalCount / 10;
+		if(totalCount%10 != 0) {
 			totalPage += 1;
 		}
 		
@@ -114,6 +130,11 @@ public class BoardService {
 		
 	}
 
+	public List selectBoardNoticeList(String memberNickname) {
+		List list = boardDao.selectBoardNoticeList(memberNickname);
+		return list;
+	}
+	
 	public Board selectOneBoard(int boardNo,String memberNickname, String check) {
 		Board b = boardDao.selectOneBoard(boardNo, memberNickname);
 		if(b != null){
@@ -186,5 +207,6 @@ public class BoardService {
 		int likeCount = boardDao.selectCommentLikeCount(bc.getCommentNo());
 		return likeCount;
 	}
+
 
 }
