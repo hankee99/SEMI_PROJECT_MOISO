@@ -8,7 +8,7 @@
 
 /*게시판*/
 .header-bottom{
-	width: 1200px;
+	width: 1000px;
     height: 335px;
     padding: 48px 12px;
     margin: 0 auto;
@@ -62,7 +62,7 @@
 /*컨텐츠*/
 .content{
     padding: 0;
-    width: 1200px;
+    width: 1000px;
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
@@ -72,15 +72,15 @@
 }
 
 .board-box{
-    width: 600px;
+    width: 500px;
     display: flex;
     flex-direction: row;
     margin-bottom: 30px;
     box-shadow: 0 0 15px rgba(0, 0, 0, .15);
 }
 .image-box{
-    width: 260px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
     overflow: hidden;
     border-radius: 5px;
     cursor: pointer;
@@ -92,7 +92,7 @@
 	width: 100%;
 }
 .text-box{
-    width: 700px;
+    width: 350px;
     height: 160px;
     padding : 10px 20px;
 }
@@ -146,6 +146,12 @@
 .user>div:last-child>p{
     line-height: 40px;
 }
+.user>div>p{
+	cursor: pointer;
+}
+.user>div>p:hover{
+	color: #373737;
+}
 .title>h5>a{
 	color: black;
 }
@@ -189,6 +195,11 @@
 }
 .islike{
 	color: red;
+}
+
+/*페이지네비*/
+#pageNavi{
+	margin-top: 30px;
 }
 </style>
 
