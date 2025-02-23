@@ -153,19 +153,17 @@
 		</div>        
 
 	<script>
+   		$(".navbar-nav").children().eq(0).addClass("active");
+   		
+   		/*
    		$(".date-box").children().eq(0).on("click",function(){
    			console.log("12")
    			$(this).addClass("clickColor");
    		 	const date = new Date();  
    	        const currentTime = `${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}.${date.getMilliseconds()}`;
    	        console.log(currentTime);
-   	 	});
-   	    $(".date-box").on("click",function(){
-   	        location.href="/board/boardWriteFrm";
-   	    });
-   		
+   	 	});		
     
-   		$(".navbar-nav").children().eq(0).addClass("active");
    			
 		let totalCnt = 0;
 		
@@ -244,6 +242,7 @@
 					
 				}
 			});	
+			*/
 			
 			
 	</script>
@@ -252,3 +251,5 @@
         <th:block th:include="common/footer"></th:block>
     </body>
 </html>
+
+
