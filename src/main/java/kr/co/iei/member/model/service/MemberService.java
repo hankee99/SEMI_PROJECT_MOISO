@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.member.model.dao.MemberDao;
 import kr.co.iei.member.model.vo.Member;
@@ -49,6 +50,13 @@ public class MemberService {
 	public List selectSigungu(String sido) {
 		List list = memberDao.selectSigungu(sido);
 		return list;
+	}
+
+	
+	@Transactional
+	public int updateMypage(Member loginUser, MultipartFile upfile) {
+		int result = memberDao.updateMypage(loginUser, upfile);
+		return result;
 	}
 
 	
