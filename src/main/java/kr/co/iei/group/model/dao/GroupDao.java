@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.iei.group.model.vo.CategoryRowMapper;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.GroupBoard;
+import kr.co.iei.group.model.vo.GroupBoardRowMapper;
 import kr.co.iei.group.model.vo.GroupMemberRowMapper;
 import kr.co.iei.group.model.vo.GroupRowMapper;
 import kr.co.iei.group.model.vo.Region;
@@ -31,7 +33,8 @@ public class GroupDao {
 	private SigunguRowMapper sigunguRowMapper;
 	@Autowired
 	private GroupMemberRowMapper groupMemberRowMapper;
-	
+	@Autowired
+	private GroupBoardRowMapper groupBoardRowMapper;
 	@Autowired
 	private JdbcTemplate jdbc;
 
@@ -117,6 +120,20 @@ public class GroupDao {
 		Object[] params = {groupNo};
 		int count = jdbc.queryForObject(query, Integer.class, params);
 		return count;
+	}
+
+	public int insertGroupBoard(GroupBoard groupBoard) {
+		String query = "insert into group_board values(group_board_seq.nextval,?,?,to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),?,?)";
+		Object[] params = {groupBoard.getMemberNo(),groupBoard.getGroupBoardContent(),groupBoard.getGroupNo(),groupBoard.getType()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectGroupBoard(int groupNo) {
+		String query = "select group_board_no, member_no, group_board_content, write_date, group_no, type, member_nickname, profile_img from group_board join member using(member_no) where group_no = ? order by 1 desc";
+		Object[] params = {groupNo};
+		List list  = jdbc.query(query, groupBoardRowMapper, params);
+		return list;
 	}
 
 	

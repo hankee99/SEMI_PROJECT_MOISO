@@ -28,5 +28,8 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 		.addResourceHandler("/profile/**")
 		.addResourceLocations("file:///"+root+"/profile/");
+		registry
+		.addResourceHandler("/groupEditor/**")
+		.addResourceLocations("file:///"+root+"/groupEditor/");
 	}
 }

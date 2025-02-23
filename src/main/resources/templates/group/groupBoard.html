@@ -4,51 +4,144 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	section>div:first-child{
+	section>div:first-child {
 		margin-bottom: 0;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 	}
-	.board-head{
+	
+	.board-head {
 		font-family: ptd_bl;
 		font-size: 48px;
 		margin-bottom: 50px;
 	}
-	.top-div{
+	
+	.top-div {
 		display: flex;
-		flex-direction : row;
+		flex-direction: row;
 		justify-content: flex-end;
-		gap : 40px;
+		gap: 40px;
 	}
-	.top-div>div{
-		cursor : pointer;
-		color : white;
-		width : 80px;
+	
+	.top-div>div {
+		cursor: pointer;
+		color: white;
+		width: 80px;
 		height: 40px;
-		background-color : var(--main1);
+		background-color: var(--main1);
 		line-height: 40px;
 		border-radius: 20px;
 		font-size: 22px;
 		font-weight: 600;
 	}
-	.top-div>div:last-child{
+	
+	.top-div>div:last-child {
 		margin-left: 367px;
 	}
 	
-	.top-div>div:last-child>a{
+	.top-div>div:last-child>a {
 		color: white;
 	}
-	.content{
-		border-right : 1px solid rgba(0, 0, 0, 0.05);
-		border-left : 1px solid rgba(0, 0, 0, 0.05);
+	
+	.content {
 		width: 800px;
-		height: 500px;
+		min-height: 1000px;
 		margin: 0 auto;
+	}
+	
+	.board-list {
+		
+	}
+	
+	.board {
+		padding: 15px 15px;
+	}
+	
+	.board-top {
+		padding : 0 10px;
+		display: flex;
+		flex-direction: row;
+		justify-content : space-between;
+		margin-bottom: 30px;
+	}
+	
+	.board-top>div {
+		
+	}
+	
+	.profile-box {
+		width: 50px;
+		height: 50px;
+		overflow: hidden;
+		border-radius: 50px;
+		margin-right: 20px;
+	}
+	
+	.profile-box>img {
+		width: 100%;
+	}
+	
+	.nickname {
+		margin-top : 7px;
+		width : 200px;
+		font-family: ptd_bl;
+		color: black;
+		font-size: 24px;
+	}
+	
+	.date {
+		line-height: 50px;
+	}
+	
+	.board-mid {
+		padding : 0 10px;
+		margin-bottom: 20px;
+	}
+	
+	.board-content {
+		font-family: ptd;
+		color: black;
+	}
+	
+	.board-bot {
+		font-size : 20px;
+		font-family : ptd;
+		color : black;
+		padding : 10px; 
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.right-box{
+		display : flex;
+		flex-direction : row;
+		width: 500px;
+	}
+	.like-box {
+		margin-right: 25px;
+	}
+	.material-icons{
+		cursor : pointer;
+		margin-right : 10px;
+		vertical-align: middle;
+	}
+	
+	.comment-box {
+		cursor : pointer;
+	}
+	
+	.type {
+		
+	}
+	
+	.gray-zone {
+		background-color: rgba(0,0,0,0.1);
+		height: 10px;
 	}
 </style>
 </head>
 <body>
 	<th:block th:include="common/header"></th:block>
-	
+
 	<main>
 		<section>
 			<!-- Hero Start -->
@@ -61,21 +154,62 @@
 						<div class="all">전체</div>
 						<div class="notice">공지</div>
 						<div class="free">자유</div>
-						<div><a th:href="${'/group/writeFrm?groupNo='+group.groupNo}">글쓰기</a></div>
+						<div>
+							<a th:href="${'/group/writeFrm?groupNo='+group.groupNo}">글쓰기</a>
+						</div>
 					</div>
 
 				</div>
 			</div>
 			<!-- Hero End -->
-			
+
 			<div class="content">
-				
+				<div class="board-list">
+					<div class="board" th:each="board : ${groupBoardList}">
+						<div class="board-top">
+							<div class="right-box">
+								<div class="hidden-box">
+									<div class="profile-box">
+										<img src="/myimage/defaultProfile.png" th:if="${board.profileImg == null}"> 
+										<img	th:src="${'/profile/' + board.profileImg}" th:if="${board.profileImg != null}">
+									</div>
+								</div>
+								<div class="nickname" th:text="${board.memberNickname}"></div>
+								
+							</div>
+							
+							<div class="date" th:text="${board.writeDate}"></div>
+						</div>
+
+						<div class="board-mid">
+							<div class="board-content" th:utext="${board.groupBoardContent}"></div>
+						</div>
+
+						<div class="board-bot">
+							<div class="right-box">
+								<div class="like-box">
+									<span class="material-icons">favorite_border</span><span>좋아요 </span><span>2</span>
+								</div>
+								<div class="comment-box">
+									<span class="material-icons">chat</span><span>댓글 </span><span>1</span>
+								</div>
+							</div>
+
+							<div class="type" th:if="${board.type == 0}">자유글</div>
+							<div class="type" th:if="${board.type == 1}">공지</div>
+						</div>
+
+
+
+						<div class="gray-zone"></div>
+					</div>
+				</div>
 			</div>
-			
-			
+
+
 		</section>
 	</main>
-	
+
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>

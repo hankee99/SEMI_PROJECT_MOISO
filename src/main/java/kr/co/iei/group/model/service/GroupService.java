@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.iei.group.model.dao.GroupDao;
 import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.GroupBoard;
 import kr.co.iei.group.model.vo.Region;
 
 @Service
@@ -91,6 +92,17 @@ public class GroupService {
 	public int selectGroupMemberCount(int groupNo) {
 		int count = groupDao.selectGroupMemberCount(groupNo);
 		return count;
+	}
+	
+	@Transactional
+	public int insertGroupBoard(GroupBoard groupBoard) {
+		int result = groupDao.insertGroupBoard(groupBoard);
+		return result;
+	}
+
+	public List selectGroupBoard(int groupNo) {
+		List list = groupDao.selectGroupBoard(groupNo); 
+		return list;
 	}
 
 	
