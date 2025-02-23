@@ -5,7 +5,9 @@
 <title>board-list</title>
 </head>
 <style>
-
+*{
+	font-family: ptd;
+}
 /*게시판*/
 .header-bottom{
 	width: 1000px;
@@ -45,7 +47,7 @@
     cursor: pointer;
 }
 .write-btn-box:hover{
-    background-color: #000;
+    background-color: #FED9A3;
     transition: .5s;
 }
 .write-btn{
@@ -55,7 +57,6 @@
     line-height: 40px;
 }
 .write-btn:hover{
-    color: #f2836b;
     transition: .5s;
 }
 
@@ -103,18 +104,21 @@
     margin-bottom: 0;
 }
 .category{
-    width: 70px;
+    width: 90px;
     height: 30px;
     box-sizing: border-box;
     border: 2px solid #f2836b;
     border-radius: 15px;
     text-align: center;
 }
+.category-board{
+    border: 2px solid #9a9a9a;
+}
 .category>p{
     font-size: 12px;
     font-weight: 400px;
     color: black;
-    line-height: 30px;
+    line-height: 28px;
 }
 .title{
     height: 23px;
@@ -148,9 +152,13 @@
 }
 .user>div>p{
 	cursor: pointer;
+ 	line-height: 40px;	
 }
 .user>div>p:hover{
 	color: #373737;
+}
+.user>span{
+	line-height: 40px;	
 }
 .title>h5>a{
 	color: black;
@@ -263,7 +271,7 @@
                         <p th:text="${n.boardDate}"></p>
                     </div>
                     <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p th:text="${n.memberNickname}"></p></div>
+                        <div><img src="/myimage/defaultProfile.png"></div><div><p th:text="${n.memberNickname}"></p></div>
                         	<span th:if="${n.isLike == 1}" class="material-icons islike">favorite</span>
 							<span th:if="${session.member != null && n.isLike == 0}" class="material-icons">favorite</span>
 							<span th:if="${session.member == null && n.isLike == 0}" class="material-icons">favorite</span>
@@ -279,7 +287,7 @@
                     </a>
                 </div>
                 <div class="text-box">
-                    <div class="category">
+                    <div class="category category-board">
                         <p th:text="${b.categoryName}"></p>
                     </div>
                     <div class="title">
@@ -290,7 +298,7 @@
                         <p th:text="${b.boardDate}"></p>
                     </div>
                     <div class="user">
-                        <div><img src="img/about.jpg"></div><div><p th:text="${b.memberNickname}"></p></div>
+                        <div><img src="/myimage/defaultProfile.png"></div><div><p th:text="${b.memberNickname}"></p></div>
                         	<span th:if="${b.isLike == 1}" class="material-icons islike">favorite</span>
 							<span th:if="${session.member != null && b.isLike == 0}" class="material-icons">favorite</span>
 							<span th:if="${session.member == null && b.isLike == 0}" class="material-icons">favorite</span>
