@@ -111,9 +111,9 @@ public class MemberController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value="/ajaxIdSelect")
-	public List ajaxIdSelect(String memberEmail) {
-		List list = memberService.ajaxIdSelect(memberEmail);
+	@PostMapping(value="/idSelect")
+	public List idSelect(String memberEmail) {
+		List list = memberService.idSelect(memberEmail);
 		return list;
 	}
 	
@@ -155,12 +155,24 @@ public class MemberController {
 		return sb.toString();
 	}
 	
-	
 	@GetMapping(value="/myPage")
 	public String mypage() {
 		return "member/mypage";
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/sido")
+	public List sido() {
+		List list = memberService.selectSido();
+		return list;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/sigungu")
+	public List sigungu(String sido) {
+		List list = memberService.selectSigungu(sido);
+		return list;
+	}
 	
 	
 	
