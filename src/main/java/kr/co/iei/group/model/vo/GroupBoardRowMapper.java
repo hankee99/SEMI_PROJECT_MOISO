@@ -20,6 +20,8 @@ public class GroupBoardRowMapper implements RowMapper<GroupBoard>{
 		groupBoard.setType(rs.getInt("type"));
 		groupBoard.setMemberNickname(rs.getString("member_nickname"));
 		groupBoard.setProfileImg(rs.getString("profile_img"));
+		groupBoard.setCommentCount(rs.getInt("comment_count"));
+		groupBoard.setLikeCount(rs.getInt("like_count"));
 		return groupBoard;
 	}
 

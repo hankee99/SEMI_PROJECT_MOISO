@@ -13,6 +13,7 @@ import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.group.model.vo.GroupBoard;
 import kr.co.iei.group.model.vo.Region;
+import kr.co.iei.member.model.vo.Member;
 
 @Service
 public class GroupService {
@@ -67,9 +68,10 @@ public class GroupService {
 	}
 	
 	@Transactional
-	public int insertGroup(Group group) {
+	public int insertGroup(Group group, Member member) {
 		int result = groupDao.insertGroup(group);
-		return result;
+		int result2 = groupDao.insertGroupLeader(member);
+		return result + result2;
 	}
 
 	public Group selectGroupDetail(int groupNo) {
@@ -102,6 +104,11 @@ public class GroupService {
 
 	public List selectGroupBoard(int groupNo) {
 		List list = groupDao.selectGroupBoard(groupNo); 
+		return list;
+	}
+
+	public List selectGroupBoardType(int groupNo, int type) {
+		List list = groupDao.selectGroupBoardType(groupNo,type);
 		return list;
 	}
 

@@ -130,13 +130,14 @@
 	}
 	
 	.type {
-		
+	
 	}
 	
 	.gray-zone {
 		background-color: rgba(0,0,0,0.1);
 		height: 10px;
 	}
+	
 </style>
 </head>
 <body>
@@ -151,9 +152,9 @@
 					<h1 class="board-head">소통게시판</h1>
 					<h3>멤버들과 자유롭게 소통해보세요!</h3>
 					<div class="top-div">
-						<div class="all">전체</div>
-						<div class="notice">공지</div>
-						<div class="free">자유</div>
+						<div class="all btnn" th:onclick="filterPosts([[${group.groupNo}]],-1,this);">전체</div>
+						<div class="notice btnn" th:onclick="filterPosts([[${group.groupNo}]],1,this);">공지</div>
+						<div class="free btnn" th:onclick="filterPosts([[${group.groupNo}]],0,this);">자유</div>
 						<div>
 							<a th:href="${'/group/writeFrm?groupNo='+group.groupNo}">글쓰기</a>
 						</div>
@@ -188,10 +189,10 @@
 						<div class="board-bot">
 							<div class="right-box">
 								<div class="like-box">
-									<span class="material-icons">favorite_border</span><span>좋아요 </span><span>2</span>
+									<span class="material-icons">favorite_border</span><span>좋아요 </span><span th:text="${board.likeCount}"></span>
 								</div>
 								<div class="comment-box">
-									<span class="material-icons">chat</span><span>댓글 </span><span>1</span>
+									<span class="material-icons">chat</span><span>댓글 </span><span th:text="${board.commentCount}"></span>
 								</div>
 							</div>
 
@@ -209,7 +210,68 @@
 
 		</section>
 	</main>
-
+	
+	<script>
+		
+		function filterPosts(groupNo,type,obj) {
+			console.log(obj);
+	        $(".btnn").css("background-color","var(--main1)")
+	        $(obj).css("background-color","var(--main3)")
+	        
+			
+			
+	        $.ajax({
+	            url: "/group/groupBoardType",
+	            method: 'GET',
+	            data : {groupNo,type},
+	            success: function(data) {
+	                // 게시글 리스트를 비우고 새로운 게시글 추가
+	                $('.board-list').empty();
+	                
+	                // 서버에서 받은 게시글 데이터에 따라 반복문을 사용하여 요소를 생성
+	                data.forEach(board => {
+	                    const boardDiv = `
+	                        <div class="board">
+	                            <div class="board-top">
+	                                <div class="right-box">
+	                                    <div class="hidden-box">
+	                                        <div class="profile-box">
+	                                            <img src="/myimage/defaultProfile.png" ${board.profileImg == null ? '' : `src="/profile/${board.profileImg}"`}>
+	                                        </div>
+	                                    </div>
+	                                    <div class="nickname">${board.memberNickname}</div>
+	                                </div>
+	                                <div class="date">${board.writeDate}</div>
+	                            </div>
+	                            <div class="board-mid">
+	                                <div class="board-content">${board.groupBoardContent}</div>
+	                            </div>
+	                            <div class="board-bot">
+	                                <div class="right-box">
+	                                    <div class="like-box">
+	                                        <span class="material-icons">favorite_border</span><span>좋아요 </span><span>${board.likeCount}</span>
+	                                    </div>
+	                                    <div class="comment-box">
+	                                        <span class="material-icons">chat</span><span>댓글 </span><span>${board.commentCount}</span>
+	                                    </div>
+	                                </div>
+	                                <div class="type">${board.type == 0 ? '자유글' : '공지'}</div>
+	                            </div>
+	                            <div class="gray-zone"></div>
+	                        </div>
+	                    `;
+	                    $('.board-list').append(boardDiv);
+	                });
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('게시글을 불러오는 데 실패했습니다.', error);
+	            }
+	        });
+	    }
+		
+		$(".all").css("background-color","var(--main3)")
+	</script>
+	
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>

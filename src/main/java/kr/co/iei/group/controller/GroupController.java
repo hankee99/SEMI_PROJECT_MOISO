@@ -74,14 +74,13 @@ public class GroupController {
 	}
 	
 	@PostMapping("/makeNewGroup")
-	public String makeNewGroup(Group group, MultipartFile imageFile) {
+	public String makeNewGroup(Group group, MultipartFile imageFile, HttpSession session) {
 		if(!imageFile.isEmpty()) {
 			String savepath = root + "/groupThumb/";
 			String filepath = fileUtils.upload(savepath, imageFile);
 			group.setThumbImage(filepath);
 		}
-		int result = groupService.insertGroup(group);
-		System.out.println(group.toString());
+		int result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
 		return "redirect:/";
 	}
 	
@@ -196,7 +195,6 @@ public class GroupController {
 	public String groupBoard(int groupNo,Model model) {
 		Group group = groupService.selectGroupDetail(groupNo);
 		List list = groupService.selectGroupBoard(groupNo);
-		System.out.println(list.get(0).toString());
 		model.addAttribute("group", group);
 		model.addAttribute("groupBoardList", list);
 		return "group/groupBoard";
@@ -240,6 +238,17 @@ public class GroupController {
 		String filepath = fileUtils.upload(savepath, upfile);
 		return filepath;
 	}
+	
+	@ResponseBody
+	@GetMapping("/groupBoardType")
+	public List getMethodName(int groupNo, int type) {
+		List list = groupService.selectGroupBoardType(groupNo,type);
+		return list;
+	}
+	
+	
+	
+	
 	
 	
 	

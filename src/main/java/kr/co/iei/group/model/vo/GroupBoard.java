@@ -18,4 +18,6 @@ public class GroupBoard {
 	private int type;
 	private String memberNickname;
 	private String profileImg;
+	private int commentCount;
+	private int likeCount;
 }
