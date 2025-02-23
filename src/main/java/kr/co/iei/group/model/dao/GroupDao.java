@@ -10,12 +10,15 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.iei.group.model.vo.CategoryRowMapper;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.GroupBoard;
+import kr.co.iei.group.model.vo.GroupBoardRowMapper;
 import kr.co.iei.group.model.vo.GroupMemberRowMapper;
 import kr.co.iei.group.model.vo.GroupRowMapper;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.group.model.vo.RegionRowMapper;
 import kr.co.iei.group.model.vo.SidoRowMapper;
 import kr.co.iei.group.model.vo.SigunguRowMapper;
+import kr.co.iei.member.model.vo.Member;
 
 @Repository
 public class GroupDao {
@@ -31,7 +34,8 @@ public class GroupDao {
 	private SigunguRowMapper sigunguRowMapper;
 	@Autowired
 	private GroupMemberRowMapper groupMemberRowMapper;
-	
+	@Autowired
+	private GroupBoardRowMapper groupBoardRowMapper;
 	@Autowired
 	private JdbcTemplate jdbc;
 
@@ -90,6 +94,14 @@ public class GroupDao {
 		int result = jdbc.update(query,params);
 		return result;
 	}
+	
+	public int insertGroupLeader(Member member) {
+		String query = "insert into group_member values(group_seq.currval,?,1,to_char(sysdate,'yyyy-mm-dd'))";
+		Object[] params = {member.getMemberNo()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+	
 
 	public List selectGroupDetail(int groupNo) {
 		String query = "select * from group_tbl where group_no=?";
@@ -118,6 +130,141 @@ public class GroupDao {
 		int count = jdbc.queryForObject(query, Integer.class, params);
 		return count;
 	}
+
+	public int insertGroupBoard(GroupBoard groupBoard) {
+		String query = "insert into group_board values(group_board_seq.nextval,?,?,to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),?,?)";
+		Object[] params = {groupBoard.getMemberNo(),groupBoard.getGroupBoardContent(),groupBoard.getGroupNo(),groupBoard.getType()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectGroupBoard(int groupNo) {
+		String query = "SELECT \r\n"
+				+ "    gb.group_board_no, \r\n"
+				+ "    gb.member_no, \r\n"
+				+ "    gb.group_board_content, \r\n"
+				+ "    gb.write_date, \r\n"
+				+ "    gb.group_no, \r\n"
+				+ "    gb.type, \r\n"
+				+ "    m.member_nickname, \r\n"
+				+ "    m.profile_img,\r\n"
+				+ "    NVL(gc.comment_count, 0) AS comment_count,\r\n"
+				+ "    NVL(gl.like_count, 0) AS like_count\r\n"
+				+ "FROM \r\n"
+				+ "    group_board gb\r\n"
+				+ "JOIN \r\n"
+				+ "    member m ON gb.member_no = m.member_no\r\n"
+				+ "LEFT JOIN \r\n"
+				+ "    (SELECT \r\n"
+				+ "         group_board_no, \r\n"
+				+ "         COUNT(*) AS comment_count \r\n"
+				+ "     FROM \r\n"
+				+ "         group_board_comment \r\n"
+				+ "     GROUP BY \r\n"
+				+ "         group_board_no) gc ON gb.group_board_no = gc.group_board_no\r\n"
+				+ "LEFT JOIN \r\n"
+				+ "    (SELECT \r\n"
+				+ "         member_no, \r\n"
+				+ "         COUNT(*) AS like_count \r\n"
+				+ "     FROM \r\n"
+				+ "         group_like \r\n"
+				+ "     GROUP BY \r\n"
+				+ "         member_no) gl ON gb.member_no = gl.member_no\r\n"
+				+ "WHERE \r\n"
+				+ "    gb.group_no = ?\r\n"
+				+ "ORDER BY \r\n"
+				+ "    gb.group_board_no DESC";
+		Object[] params = {groupNo};
+		List list  = jdbc.query(query, groupBoardRowMapper, params);
+		return list;
+	}
+
+	public List selectGroupBoardType(int groupNo, int type) {
+		if(type == -1) {
+			String query = "SELECT \r\n"
+					+ "    gb.group_board_no, \r\n"
+					+ "    gb.member_no, \r\n"
+					+ "    gb.group_board_content, \r\n"
+					+ "    gb.write_date, \r\n"
+					+ "    gb.group_no, \r\n"
+					+ "    gb.type, \r\n"
+					+ "    m.member_nickname, \r\n"
+					+ "    m.profile_img,\r\n"
+					+ "    NVL(gc.comment_count, 0) AS comment_count,\r\n"
+					+ "    NVL(gl.like_count, 0) AS like_count\r\n"
+					+ "FROM \r\n"
+					+ "    group_board gb\r\n"
+					+ "JOIN \r\n"
+					+ "    member m ON gb.member_no = m.member_no\r\n"
+					+ "LEFT JOIN \r\n"
+					+ "    (SELECT \r\n"
+					+ "         group_board_no, \r\n"
+					+ "         COUNT(*) AS comment_count \r\n"
+					+ "     FROM \r\n"
+					+ "         group_board_comment \r\n"
+					+ "     GROUP BY \r\n"
+					+ "         group_board_no) gc ON gb.group_board_no = gc.group_board_no\r\n"
+					+ "LEFT JOIN \r\n"
+					+ "    (SELECT \r\n"
+					+ "         member_no, \r\n"
+					+ "         COUNT(*) AS like_count \r\n"
+					+ "     FROM \r\n"
+					+ "         group_like \r\n"
+					+ "     GROUP BY \r\n"
+					+ "         member_no) gl ON gb.member_no = gl.member_no\r\n"
+					+ "WHERE \r\n"
+					+ "    gb.group_no = ?\r\n"
+					+ "ORDER BY \r\n"
+					+ "    gb.group_board_no DESC";
+			Object[] params = {groupNo};
+			List list  = jdbc.query(query, groupBoardRowMapper, params);
+			return list;
+		}else {
+			String query = "SELECT \r\n"
+					+ "    gb.group_board_no, \r\n"
+					+ "    gb.member_no, \r\n"
+					+ "    gb.group_board_content, \r\n"
+					+ "    gb.write_date, \r\n"
+					+ "    gb.group_no, \r\n"
+					+ "    gb.type, \r\n"
+					+ "    m.member_nickname, \r\n"
+					+ "    m.profile_img,\r\n"
+					+ "    NVL(gc.comment_count, 0) AS comment_count,\r\n"
+					+ "    NVL(gl.like_count, 0) AS like_count\r\n"
+					+ "FROM \r\n"
+					+ "    group_board gb\r\n"
+					+ "JOIN \r\n"
+					+ "    member m ON gb.member_no = m.member_no\r\n"
+					+ "LEFT JOIN \r\n"
+					+ "    (SELECT \r\n"
+					+ "         group_board_no, \r\n"
+					+ "         COUNT(*) AS comment_count \r\n"
+					+ "     FROM \r\n"
+					+ "         group_board_comment \r\n"
+					+ "     GROUP BY \r\n"
+					+ "         group_board_no) gc ON gb.group_board_no = gc.group_board_no\r\n"
+					+ "LEFT JOIN \r\n"
+					+ "    (SELECT \r\n"
+					+ "         member_no, \r\n"
+					+ "         COUNT(*) AS like_count \r\n"
+					+ "     FROM \r\n"
+					+ "         group_like \r\n"
+					+ "     GROUP BY \r\n"
+					+ "         member_no) gl ON gb.member_no = gl.member_no\r\n"
+					+ "WHERE \r\n"
+					+ "    gb.group_no = ? and gb.type = ?\r\n"
+					+ "ORDER BY \r\n"
+					+ "    gb.group_board_no DESC";
+			Object[] params = {groupNo,type};
+			List list  = jdbc.query(query, groupBoardRowMapper, params);
+			return list;
+		}
+		
+		
+		
+	}
+
+	
 
 	
 }

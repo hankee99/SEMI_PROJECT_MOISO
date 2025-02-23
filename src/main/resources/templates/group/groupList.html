@@ -113,7 +113,7 @@
 						<div class="material-icons arrows left-arrow" style="font-size: 30px;">arrow_circle_left</div>
 						<div class="hidden-box">
 							<div class="category-box">
-								<div th:each="category : ${categoryList}"  th:text="${category.categoryName}" class="category"  th:onclick="groupList([[${category.categoryNo}]])"></div>
+								<div th:each="category : ${categoryList}"  th:text="${category.categoryName}" class="category"  th:onclick="groupList([[${category.categoryNo}]],this)"></div>
 							</div>
 						</div>
 						<div class="material-icons arrows right-arrow" style="font-size: 30px;">arrow_circle_right</div>
@@ -159,7 +159,9 @@
 		let currentCount = 0;
 		let start = 1;	
 		
-		function groupList(categoryNo){
+		function groupList(categoryNo,obj){
+			$(".category").css("font-family","ptd");
+			$(obj).css("font-family","ptd_bl");
 			console.log(categoryNo);
 			if(categoryPage !== categoryNo){
 				$.ajax({
@@ -266,8 +268,8 @@
 		
 		
 		
-		
-		groupList(1);
+		const fst = $(".category:first-child");
+		groupList(1,fst);
 	</script>
 	<th:block th:include="common/footer"></th:block>
 

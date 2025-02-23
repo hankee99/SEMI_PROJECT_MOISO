@@ -5,7 +5,10 @@
 <title>board</title>
 </head>
 <style>
-
+*{
+	font-family: ptd;
+}
+/*게시글*/
 .board{
     position: relative;
 }
@@ -27,8 +30,6 @@
     height: 100%;
     object-fit: cover;
 }
-
-
 .board-info-img{
     margin: 0 auto;
     text-align: center;
@@ -62,10 +63,19 @@
 	height: 50px;
 }
 .category-box{
-    width: 70px;
+    width: 90px;
     height: 30px;
     box-sizing: border-box;
     border: 2px solid #f2836b;
+    border-radius: 15px;
+    text-align: center;
+    margin: 0 auto;
+}
+.category-board{
+    width: 90px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 2px solid #9a9a9a;
     border-radius: 15px;
     text-align: center;
     margin: 0 auto;
@@ -74,7 +84,7 @@
     font-size: 12px;
     font-weight: 400px;
     color: #373737;
-    line-height: 30px;
+    line-height: 28px;
 }
 .board-content{
     white-space: pre-wrap;
@@ -493,7 +503,7 @@
 	                </div>
 	
 	                <div class="board-info-img">
-	                    <img src="img/about.jpg">
+	                    <img src="/myimage/defaultProfile.png">
 	                </div>
 	
 	                <div class="board-content-wrap">
@@ -503,9 +513,16 @@
 	                    </div>                           
 	                   
 	                   <div class="category">
+	                   <th:block th:if ="${b.categoryName == '공지사항'}">
 	                    	<div class="category-box">
                        			<p th:text="${b.categoryName}"></p>
-                    		</div>     
+                    		</div> 
+                       </th:block>
+                       <th:block th:if ="${b.categoryName != '공지사항'}">
+	                    	<div class="category-box category-board">
+                       			<p th:text="${b.categoryName}"></p>
+                    		</div> 
+                       </th:block>     
 	                   </div>
 	                             
 	                    <div class="board-title">
@@ -540,7 +557,7 @@
                         </div>
                         <div class="board-user">
                             <div class="board-user-img">
-                                <img src="img/about.jpg">
+                                <img src="/myimage/defaultProfile.png">
                             </div>
                             <div class="board-user-info">
                                 <div class="board-user-name" th:text="${b.memberNickname}"></div>
@@ -556,7 +573,7 @@
 	                <div class="board-comment-write">
 	                    <div class="comment-img-box">
 	                        <div class="comment-img">
-	                            <img src="img/about.jpg">
+	                            <img src="/myimage/defaultProfile.png">
 	                        </div>
 	                    </div>
 	                    <div class="comment-content">
@@ -583,7 +600,7 @@
 	                <div class="board-comment-read">
 	                    <div class="read-comment-img-box">
 	                        <div class="read-comment-img">
-	                            <img src="img/about.jpg">
+	                            <img src="/myimage/defaultProfile.png">
 	                        </div>
 	                    </div>
 	                    <div class="read-comment-content">
@@ -626,7 +643,7 @@
 	                <div class="board-comment-read reBoard-comment-read">
 	                    <div class="read-comment-img-box">
 	                        <div class="read-comment-img">
-	                            <img src="img/about.jpg">
+	                            <img src="/myimage/defaultProfile.png">
 	                        </div>
 	                    </div>
 	                    <div class="read-comment-content reRead-comment-content">
@@ -666,7 +683,7 @@
 		                <div class="board-recomment-write">
 		                    <div class="recomment-img-box">
 		                        <div class="recomment-img">
-		                            <img src="img/about.jpg">
+		                            <img src="/myimage/defaultProfile.png">
 		                        </div>
 		                    </div>
 		                    <div class="recomment-content">

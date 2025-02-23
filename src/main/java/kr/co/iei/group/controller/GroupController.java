@@ -25,10 +25,13 @@ import jakarta.servlet.http.HttpSession;
 import kr.co.iei.group.model.service.GroupService;
 import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.group.model.vo.GroupBoard;
 import kr.co.iei.group.model.vo.GroupMember;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.util.FileUtils;
 import java.util.stream.*;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -71,14 +74,13 @@ public class GroupController {
 	}
 	
 	@PostMapping("/makeNewGroup")
-	public String makeNewGroup(Group group, MultipartFile imageFile) {
+	public String makeNewGroup(Group group, MultipartFile imageFile, HttpSession session) {
 		if(!imageFile.isEmpty()) {
 			String savepath = root + "/groupThumb/";
 			String filepath = fileUtils.upload(savepath, imageFile);
 			group.setThumbImage(filepath);
 		}
-		int result = groupService.insertGroup(group);
-		System.out.println(group.toString());
+		int result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
 		return "redirect:/";
 	}
 	
@@ -192,15 +194,63 @@ public class GroupController {
 	@GetMapping(value="/groupBoard")
 	public String groupBoard(int groupNo,Model model) {
 		Group group = groupService.selectGroupDetail(groupNo);
+		List list = groupService.selectGroupBoard(groupNo);
 		model.addAttribute("group", group);
+		model.addAttribute("groupBoardList", list);
 		return "group/groupBoard";
 	}
 	
 	@GetMapping(value="/writeFrm")
-	public String writeFrm(int groupNo,Model model) {
+	public String writeFrm(int groupNo,Model model, HttpSession session) {
+		List groupMembers = groupService.selectGroupMembers(groupNo);
+		boolean flag = false;
+		if(session.getAttribute("member") != null) {
+			Member member = (Member)session.getAttribute("member");
+			int memberNo = member.getMemberNo();
+			
+			for(GroupMember gm : (ArrayList<GroupMember>)groupMembers) {
+				if(gm.getMemberNo() == memberNo && gm.getGroupMemberLevel() <3) {
+					flag = true;
+					break;
+				}
+			}
+		}
+		
 		model.addAttribute("groupNo", groupNo);
+		model.addAttribute("flag", flag);
 		return "group/writeFrm";
 	}
+	
+	@PostMapping(value="/write")
+	public String write(GroupBoard groupBoard, HttpSession session) {
+		Member member = (Member)session.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		groupBoard.setMemberNo(memberNo);
+		int result = groupService.insertGroupBoard(groupBoard);
+		System.out.println(groupBoard.toString());
+		return "redirect:/group/groupBoard?groupNo="+groupBoard.getGroupNo();
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/editorImage", produces = "plain/text;charset=utf-8")
+	public String editorImage(MultipartFile upfile) {
+		String savepath = root + "/groupEditor/";
+		String filepath = fileUtils.upload(savepath, upfile);
+		return filepath;
+	}
+	
+	@ResponseBody
+	@GetMapping("/groupBoardType")
+	public List getMethodName(int groupNo, int type) {
+		List list = groupService.selectGroupBoardType(groupNo,type);
+		return list;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

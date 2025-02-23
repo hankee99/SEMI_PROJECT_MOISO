@@ -38,8 +38,20 @@
 		border-right : 1px solid rgba(0, 0, 0, 0.05);
 		border-left : 1px solid rgba(0, 0, 0, 0.05);
 		width: 800px;
-		height: 500px;
+		height: 650px;
 		margin: 0 auto;
+	}
+	.title{
+		height : 40px;
+		text-align: center;
+		margin-bottom: 50px;
+		padding-top: 20px;
+	}
+	.input-box{
+		height: 600px;
+	}
+	.input-box>textarea{
+		width: 100%;
 	}
 </style>
 </head>
@@ -63,6 +75,21 @@
 			<!-- Hero End -->
 			
 			<div class="content">
+				<form action="/group/write" method="post" class="frm">
+					<div class="title"><h1>내용을 입력하세요</h1></div>
+					<div class="input-box">
+						<textarea class="write-content" name="groupBoardContent"></textarea>
+					</div>
+					<div class="select-zone">
+						<div class="select">
+							<select id="type" name="type">
+								    <option value="0">자유글</option>
+								    <option value="1" th:if="${flag}">공지</option>
+							</select>
+						</div>
+					</div>
+					<input type="hidden" id="groupNo" name="groupNo" th:value="${groupNo}">
+				</form>
 				
 			</div>
 			
@@ -70,6 +97,57 @@
 		</section>
 	</main>
 	
+	
 	<th:block th:include="common/footer"></th:block>
+	<script src="/summernote/summernote-lite.js"></script>
+    <script src="/summernote/lang/summernote-ko-KR.js"></script>
+    <link rel="stylesheet" href="/summernote/summernote-lite.css">
+    <script>
+            
+        $(".write-content").summernote({
+            height: 500,
+            lang: "ko-KR",
+            callbacks : {
+                //사용자가 이미지를 올리면 동작할 함수를 지정
+                onImageUpload : function(file){
+                    //이미지를 선택하면 해당 파일을 매개변수로 받음
+                    //이미지를 처리할 함수를 실행 -> 처리할 함수에 첨부파일과 에디터객체를 전송 
+                    uploadImage(file[0],this);
+                }
+            }
+        });
+
+        function uploadImage(file, editor){
+			//ajax로 서버에 이미지를 업로드
+			//업로드된 파일의 filepath를 받아옴
+			//받아온 filepath로 img태그의 src를 설정
+			
+			//ajax파일 업로드
+			//<form>태그 역할의 객체
+			const form = new FormData();	//<form></form>
+			form.append("upfile",file);		//<form> input type=file name=upfile </form>  실제 폼태그는 아님
+			
+			$.ajax({
+				url : "/group/editorImage",
+				type : "post",
+				data : form,
+				processData : false,
+				contentType : false,
+				success : function(data) {
+					console.log(data);
+					$(editor).summernote("insertImage","/groupEditor/"+data);
+				}
+			});
+			//processData : 데이터 전송 시 기본적으로 문자열로 전송하게 세팅되어있음 -> 그 기본세팅을 비활성화(false)
+			//contentType : enctype="application/x-www-formurlencoded;charset=utf-8" 기본값
+			//-> 기본값을 비활성화(false)
+			
+		}
+        
+        $(".complete").on("click", () => {
+        	$(".frm").submit();
+        });
+    </script>  
+	
 </body>
 </html>
