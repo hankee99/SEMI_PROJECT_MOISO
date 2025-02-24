@@ -52,10 +52,11 @@ public class MemberService {
 		return list;
 	}
 
-	
+
+
 	@Transactional
-	public int updateMypage(Member loginUser, MultipartFile upfile) {
-		int result = memberDao.updateMypage(loginUser, upfile);
+	public int updateMypage(Member m) {
+		int result = memberDao.updateMypage(m);// TODO Auto-generated method stub
 		return result;
 	}
 
