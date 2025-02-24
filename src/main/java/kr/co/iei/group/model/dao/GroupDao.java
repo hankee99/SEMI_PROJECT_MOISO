@@ -15,6 +15,7 @@ import kr.co.iei.group.model.vo.GroupBoardCommentRowMapper;
 import kr.co.iei.group.model.vo.GroupBoardRowMapper;
 import kr.co.iei.group.model.vo.GroupMemberRowMapper;
 import kr.co.iei.group.model.vo.GroupRowMapper;
+import kr.co.iei.group.model.vo.Pay;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.group.model.vo.RegionRowMapper;
 import kr.co.iei.group.model.vo.SidoRowMapper;
@@ -105,9 +106,9 @@ public class GroupDao {
 		return result;
 	}
 	
-	public int insertGroupLeader(Member member, int groupNo) {
-		String query = "insert into group_member values(?,?,1,to_char(sysdate,'yyyy-mm-dd'))";
-		Object[] params = {groupNo,member.getMemberNo()};
+	public int insertGroupMember(int memberNo, int groupNo,int memberLevel) {
+		String query = "insert into group_member values(?,?,?,to_char(sysdate,'yyyy-mm-dd'))";
+		Object[] params = {groupNo,memberNo,memberLevel};
 		int result = jdbc.update(query,params);
 		return result;
 	}
@@ -298,6 +299,13 @@ public class GroupDao {
 		Object[] params = {boardNo};
 		int count = jdbc.queryForObject(query, Integer.class, params);
 		return count;
+	}
+
+	public int insertPay(Pay pay) {
+		String query = "insert into pay values(pay_seq.nextval,?,?,?,to_char(sysdate,'yyyy-mm-dd'))";
+		Object[] params = {pay.getMemberNo(),pay.getMemberNo(),pay.getPrice()};
+		int result = jdbc.update(query,params);
+		return result;
 	}
 
 	

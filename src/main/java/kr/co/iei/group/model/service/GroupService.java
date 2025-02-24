@@ -13,6 +13,7 @@ import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.group.model.vo.GroupBoard;
 import kr.co.iei.group.model.vo.GroupBoardComment;
+import kr.co.iei.group.model.vo.Pay;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.member.model.vo.Member;
 
@@ -73,7 +74,8 @@ public class GroupService {
 		int groupNo = groupDao.selectNewGroupNo();
 		group.setGroupNo(groupNo);
 		int result = groupDao.insertGroup(group);
-		int result2 = groupDao.insertGroupLeader(member,groupNo);
+		int memberNo = member.getMemberNo();
+		int result2 = groupDao.insertGroupMember(memberNo,groupNo,1);
 		int[] resultArr = {groupNo, result + result2}; 
 		return resultArr;
 	}
@@ -154,6 +156,15 @@ public class GroupService {
 		int commentCount = groupDao.selectCommentCount(boardNo);
 		return commentCount;
 	}
+
+	@Transactional
+	public int insertPay(Pay pay) {
+		int result = groupDao.insertPay(pay);
+		int result2 = groupDao.insertGroupMember(pay.getMemberNo(), pay.getGroupNo(), 3);
+		return result+result2;
+	}
+	
+	
 
 	
 

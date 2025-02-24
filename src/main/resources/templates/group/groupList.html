@@ -29,7 +29,7 @@
 		list-style-type : none;
 		margin: 0 50px;
 		font-size: 18px;
-		color: black;
+		color: rgba(0,0,0,0.7);
 		cursor: pointer;
 	}
 	.arrows{
@@ -52,7 +52,7 @@
 		box-sizing : border-box;
 		box-shadow: 0 0 15px rgba(0, 0, 0, .15);
 		width : 250px;
-		height : 350px;
+		height : 360px;
 		margin: 20px 40px;
 		padding: 20px 40px;
 	}
@@ -77,6 +77,7 @@
 		overflow : hidden;
 		text-align : center;
 		height: 40px;
+		margin-bottom: 10px;
 	}
 	.title-div>h3{
 		line-height: 40px;
@@ -84,18 +85,26 @@
 		
 	}
 	.info-div{
-		height : 48px;
+		height : 54px;
 		word-break: break-all; 
 		overflow: hidden;
 	}
 	.info-div>p{
+		font-size : 18px;
+		font-family : ptd;
 		color: black;
+		margin-bottom: 0;
 	}
-	.cate-div{
-		color : #373737;
-		width : 50px;
+	.date-div{
+		color : var(--main2);
+		width : 150px;
 		height: 20px;
-		background-color: #cacaca;
+	}
+	.location-div{
+		color : rgba(0, 0, 0,0.5);
+		width : 170px;
+		height: 20px;
+		overflow: hidden;
 	}
 </style>
 </head>
@@ -136,19 +145,23 @@
 	</main>
 	<script>
 		$(".navbar-nav").children().eq(1).addClass("active");
-		
+		$(".left-arrow").css("color","var(--gray2)");
 	
 		let temp = 0;
 		$(".right-arrow").on("click", () => {
 			if(temp === 0){
-				$(".category-box").css("transform","translateX(-1320px)")
+				$(".category-box").css("transform","translateX(-1320px)");
+				$(".right-arrow").css("color","var(--gray2)");
+				$(".left-arrow").css("color","#f2836b");
 				temp = 1;
 			}
 		});
 		
 		$(".left-arrow").on("click", () => {
 			if(temp === 1){
-				$(".category-box").css("transform","translateX(0)")
+				$(".category-box").css("transform","translateX(0)");
+				$(".left-arrow").css("color","var(--gray2)");
+				$(".right-arrow").css("color","#f2836b");
 				temp = 0;
 			}
 		});
@@ -160,8 +173,8 @@
 		let start = 1;	
 		
 		function groupList(categoryNo,obj){
-			$(".category").css("font-family","ptd");
-			$(obj).css("font-family","ptd_bl");
+			$(".category").css("font-family","ptd").css("color","rgba(0,0,0,0.7)");
+			$(obj).css("font-family","ptd_bl").css("color","black");
 			console.log(categoryNo);
 			if(categoryPage !== categoryNo){
 				$.ajax({
@@ -232,14 +245,19 @@
 						p.text(group.groupInfo);
 						infoDiv.append(p);
 						
-						const cateDiv = $("<div>");
-						cateDiv.addClass("cate-div")
-						cateDiv.text("hihi");
+						const dateDiv = $("<div>");
+						dateDiv.addClass("date-div")
+						dateDiv.text(group.meetingDate);
+						
+						const locationDiv = $("<div>");
+						locationDiv.addClass("location-div")
+						locationDiv.text(group.groupLocation);
 						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
 						groupBox.append(infoDiv);
-						groupBox.append(cateDiv);
+						groupBox.append(dateDiv);
+						groupBox.append(locationDiv);
 						
 						$(".group-list-box").append(groupBox);
 						

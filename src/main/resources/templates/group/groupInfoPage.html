@@ -74,8 +74,12 @@
 		top: 0;
 		left: 0;
 	}
+	.text-box{
+		width: 400px;
+	}
 	
 	.text-box>div {
+		overflow : hidden;
 		color: black;
 		font-family: ptd;
 		font-size: 20px;
@@ -125,7 +129,7 @@
 	}
 	
 	.join-fee {
-		padding-left: 280px;
+		padding-left: 118px;
 	}
 	
 	.title {
@@ -278,12 +282,12 @@
 						</div>
 						<div class="btn-zone">
 							<div class="btn-box">
-								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);"  th:if="${!flag}">가입하기</button>
+								<button class="join-btn" th:onclick="joinGroup([[${session.member}]],[[${group.groupNo}]]);"  th:if="${!flag}">가입하기</button>
 								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"  th:if="${flag}"><button>소통게시판</button></a>
 							</div>
 							<div class="join-fee"   th:if="${!flag}">
 								<span>가입비: </span>
-								<span th:text="${group.joinFee}"></span>
+								<span th:text="${group.joinFee}" class="price"></span>
 								<span>원</span>
 							</div>
 						</div>
@@ -334,6 +338,7 @@
 		</section>
 	</main>
 	
+	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 	<script>
 		const moreBtn = $(".more-btn");
 	
@@ -346,8 +351,34 @@
 			}
 		});
 		
-		function joinGroup(memberNo){
+		function joinGroup(member,groupNo){
+			console.log(member.memberNickname + "/" + member.memberEmail);
+			const totalPrice = $(".price").text();
+			const date = new Date();
+			const dateString = date.getFullYear() + "" + (date.getMonth()+1) + ""+date.getDate() + "" + date.getHours() + "" + date.getMinutes() + "" + date.getSeconds();
+			IMP.init("imp38620780");
 			
+			IMP.request_pay(
+					  {
+					    channelKey: "channel-key-94ea925a-a556-4122-b3fb-7a320bfbe8df", //필수
+					    pay_method: "card", //필수
+					    merchant_uid: "order_no_"+dateString, //상점에서 생성한 고유 주문번호 필수
+					    name: "주문명:결제테스트",
+					    amount: totalPrice, //필수
+					    buyer_email: member.memberEmail,
+					    buyer_name: member.memberNickname,
+					    buyer_tel: member.memberPhone, //필수 파라미터 입니다.
+					  },
+					  function (rsp) {
+						  if(rsp.success){
+							  //데이터베이스에 기록할 데이터를 취합해서 insert하는 로직
+							  alert("가입성공!");
+							  location.href="/group/successPay?memberNo="+member.memberNo+"&groupNo="+groupNo+"&price="+totalPrice;
+						  }
+					    // callback 로직
+					    //* ...중략... *//
+					  },
+			);
 		}
 		
 	</script>
