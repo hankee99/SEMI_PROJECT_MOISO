@@ -31,5 +31,8 @@ public class WebConfig implements WebMvcConfigurer{
 		registry
 		.addResourceHandler("/groupEditor/**")
 		.addResourceLocations("file:///"+root+"/groupEditor/");
+		registry
+		.addResourceHandler("/moisoPhoto/editor/**")
+		.addResourceLocations("file:///"+root+"/moisoPhoto/editor/");
 	}
 }

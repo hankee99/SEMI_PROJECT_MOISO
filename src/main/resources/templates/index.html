@@ -58,6 +58,9 @@
 .clickColor{
 	background-color: #FDA792;
 }
+.clickColor:hover{
+	background-color: #FED9A3;
+}
 .date>div{
 	width: 70px;
 	height: 35px;
@@ -84,6 +87,18 @@
     background-color: #FED9A3;
     transition: .5s;
 }
+.read-btn-box-date{
+    background-color: #f2836b;
+    height: 55px;
+    width: 140px;
+    margin: 0 auto;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.read-btn-box-date:hover{
+    background-color: #FED9A3;
+    transition: .5s;
+}
 .read-btn{
     color: black;
     font-weight: 1000;
@@ -93,6 +108,73 @@
 .read-btn:hover{
     transition: .5s;
 }
+
+/*게시글*/
+	.group-list-box{
+		width : 1320px;
+		margin : 0 auto;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+	}
+	.group-list-box-date{
+		width : 1320px;
+		margin : 0 auto;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+	}
+	.group-box{
+		border-radius : 20px;
+		cursor : pointer;
+		box-sizing : border-box;
+		box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+		width : 250px;
+		height : 350px;
+		margin: 20px 40px;
+		padding: 20px 40px;
+	}
+	
+	.img-div{
+		border-radius : 5px;
+		height : 165px;
+		margin-bottom: 5px;
+		overflow: hidden;
+    	position: relative;
+	}
+	.img-div>img{
+		width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	}
+	.title-div{
+		max-width : 170px;
+		overflow : hidden;
+		text-align : center;
+		height: 40px;
+	}
+	.title-div>h3{
+		line-height: 40px;
+		color : black;
+		
+	}
+	.info-div{
+		height : 48px;
+		word-break: break-all; 
+		overflow: hidden;
+	}
+	.info-div>p{
+		color: black;
+	}
+	.cate-div{
+		color : #373737;
+		width : 50px;
+		height: 20px;
+		background-color: #cacaca;
+	}
 </style>
     <body>
 
@@ -119,10 +201,9 @@
 			<div class="group-list-box">
 					
 			</div>
-			<div class="more-btn" style="cursor: pointer; width: 400px; margin: 0 auto; display: none;" th:onclick="moreClick()">더보기</div>
 			
 			<div class="read-btn-box">
-            	<div class="read-btn" th:onclick="groupList()">더보기</div>
+            	<div class="read-btn" onclick="moreClick();">더보기</div>
         	</div> 
 		</div>
 		
@@ -134,41 +215,76 @@
         
         <div class="date-wrap">
         	<div class="date-box">
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>
-        		<div class="date"><div><span>13일</span></div> <div><span>오늘</span></div></div>      		        		        		        		        		        		
+        		<div class="date" th:onclick="dateList(this,0)"> <div><span></span><span>일</span></div> <div><span>오늘</span></div></div>
+        		<div class="date" th:onclick="dateList(this,1)"> <div><span></span><span>일</span></div> <div><span>내일</span></div></div>
+        		<div class="date" th:onclick="dateList(this,2)"> <div><span></span><span>일</span></div> <div><span></span></div></div>
+        		<div class="date" th:onclick="dateList(this,3)"> <div><span></span><span>일</span></div> <div><span></span></div></div>
+        		<div class="date" th:onclick="dateList(this,4)"> <div><span></span><span>일</span></div> <div><span></span></div></div>
+        		<div class="date" th:onclick="dateList(this,5)"> <div><span></span><span>일</span></div> <div><span></span></div></div>
+        		<div class="date" th:onclick="dateList(this,6)"> <div><span></span><span>일</span></div> <div><span></span></div></div>      		        		        		        		        		        		
         	</div>
         </div>
         
         
 		<div class="content">
-			<div class="group-list-box">
+			<div class="group-list-box-date">
 					
 			</div>
-			<div class="more-btn" style="cursor: pointer; width: 400px; margin: 0 auto; display: none;" th:onclick="moreClick()">더보기</div>
+			<div class="read-btn-box-date">
+            	<div class="read-btn" th:onclick="dateMoreClick();">더보기</div>
+        	</div> 
 		</div>        
 
 	<script>
    		$(".navbar-nav").children().eq(0).addClass("active");
    		
-   		/*
-   		$(".date-box").children().eq(0).on("click",function(){
-   			console.log("12")
-   			$(this).addClass("clickColor");
-   		 	const date = new Date();  
-   	        const currentTime = `${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}.${date.getMilliseconds()}`;
-   	        console.log(currentTime);
-   	 	});		
-    
-   			
-		let totalCnt = 0;
-		
+
+   		$(this).addClass("clickColor");
+   		
+   		//날짜구하기
+   		const today = new Date();
+        // 요일 배열을 만들어 놓습니다.
+        const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+        // 0일 뒤(오늘)부터 6일 뒤까지 반복문을 사용하여 날짜와 요일을 구합니다.
+        
+        let dates = [];
+        
+        for (let i = 0; i <= 6; i++) {
+            const futureDate = new Date(today);
+            futureDate.setDate(today.getDate() + i); // i일 뒤로 설정
+            const date = futureDate.getDate(); // 날짜
+            const futureDayOfWeek = daysOfWeek[futureDate.getDay()]; // 요일 구하기  
+            
+            // 날짜를 원하는 형식 (yyyy-mm-dd)으로 포맷팅
+            let formattedDate = futureDate.toISOString().split('T')[0];
+        	// 날짜들 출력
+        	console.log(formattedDate);
+        	//날짜들 배열입력
+            dates.push(formattedDate);
+        	
+       		$(".date-box").children().eq(i).children().eq(0).children().eq(0).text(date);
+            if(i > 1){        	
+       		$(".date-box").children().eq(i).children().eq(1).text(futureDayOfWeek);
+       		
+            }      
+        }
+
+                
 		let currentCount = 0;
 		let start = 1;	
+		//let totalCnt = 0;
+		
+		/*
+        function readCountList(){
+			$.ajax({
+				url : "/mainPage/readCountTotalCount",
+				type : "get",
+				success : data => {					
+					totalCnt = data;
+					}			
+				});			
+		}
+		*/
 			
 		function moreClick(){
 			const amount = 8;
@@ -235,21 +351,130 @@
 					
 					start += amount;
 					currentCount += data.length;
-					if(currentCount === totalCnt){
+					if(currentCount === 24){
+						$(".read-btn-box").remove();
+					}			
+					console.log(currentCount);
+				}
+			});	
+		}
+		
+		let datePage = -1;
+		let totalCntDate = 0;
+		let dateCurrentCount = 0;
+		let dateStart = 1;
+
+		function dateList(obj,idx){
+			$(".date-box>div").removeClass("clickColor");
+			$(obj).addClass("clickColor");
+			if(datePage !== idx){
+				const date = dates[idx];
+				$.ajax({
+					url : "/mainPage/dateTotalCount",
+					type : "get",
+					data : {date : date},
+					success : data => {
+						$(".group-list-box-date>div").remove();
+						datePage = idx;
 						
+						start = 1;
+						dateCurrentCount = 0;
+						totalCntDate = data;
+						dateMoreClick();
+					}
+					
+				});
+				
+			}
+			
+		}		
+
+		function dateMoreClick(){
+			const amount = 8;
+			const date = dates[datePage]
+			$.ajax({
+				url : "/mainPage/dateGroup",
+				type : "get",
+				data : {date : date, dateStart : dateStart, amount : amount},
+				success : data => {
+					console.log(data);
+					
+					for(let i=0; i<data.length; i++){
+						
+						const group = data[i];
+						
+						const groupBox = $("<div>");
+						groupBox.addClass("group-box").addClass("rounded");
+						
+						const imgDiv = $("<div>");
+						imgDiv.addClass("img-div");
+						const img = $("<img>");
+						if(group.thumbImage != null){
+							img.attr("src","/groupThumb/"+group.thumbImage).css("width","100%");
+							imgDiv.append(img);
+						}else{
+							img.attr("src","/myimage/defaultProfile.png").css("width","100%");
+							imgDiv.append(img);
+						}
+						
+						
+						const titleDiv = $("<div>");
+						titleDiv.addClass("title-div");
+						const h3 = $("<h3>");
+						h3.text(group.groupName);
+						titleDiv.append(h3);
+						
+						const infoDiv = $("<div>");
+						infoDiv.addClass("info-div");
+						const p = $("<p>");
+						p.text(group.groupInfo);
+						infoDiv.append(p);
+						
+						const cateDiv = $("<div>");
+						cateDiv.addClass("cate-div")
+						cateDiv.text("hihi");
+						
+						groupBox.append(imgDiv);
+						groupBox.append(titleDiv);
+						groupBox.append(infoDiv);
+						groupBox.append(cateDiv);
+						
+						$(".group-list-box-date").append(groupBox);
+						
+						
+						groupBox.on("click", () => {
+							const no = group.groupNo;
+							console.log(no);
+							const url = "/group/groupInfoPage?groupNo="+no;
+							location.href = url;
+						});
+						
+						
+						
+					}
+					
+					start += amount;
+					dateCurrentCount += data.length;
+					if(dateCurrentCount === totalCntDate){
+						$(".read-btn-box-date").remove();
+					console.log(dateCurrentCount);
+					console.log(totalCntDate);
 					}
 					
 					
 				}
-			});	
-			*/
-			
-			
+			});
+		}
+		
+		const fst = $(".date-box>div:first-child");
+		dateList(fst,1);
+		moreClick();
 	</script>
 
 
         <th:block th:include="common/footer"></th:block>
     </body>
 </html>
+
 
 
