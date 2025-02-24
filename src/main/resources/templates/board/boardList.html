@@ -265,7 +265,7 @@
                     </div>
                     <div class="title">
                         <h5><a th:href="@{/board/board(boardNo=${n.boardNo})}" id="category-title" th:text="${n.boardTitle}"></a>
-                        <span th:if="${n.commentCount != 0}" id="countComment">[<span th:text="${n.commentCount}"></span>]</span></h5>
+                        <a th:href="@{/board/board#board-comment(boardNo=${n.boardNo})}" th:if="${n.commentCount != 0}" id="countComment">[<span th:text="${n.commentCount}"></span>]</a></h5>
                     </div>
                     <div class="date">
                         <p th:text="${n.boardDate}"></p>
@@ -292,7 +292,7 @@
                     </div>
                     <div class="title">
                         <h5><a th:href="@{/board/board(boardNo=${b.boardNo})}" th:text="${b.boardTitle}"></a>
-                        <span th:if="${b.commentCount != 0}" id="countComment">[<span th:text="${b.commentCount}"></span>]</span></h5>
+                        <a th:href="@{/board/board#board-comment(boardNo=${b.boardNo})}" th:if="${b.commentCount != 0}" id="countComment">[<span th:text="${b.commentCount}"></span>]</a></h5>
                     </div>
                     <div class="date">
                         <p th:text="${b.boardDate}"></p>

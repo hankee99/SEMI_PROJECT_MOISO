@@ -12,9 +12,26 @@ public class MainPageService {
 	@Autowired
 	private MainPageDao mainPageDao;
 
-	public List readCountGroup(int start, int amount) {
-		int end = start + amount -1;		
-		List list = mainPageDao.readCountGroup(start,end);
+	public int selectReadCountTotalCount() {
+		int totalCount = mainPageDao.selectReadCountTotalCount();
+		return totalCount;
+	}
+	
+	public List selectReadCountGroup(int start, int amount) {
+		int end = start + amount -1;//8
+		List list = mainPageDao.selectReadCountGroup(start,end);
 		return list;
 	}
+
+	public List selectDateGroup(String date, int dateStart, int amount) {
+		int end = dateStart + amount -1;
+		List list = mainPageDao.selectDateGroup(date,dateStart,end);
+		return list;
+	}
+
+	public int selectDateTotalCount(String date) {
+		int totalCount = mainPageDao.selectDateTotalCount(date);
+		return totalCount;
+	}
+
 }

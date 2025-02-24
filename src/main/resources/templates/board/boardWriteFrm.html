@@ -141,7 +141,7 @@
 	               <div class="board-write-title">      
 	                   <div class="board-write-category">
 	                       <select class="board-write-category-select" name="categoryName">
-	                           <option>공지사항</option>
+	                           <option th:if="${session.member.memberLevel == 2}">공지사항</option>
 	                           <option>자유게시판</option> 
 	                           <th:block th:each="category : ${c}">
 	                           		<option th:text="${category.categoryName}"></option> 
