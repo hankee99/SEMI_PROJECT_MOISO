@@ -20,4 +20,5 @@ public class GroupBoard {
 	private String profileImg;
 	private int commentCount;
 	private int likeCount;
+	private int isLike;
 }

@@ -26,6 +26,7 @@ import kr.co.iei.group.model.service.GroupService;
 import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.group.model.vo.GroupBoard;
+import kr.co.iei.group.model.vo.GroupBoardComment;
 import kr.co.iei.group.model.vo.GroupMember;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.util.FileUtils;
@@ -80,8 +81,8 @@ public class GroupController {
 			String filepath = fileUtils.upload(savepath, imageFile);
 			group.setThumbImage(filepath);
 		}
-		int result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
-		return "redirect:/";
+		int[] result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
+		return "redirect:/group/groupInfoPage?groupNo="+result[0];
 	}
 	
 //	@ResponseBody
@@ -168,6 +169,9 @@ public class GroupController {
 		Category category = groupService.selectOneCategory(group);
 		List groupMembers = groupService.selectGroupMembers(groupNo);
 		int numOfMembers = groupService.selectGroupMemberCount(groupNo);
+		
+		int result = groupService.updateReadCount(groupNo);
+				
 		boolean flag = false;
 		if(session.getAttribute("member") != null) {
 			Member member = (Member)session.getAttribute("member");
@@ -193,11 +197,21 @@ public class GroupController {
 	
 	@GetMapping(value="/groupBoard")
 	public String groupBoard(int groupNo,Model model) {
+		
 		Group group = groupService.selectGroupDetail(groupNo);
-		List list = groupService.selectGroupBoard(groupNo);
+		
 		model.addAttribute("group", group);
-		model.addAttribute("groupBoardList", list);
 		return "group/groupBoard";
+	}
+	
+	@ResponseBody
+	@GetMapping("/groupBoardType")
+	public List getMethodName(int groupNo, int type, HttpSession session) {
+		Member member = (Member)session.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		List list = groupService.selectGroupBoardType(groupNo,type,memberNo);
+		
+		return list;
 	}
 	
 	@GetMapping(value="/writeFrm")
@@ -240,10 +254,34 @@ public class GroupController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/groupBoardType")
-	public List getMethodName(int groupNo, int type) {
-		List list = groupService.selectGroupBoardType(groupNo,type);
+	@GetMapping(value="/likePush")
+	public int likePush(int memberNo, int boardNo, int type) {
+		System.out.println(boardNo);
+		int result = groupService.insertLike(memberNo,boardNo,type);
+		int currLike = groupService.selectCurrentLikeCount(boardNo,type);
+		return currLike;
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/viewComment")
+	public List viewComment(int boardNo) {
+		List list = groupService.selectCommentList(boardNo);
+		
 		return list;
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/insertComment")
+	public Object[] insertComment(String content, int boardNo, HttpSession session) {
+		Member member = (Member)session.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		int commentNo = groupService.selectCommentSeq();
+		int result = groupService.insertComment(commentNo,content,memberNo,boardNo);
+		GroupBoardComment comment = groupService.selectOneComment(commentNo);
+		int newCommentCount = groupService.selectCommentCount(boardNo);
+		Object[] arr = {comment,newCommentCount};
+		return arr;
 	}
 	
 	

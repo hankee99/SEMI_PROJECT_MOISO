@@ -257,6 +257,7 @@
 			<div class="content">
 				<div class="thumb-zone">
 					<img th:if="${group.thumbImage != null}" th:src="${img}">
+					<img th:if="${group.thumbImage == null}" src="/myimage/defaultProfile.png">
 				</div>
 				
 				<div class="main">
@@ -264,6 +265,7 @@
 						<div class="info-zone">
 							<div class="img-box">
 								<img th:if="${group.thumbImage != null}" th:src="${img}">
+								<img th:if="${group.thumbImage == null}" src="/myimage/defaultProfile.png">
 							</div>
 							<div class="text-box">
 								<div class="category" th:text="${categoryName}"></div>
