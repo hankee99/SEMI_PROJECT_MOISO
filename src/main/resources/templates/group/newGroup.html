@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	input{
+		outline: none;
+		border: 2px solid var(--main1);
+		border-radius: 4px;
+	}
+
 	.new-head{
 		font-family: ptd_bl;
 		font-size: 48px;
@@ -13,32 +19,57 @@
 		
 	}
 	.new-group-box{
-		width: 1000px;
+		width: 400px;
 		margin: 0 auto;
 	}
 	.title{
 		color : black;
-		font-family: ptd;
+		font-family: ptd_bl;
 		font-size: 26px;
+		margin-bottom: 15px;
+		margin-right: 15px;
 	}
 	.new-group-box>div{
 		margin-bottom: 50px;
 	}
 	.group-name-box>input{
-		width : 500px;
+		outline : none;
+		width : 400px;
 		border : none;
-		border-bottom: 1px solid black;
+		border-bottom: 2px solid var(--main1);
 	}
 	#category{
+		font-size : 20px;
 		width: 150px;
+		border: 2px solid var(--main1);
+		color: black;
+		border-radius: 4px;
 	}
+	
+	#groupInfo{
+		resize: none;
+		width: 400px;
+		height: 200px;
+		outline: none;
+		border : 2px solid var(--main1);
+		border-radius: 4px;
+	}
+	
+	#maxNum{
+		text-align : center;
+		width: 70px;
+	}
+	
 	.region-api-div{
+		width : 300px;
+		border : 2px solid var(--main1);
+		border-radius: 4px;
 		display: flex;
 		flex-direction: row;
 	}
 	.region-api-div>div{
 		text-align : center;
-		border : 1px solid black;
+		border : none;
 		width : 150px;
 		height: 120px;
 		overflow-y: scroll;
@@ -64,6 +95,16 @@
 	}
 	.join-fee>span>input{
 		margin-right: 5px;
+	}
+	.btn-box>button{
+		width : 100px;
+		height : 50px;
+		border-radius: 50px;
+		background-color: var(--main1);
+		border: none;
+		color : white;
+		font-family: ptd_bl;
+		font-size: 22px;
 	}
 </style>
 </head>
@@ -177,9 +218,9 @@
 			
 		</section>
 	</main>
-	
-	
-	
+
+
+
 	<script>
 		$(".navbar-nav").children().eq(2).addClass("active");
 		

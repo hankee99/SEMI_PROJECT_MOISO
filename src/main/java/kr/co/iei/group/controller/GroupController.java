@@ -28,6 +28,7 @@ import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.group.model.vo.GroupBoard;
 import kr.co.iei.group.model.vo.GroupBoardComment;
 import kr.co.iei.group.model.vo.GroupMember;
+import kr.co.iei.group.model.vo.Pay;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.util.FileUtils;
 import java.util.stream.*;
@@ -282,6 +283,12 @@ public class GroupController {
 		int newCommentCount = groupService.selectCommentCount(boardNo);
 		Object[] arr = {comment,newCommentCount};
 		return arr;
+	}
+	
+	@GetMapping(value="/successPay")
+	public String successPay(Pay pay) {
+		int result = groupService.insertPay(pay);
+		return "redirect:/group/groupInfoPage?groupNo="+pay.getGroupNo();
 	}
 	
 	
