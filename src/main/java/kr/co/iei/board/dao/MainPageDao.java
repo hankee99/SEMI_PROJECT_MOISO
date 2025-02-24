@@ -15,10 +15,32 @@ public class MainPageDao {
 	@Autowired
 	private GroupRowMapper groupRowMapper;
 	
-	public List readCountGroup(int start, int end) {
-		String query = "select * from (select rownum as rnum, g.* from (select * from group_tbl where read_count order by 1 desc) g) where rnum between ? and ?";
+	public int selectReadCountTotalCount() {
+		String query = "select count(*) from group_tbl";
+		int totalCount = jdbc.queryForObject(query, Integer.class);
+		return totalCount;
+	}
+	
+	public List selectReadCountGroup(int start, int end) {
+		String query = "select * from (select rownum as rnum, g.* from (select * from group_tbl order by read_count desc) g) where rnum between ? and ?";
 		Object[] params = {start,end};
 		List list = jdbc.query(query, groupRowMapper, params);
 		return list;
 	}
+	
+
+	public int selectDateTotalCount(String date) {
+		String query = "select count(*) from group_tbl where meeting_date = ?";
+		Object[] params = {date};
+		int totalCount = jdbc.queryForObject(query, Integer.class, params);
+		return totalCount;
+	}
+	
+	public List selectDateGroup(String date, int dateStart, int end) {
+		String query = "select * from (select rownum as rnum, g.* from (select * from group_tbl where meeting_date = ? order by read_count desc) g) where rnum between ? and ?";
+		Object[] params = {date,dateStart,end};
+		List list = jdbc.query(query, groupRowMapper, params);
+		return list;
+	}
+
 }
