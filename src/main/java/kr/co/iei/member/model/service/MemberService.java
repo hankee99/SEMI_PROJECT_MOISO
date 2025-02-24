@@ -60,6 +60,11 @@ public class MemberService {
 		return result;
 	}
 
+	public List selectGroupMemebr() {
+		List list = memberDao.selectGroupMember();
+		return list;
+	}
+
 	
 
 }

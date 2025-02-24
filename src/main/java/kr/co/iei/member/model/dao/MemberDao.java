@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.group.model.vo.SidoRowMapper;
 import kr.co.iei.group.model.vo.SigunguRowMapper;
+import kr.co.iei.member.model.vo.GroupAllMemberRowMapper;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.member.model.vo.MemberIdRowMapper;
 import kr.co.iei.member.model.vo.MemberRowMapper;
@@ -25,6 +26,8 @@ public class MemberDao {
 	private SidoRowMapper sidoRowMapper;
 	@Autowired
 	private SigunguRowMapper sigunguRowMapper;
+	@Autowired
+	private GroupAllMemberRowMapper groupAllMemberRowMapper;
 	
 	public Member selectOneMember(Member m) {
 		String query = "Select * from member where member_id=? and member_pw=?";
@@ -98,6 +101,14 @@ public class MemberDao {
 		Object[] params = {m.getProfileImg(), m.getMemberNickname(), m.getMemberIntro(), m.getMemberMbti(), m.getMemberAddr(), m.getMemberGender(), m.getMemberPw(), m.getMemberPhone(), m.getMemberId()};
 		int result = jdbc.update(query, params);
 		return result;
+	}
+
+	public List selectGroupMember() {
+		String query = "select group_no, m.member_no, member_nickname, member_addr, member_phone, join_date, group_member_level \r\n"
+				+ "from member m join GROUP_MEMBER gm on (m.member_no = gm.member_no)\r\n"
+				+ "where group_no = (select group_no from group_member where member_no=1 and group_member_level=1)";
+		List list = jdbc.query(query, groupAllMemberRowMapper);
+		return list;
 	}
 	
 	

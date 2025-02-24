@@ -160,8 +160,9 @@ public class MemberController {
 		return sb.toString();
 	}
 	
-	@GetMapping(value="/myPage")
-	public String mypage() {
+	@GetMapping(value="/mypage")
+	public String mypage(@SessionAttribute Member member) {
+		System.out.println(member);
 		return "member/mypage";
 	}
 	
@@ -205,7 +206,7 @@ public class MemberController {
 			model.addAttribute("title", "수정실패");
 			model.addAttribute("text", "다시입력해보세요.");
 			model.addAttribute("icon", "error");
-			model.addAttribute("loc", "/member/myPage");
+			model.addAttribute("loc", "/member/mypage");
 			return "common/msg";
 		}
 
@@ -227,6 +228,14 @@ public class MemberController {
 	public List sigungu(String sido) {
 		List list = memberService.selectSigungu(sido);
 		return list;
+	}
+	
+	
+	@GetMapping(value="/mypage2")
+	public String hostLevelMng(Model model) {
+		List list = memberService.selectGroupMemebr();
+		model.addAttribute("list", list);
+		return "member/mypage2";
 	}
 	
 	
