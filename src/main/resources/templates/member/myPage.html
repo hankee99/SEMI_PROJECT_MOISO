@@ -59,7 +59,7 @@
             cursor: pointer;
         }
 
-        .selected {
+        .gender-selected {
             background: white;
             font-weight: bold;
         }
@@ -82,44 +82,33 @@
 					<div class="profile-img-box">
 						<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
 						<img th:src="'/profile/'+${session.member.profileImg}" class="profile-img" th:if="${session.member.profileImg != null}">
-						<input type="file" name="upfile" accept="image/*" onchange="loadImg(this);">
+						<input type="file" class="profile-input" name="upfile" accept="image/*">
+						<input type="checkbox" name="defaultProfileUse" class="defaultProfileUse" value="defaultProfileUse"> 기본 이미지 사용
 					</div>
 					<table class="mypage-tbl">
 						<tr>
 							<th>닉네임</th>
 							<td class="left">
-								<input class="test-box rounded" th:value="${session.member.memberNickname}">
+								<input class="input-box rounded" name="memberNickname" th:value="${session.member.memberNickname}">
 							</td>
 						</tr>
 						<tr>
 							<th>소개</th>
 							<td class="left">
-								<input class="test-box rounded" th:value="${session.member.memberIntro}">
+								<input class="input-box rounded" name="memberIntro" th:value="${session.member.memberIntro}">
 							</td>
 						</tr>
 						<tr>
 							<th>MBTI</th>
 							<td class="left">
-								<input class="test-box rounded" th:value="${session.member.memberMbti}">
-							</td>
-						</tr>
-						<tr>
-							<th>관심사</th>
-							<td class="left">
-								<div ></div>
+								<input class="input-box rounded" name="memberMbti" th:value="${session.member.memberMbti}">
 							</td>
 						</tr>
 						<tr>
 							<th>지역</th>
 							<td>
-								<!-- <div class="test-box rounded current-location" th:value="${session.member.}">
-									
-								</div> -->
-								
+								<div class="text-box rounded" th:text="${session.member.memberAddr}"></div>
 								<div class="group-location">
-								<div class="title">
-									<label for="region">지역</label>
-								</div>
 								<div class="region-api-div">
 									<div class="sido">
 										
@@ -128,18 +117,28 @@
 									
 									</div>
 								</div>
-								<input type="hidden" id="groupLocation" name="groupLocation">
+								<input type="hidden" id="groupLocation" name="memberAddr">
 							</div>
 							</td>
 						</tr>
 						<tr>
 							<th>성별</th>
 							<td class="left">								
-						        <div class="gender-toggle-box">
-						            <div id="toggle-button maleBtn" class="toggle-button">남</div>
-						            <div id="toggle-button femaleBtn" class="toggle-button selected">여</div>
-						        </div>
-						        	<input type="hidden" name="gender" id="gender">				        					      
+					        	<th:block th:switch="${session.member.memberGender}">
+						        	<div class="gender-toggle-box" th:case="null">
+							            <div id="toggle-button maleBtn" class="toggle-button">남</div>
+							            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
+						        	</div>
+						        	<div class="gender-toggle-box" th:case="남">
+							            <div id="toggle-button maleBtn" class="toggle-button gender-selected">남</div>
+							            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
+						        	</div>
+						        	<div class="gender-toggle-box" th:case="여">
+							            <div id="toggle-button maleBtn" class="toggle-button">남</div>
+							            <div id="toggle-button femaleBtn" class="toggle-button gender-selected">여</div>
+						        	</div>
+						        </th:block>
+						        	<input type="hidden" name="memberGender" id="gender">				        					      
 							</td>
 						</tr>
 				
@@ -157,18 +156,20 @@
 						<tr>
 							<th>비밀번호</th>
 							<td class="left">
-								<input type="password" class="input-box rounded" th:value="${session.member.memberPw}">
+								<input type="password" class="input-box rounded" name="memberPw" th:value="${session.member.memberPw}">
 							</td>
 						</tr>
 						<tr>
 							<th>전화번호</th>
 							<td class="left">
-								<input class="input-box rounded" th:value="${session.member.memberPhone}">
+								<input class="input-box rounded" name="memberPhone" th:value="${session.member.memberPhone}">
 							</td>
 						</tr>
 					
 					</table>
-					<button type="submit">수정완료</button>
+					<div class="btn-box">
+						<button type="submit">수정완료</button>
+					</div>
 				</form>
 			</section>
 		</main>
@@ -178,6 +179,8 @@
 	<th:block th:include="common/footer"></th:block>
 
 	<script>
+	
+	
 	$.ajax({
 		url : "/member/sido",
 		type : "get",
@@ -193,7 +196,6 @@
 					printSigungu(this,sido);
 				})
 			}
-			
 			$(".sido>div:first-child").click();
 			
 		}
@@ -220,16 +222,41 @@
 						$(".sigungu>div").removeClass("selected");
 						$(this).addClass("selected");
 					})
-				}
-				
+				}	
 			}
 		});
 	}
+	
+	$(".btn-box>button").on("click", (e) => {
+		const arr = $(".selected");
+		const location = arr.length === 2;
+		
+		if(location){
+			const addr = arr.eq(0).text() + "/" + arr.eq(1).text();
+			$("#groupLocation").val(addr);
+		}else{
+			alert("입력 정보를 확인하세요");
+			e.preventDefault();
+		}
+		
+	});
+	
+	
 	$(".toggle-button").click(function () {
-        $(".toggle-button").removeClass("selected");
-        $(this).addClass("selected");
+        $(".toggle-button").removeClass("gender-selected");
+        $(this).addClass("gender-selected");
         $("#gender").val($(this).text());
 		
+	});
+	
+	$(".defaultProfileUse").click(function(){
+		 if(this.checked) {
+				$(".profile-input").attr("disabled",true);
+				$(".profile-img-box img:first").attr("src", "/myimage/defaultProfile.png");
+				
+		    } else {
+		    	$(".profile-input").removeAttr("disabled");
+		    }
 	});
 	
 	
@@ -237,3 +264,22 @@
 	</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

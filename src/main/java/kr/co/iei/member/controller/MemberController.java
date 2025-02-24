@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -164,25 +165,52 @@ public class MemberController {
 		return "member/mypage";
 	}
 	
-	@RequestMapping(value="/update")
-	private String mypageUpdate(Member m, MultipartFile upfile, Model model, HttpSession session) {
-		Member loginUser =  (Member)session.getAttribute("member");
-	    session.setAttribute("member", loginUser);
-	    if (upfile != null) {  
-	        String savepath = root + "/profile/";
+	@PostMapping(value="/update")
+	private String mypageUpdate(Member m, MultipartFile upfile, Model model, @SessionAttribute Member member, String defaultProfileUse) {
+		String memberId = member.getMemberId();
+		m.setMemberId(memberId);
+		String profileImg = member.getProfileImg();
+		if(defaultProfileUse != null) {
+			//check가 defaultProfileUse(null아님)면, 기본이미지니까 데이터에 null을 넣어줘야 하고,
+			m.setProfileImg(null);
+		}else {
+			//null이면 기본이미지 사용 안하니까 기존 사진이거나 새로운 사진이거나!
+			if (!upfile.isEmpty()) {  
+				String savepath = root + "/profile/";
+				
+				String filename = upfile.getOriginalFilename();
+				String filepath = fileUtils.upload(savepath, upfile);
+				// 이미지파일경로를 loginUser에 저장	        
+				m.setProfileImg(filepath);
+			}else {
+				m.setProfileImg(profileImg);
+			}
+		}	 
+		int result = memberService.updateMypage(m);
+		if(result > 0) {
+			member.setMemberAddr(m.getMemberAddr());
+			member.setMemberGender(m.getMemberGender());
+			member.setMemberIntro(m.getMemberIntro());
+			member.setMemberMbti(m.getMemberMbti());
+			member.setMemberNickname(m.getMemberNickname());
+			member.setMemberPhone(m.getMemberPhone());
+			member.setMemberPw(m.getMemberPw());
+			member.setProfileImg(m.getProfileImg());
+			model.addAttribute("title", "작성완료");
+			model.addAttribute("text", "마이페이지가 수정되었습니다.");
+			model.addAttribute("icon", "success");
+			model.addAttribute("loc", "/member/myPage");
+			return "common/msg";	
+		}else {
+			model.addAttribute("title", "수정실패");
+			model.addAttribute("text", "다시입력해보세요.");
+			model.addAttribute("icon", "error");
+			model.addAttribute("loc", "/member/myPage");
+			return "common/msg";
+		}
 
-	        String filename = upfile.getOriginalFilename();
-	        String filepath = fileUtils.upload(savepath, upfile);
-	        // 이미지파일경로를 loginUser에 저장	        
-	        loginUser.setProfileImg(filepath);
-	    }    
-	    int result = memberService.updateMypage(loginUser, upfile);
-	    model.addAttribute("title", "작성완료");
-		model.addAttribute("text", "마이페이지가 수정되었습니다.");
-		model.addAttribute("icon", "success");
-		model.addAttribute("loc", "/member/mypage");
 		
-		return "common/msg";
+	    
 	}
 	
 	

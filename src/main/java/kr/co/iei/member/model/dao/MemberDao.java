@@ -93,9 +93,9 @@ public class MemberDao {
 
 	
 	
-	public int updateMypage(Member loginUser, MultipartFile upfile) {
-		String query = "update member set profile_img=? member_nickname=? member_intro=? member_mbti=? member_addr=? member_gender=? member_pw=? member_phone=? where member_id=?";
-		Object[] params = {loginUser.getProfileImg(), loginUser.getMemberNickname(), loginUser.getMemberIntro(), loginUser.getMemberMbti(), loginUser.getMemberAddr(), loginUser.getMemberGender(), loginUser.getMemberPw(), loginUser.getMemberPhone(), loginUser.getMemberId()};
+	public int updateMypage(Member m ) {
+		String query = "update member set profile_img=?, member_nickname=?, member_intro=?, member_mbti=?, member_addr=?, member_gender=?, member_pw=?, member_phone=? where member_id=?";
+		Object[] params = {m.getProfileImg(), m.getMemberNickname(), m.getMemberIntro(), m.getMemberMbti(), m.getMemberAddr(), m.getMemberGender(), m.getMemberPw(), m.getMemberPhone(), m.getMemberId()};
 		int result = jdbc.update(query, params);
 		return result;
 	}
