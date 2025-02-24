@@ -78,6 +78,8 @@
 		<main class="content">
 			<section class="mypage-wrap rounded">
 				<div class="page-title">Mypage</div>
+				<a href="/member/mypage2">모임호스트의 운영진관리</a>
+				
 				<form action="/member/update" method="post" autocomplete="off" enctype = "multipart/form-data">
 					<div class="profile-img-box">
 						<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
@@ -123,12 +125,16 @@
 						</tr>
 						<tr>
 							<th>성별</th>
-							<td class="left">								
-					        	<th:block th:switch="${session.member.memberGender}">
-						        	<div class="gender-toggle-box" th:case="null">
+							<td class="left">	
+							<div th:text="${session.member.memberGender}"></div>							
+					        	<th:block th:if="${session.member.memberGender==null}">
+						        	<div class="gender-toggle-box">
 							            <div id="toggle-button maleBtn" class="toggle-button">남</div>
 							            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
 						        	</div>
+						        </th:block>
+						        <th:block th:if="${session.member.memberGender!=null}">
+						        <th:block th:switch="${session.member.memberGender}">
 						        	<div class="gender-toggle-box" th:case="남">
 							            <div id="toggle-button maleBtn" class="toggle-button gender-selected">남</div>
 							            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
@@ -137,6 +143,7 @@
 							            <div id="toggle-button maleBtn" class="toggle-button">남</div>
 							            <div id="toggle-button femaleBtn" class="toggle-button gender-selected">여</div>
 						        	</div>
+						        </th:block>
 						        </th:block>
 						        	<input type="hidden" name="memberGender" id="gender">				        					      
 							</td>
@@ -235,7 +242,7 @@
 			const addr = arr.eq(0).text() + "/" + arr.eq(1).text();
 			$("#groupLocation").val(addr);
 		}else{
-			alert("입력 정보를 확인하세요");
+			alert("지역 정보를 확인해주세요!");
 			e.preventDefault();
 		}
 		
