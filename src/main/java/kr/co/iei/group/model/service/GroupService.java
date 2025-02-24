@@ -68,10 +68,13 @@ public class GroupService {
 	}
 	
 	@Transactional
-	public int insertGroup(Group group, Member member) {
+	public int[] insertGroup(Group group, Member member) {
+		int groupNo = groupDao.selectNewGroupNo();
+		group.setGroupNo(groupNo);
 		int result = groupDao.insertGroup(group);
-		int result2 = groupDao.insertGroupLeader(member);
-		return result + result2;
+		int result2 = groupDao.insertGroupLeader(member,groupNo);
+		int[] resultArr = {groupNo, result + result2}; 
+		return resultArr;
 	}
 
 	public Group selectGroupDetail(int groupNo) {

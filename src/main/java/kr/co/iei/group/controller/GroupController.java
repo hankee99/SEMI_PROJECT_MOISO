@@ -80,8 +80,8 @@ public class GroupController {
 			String filepath = fileUtils.upload(savepath, imageFile);
 			group.setThumbImage(filepath);
 		}
-		int result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
-		return "redirect:/";
+		int[] result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
+		return "redirect:/group/groupInfoPage?groupNo="+result[0];
 	}
 	
 //	@ResponseBody

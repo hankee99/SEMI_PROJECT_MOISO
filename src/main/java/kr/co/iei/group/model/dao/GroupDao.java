@@ -78,11 +78,18 @@ public class GroupDao {
 		List list = jdbc.query(query, sigunguRowMapper, params);
 		return list;
 	}
-
+	
+	public int selectNewGroupNo() {
+		String query = "select group_seq.nextval from dual";
+		int groupNo = jdbc.queryForObject(query, Integer.class);
+		return groupNo;
+	}
+	
 	public int insertGroup(Group group) {
-		String query = "insert into group_tbl values(group_seq.nextval,?,?,?,?,?,?,?,?,0)";
+		String query = "insert into group_tbl values(?,?,?,?,?,?,?,?,?,0)";
 		Object[] params = {
-				group.getGroupName()
+				group.getGroupNo()
+				,group.getGroupName()
 				,group.getGroupInfo()
 				,group.getMaxNum()
 				,group.getGroupLocation()
@@ -95,9 +102,9 @@ public class GroupDao {
 		return result;
 	}
 	
-	public int insertGroupLeader(Member member) {
-		String query = "insert into group_member values(group_seq.currval,?,1,to_char(sysdate,'yyyy-mm-dd'))";
-		Object[] params = {member.getMemberNo()};
+	public int insertGroupLeader(Member member, int groupNo) {
+		String query = "insert into group_member values(?,?,1,to_char(sysdate,'yyyy-mm-dd'))";
+		Object[] params = {groupNo,member.getMemberNo()};
 		int result = jdbc.update(query,params);
 		return result;
 	}
@@ -263,6 +270,8 @@ public class GroupDao {
 		
 		
 	}
+
+	
 
 	
 
