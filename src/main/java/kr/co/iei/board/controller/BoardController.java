@@ -95,7 +95,15 @@ public class BoardController {
 		model.addAttribute("loc", "/board/boardList?reqPage=1");
 		return "common/msg";
 	}
-
+	//summernote
+	@ResponseBody
+	@PostMapping(value="/editorImage", produces = "plain/text;charset=utf-8")
+	public String editorImage(MultipartFile upfile) {
+		String savepath = root + "/moisoPhoto/editor/";
+		String filepath = fileUtils.upload(savepath, upfile);
+		return filepath;
+	}
+	
 	//게시글 수정
 	@GetMapping(value="/boardUpdateFrm")
 	public String boardUpdateFrm(int boardNo,Model model, String memberNickname) {

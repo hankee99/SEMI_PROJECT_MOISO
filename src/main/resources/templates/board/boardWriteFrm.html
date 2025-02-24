@@ -197,6 +197,35 @@
                 }
             }
         });
+        
+        function uploadImage(file, editor){
+			//ajax로 서버에 이미지를 업로드
+			//업로드된 파일의 filepath를 받아옴
+			//받아온 filepath로 img태그의 src를 설정
+			
+			//ajax파일 업로드
+			//<form>태그 역할의 객체
+			const form = new FormData();	//<form></form>
+			form.append("upfile",file);		//<form> input type=file name=upfile </form>  실제 폼태그는 아님
+			
+			$.ajax({
+				url : "/board/editorImage",
+				type : "post",
+				data : form,
+				processData : false,
+				contentType : false,
+				success : function(data) {
+					console.log(data);
+					$(editor).summernote("insertImage","/moisoPhoto/editor/"+data);
+				}
+			});
+			//processData : 데이터 전송 시 기본적으로 문자열로 전송하게 세팅되어있음 -> 그 기본세팅을 비활성화(false)
+			//contentType : enctype="application/x-www-formurlencoded;charset=utf-8" 기본값
+			//-> 기본값을 비활성화(false)
+			
+		}
+        
+        
 
         function loadImg(obj){
         	$(".img-view").removeClass("valid").removeClass("invalid");
