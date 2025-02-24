@@ -125,7 +125,7 @@
 	}
 	
 	.join-fee {
-		padding-left: 155px;
+		padding-left: 280px;
 	}
 	
 	.title {
@@ -276,12 +276,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="btn-zone" th:if="${flag}">
+						<div class="btn-zone">
 							<div class="btn-box">
-								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);">가입하기</button>
-								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"><button>소통게시판</button></a>
+								<button class="join-btn" th:onclick="joinGroup([[${session.member.memberNo}]]);"  th:if="${!flag}">가입하기</button>
+								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"  th:if="${flag}"><button>소통게시판</button></a>
 							</div>
-							<div class="join-fee">
+							<div class="join-fee"   th:if="${!flag}">
 								<span>가입비: </span>
 								<span th:text="${group.joinFee}"></span>
 								<span>원</span>
