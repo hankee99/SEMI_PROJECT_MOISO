@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 
@@ -25,10 +26,13 @@ import kr.co.iei.util.FileUtils;
 public class MemberController {
 	@Autowired
 	private MemberService memberService;
+	
 	@Autowired
 	private EmailSender emailSender;
+	
 	@Value(value="${file.root}")
 	private String root;
+	
 	@Autowired
 	private FileUtils fileUtils;
 	
@@ -159,6 +163,29 @@ public class MemberController {
 	public String mypage() {
 		return "member/mypage";
 	}
+	
+	@RequestMapping(value="/update")
+	private String mypageUpdate(Member m, MultipartFile upfile, Model model, HttpSession session) {
+		Member loginUser =  (Member)session.getAttribute("member");
+	    session.setAttribute("member", loginUser);
+	    if (upfile != null) {  
+	        String savepath = root + "/profile/";
+
+	        String filename = upfile.getOriginalFilename();
+	        String filepath = fileUtils.upload(savepath, upfile);
+	        // 이미지파일경로를 loginUser에 저장	        
+	        loginUser.setProfileImg(filepath);
+	    }    
+	    int result = memberService.updateMypage(loginUser, upfile);
+	    model.addAttribute("title", "작성완료");
+		model.addAttribute("text", "마이페이지가 수정되었습니다.");
+		model.addAttribute("icon", "success");
+		model.addAttribute("loc", "/member/mypage");
+		
+		return "common/msg";
+	}
+	
+	
 	
 	@ResponseBody
 	@GetMapping(value="/sido")

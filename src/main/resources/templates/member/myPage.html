@@ -5,6 +5,15 @@
 <title>Mypage</title>
 </head>
 <style>
+	*{
+	font-family: ptd;
+	}
+	.mypage-wrap{
+		width: 500px;
+		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
+	}
+
+
 	.test-box{
 		background-color: red;
 		width: 100px;
@@ -54,34 +63,44 @@
             background: white;
             font-weight: bold;
         }
+        
+        .profile-img-box{
+        	width: 250px;
+        	border-radius: 50%;
+        	cursor: pointer;
+        }
+        .profile-img{
+        	width: 100%;
+        }
 </style>
 <body>
 	<th:block th:include="common/header"></th:block>
 		<main class="content">
-			<section class="mypage-wrap">
+			<section class="mypage-wrap rounded">
 				<div class="page-title">Mypage</div>
-				<form action="/member/update" method="post" autocomplete="off">
-					<div class="profile-img">
-						<img src="/myimage/defaultProfile.png"  th:if="${session.member.profileImg == null}">
-						<img src="/profile/default.png"  th:if="${session.member.profileImg != null}">
+				<form action="/member/update" method="post" autocomplete="off" enctype = "multipart/form-data">
+					<div class="profile-img-box">
+						<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
+						<img th:src="'/profile/'+${session.member.profileImg}" class="profile-img" th:if="${session.member.profileImg != null}">
+						<input type="file" name="upfile" accept="image/*" onchange="loadImg(this);">
 					</div>
 					<table class="mypage-tbl">
 						<tr>
-							<th>이름</th>
+							<th>닉네임</th>
 							<td class="left">
-								<div class="test-box rounded" th:text="${session.member.memberNickname}"></div>
+								<input class="test-box rounded" th:value="${session.member.memberNickname}">
 							</td>
 						</tr>
 						<tr>
 							<th>소개</th>
 							<td class="left">
-								<div class="test-box rounded" th:text="${session.member.memberIntro}"></div>
+								<input class="test-box rounded" th:value="${session.member.memberIntro}">
 							</td>
 						</tr>
 						<tr>
 							<th>MBTI</th>
 							<td class="left">
-								<div th:text="${session.member.memberMbti}"></div>
+								<input class="test-box rounded" th:value="${session.member.memberMbti}">
 							</td>
 						</tr>
 						<tr>
@@ -93,6 +112,10 @@
 						<tr>
 							<th>지역</th>
 							<td>
+								<!-- <div class="test-box rounded current-location" th:value="${session.member.}">
+									
+								</div> -->
+								
 								<div class="group-location">
 								<div class="title">
 									<label for="region">지역</label>
@@ -123,6 +146,28 @@
 					</table>
 				
 					<div class="blank"></div>
+					
+					<table class="mypage-tbl mine">
+						<tr>
+							<th>아이디</th>
+							<td class="left">
+								<div class="text-box rounded" th:text="${session.member.memberId}"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td class="left">
+								<input type="password" class="input-box rounded" th:value="${session.member.memberPw}">
+							</td>
+						</tr>
+						<tr>
+							<th>전화번호</th>
+							<td class="left">
+								<input class="input-box rounded" th:value="${session.member.memberPhone}">
+							</td>
+						</tr>
+					
+					</table>
 					<button type="submit">수정완료</button>
 				</form>
 			</section>
