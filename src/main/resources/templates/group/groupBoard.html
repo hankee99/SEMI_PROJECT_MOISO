@@ -125,6 +125,7 @@
 		vertical-align: middle;
 	}
 	
+	
 	.comment-box {
 		cursor : pointer;
 	}
@@ -144,6 +145,67 @@
 		margin-top: 20px;
 		padding-top: 50px;
 		border-top: 1px solid rgba(0,0,0,0.1)
+	}
+	
+	
+	.cmt-div{
+		padding-left : 15px;
+		height: 120px;
+		margin-bottom: 20px;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+	}
+	
+	
+	.top-zone-div{
+		padding-top : 10px;
+		display: flex;
+		flex-direction : row;
+		justify-content: space-between;
+		margin-bottom: 30px;
+	}
+	.l-div{
+		display: flex;
+		flex-direction: row;
+	}
+	.img-div{
+		margin-right : 15px;
+		width: 40px;
+		height: 40px;
+		overflow: hidden;
+		border-radius: 30px;
+	}
+	.name-div{
+		color : black;
+		font-family: ptd_bl;
+		font-size: 22px;
+	}
+	.bot-div{
+		color : black;
+		padding-left: 5px;
+		font-family: ptd;
+		font-size: 18px;
+	}
+	.input-zone{
+		display: flex;
+    	flex-direction: row;
+    	height: 100px; /* 원하는 높이 */
+	}
+	.input-zone>textarea{
+		flex-grow: 1; /* 여유 공간을 모두 차지 */
+    	resize: none; /* 크기 조정 비활성화 (선택 사항) */
+    	margin-right: 10px;
+	}
+	.input-zone>button{
+		border : none;
+		background-color : var(--main2);
+		border-radius : 15px;
+		align-self: center;
+		width: 100px;
+		height: 100px;
+		font-family: ptd;
+		font-size: 22px;
+		font-weight: 600;
+		color : white;
 	}
 </style>
 </head>
@@ -173,43 +235,7 @@
 
 			<div class="content">
 				<div class="board-list">
-					<div class="board" th:each="board : ${groupBoardList}">
-						<div class="board-top">
-							<div class="right-box">
-								<div class="hidden-box">
-									<div class="profile-box">
-										<img src="/myimage/defaultProfile.png" th:if="${board.profileImg == null}"> 
-										<img	th:src="${'/profile/' + board.profileImg}" th:if="${board.profileImg != null}">
-									</div>
-								</div>
-								<div class="nickname" th:text="${board.memberNickname}"></div>
-								
-							</div>
-							
-							<div class="date" th:text="${board.writeDate}"></div>
-						</div>
-
-						<div class="board-mid">
-							<div class="board-content" th:utext="${board.groupBoardContent}"></div>
-						</div>
-
-						<div class="board-bot">
-							<div class="right-box">
-								<div class="like-box">
-									<span class="material-icons">favorite_border</span><span>좋아요 </span><span th:text="${board.likeCount}"></span>
-								</div>
-								<div class="comment-box">
-									<span class="material-icons">chat</span><span>댓글 </span><span th:text="${board.commentCount}"></span>
-								</div>
-							</div>
-
-							<div class="type" th:if="${board.type == 0}">자유글</div>
-							<div class="type" th:if="${board.type == 1}">공지</div>
-						</div>
-
-
-
-						<div class="gray-zone"></div>
+					
 					</div>
 				</div>
 			</div>
@@ -218,8 +244,11 @@
 		</section>
 	</main>
 	
-	<script>
+	<script th:inline="javascript">
 		
+	
+		let gn = [[${group.groupNo}]];
+		const memberNo = [[${session.member.memberNo}]];
 		function filterPosts(groupNo,type,obj) {
 			console.log(obj);
 	        $(".btnn").css("background-color","var(--main1)")
@@ -230,7 +259,7 @@
 	        $.ajax({
 	            url: "/group/groupBoardType",
 	            method: 'GET',
-	            data : {groupNo,type},
+	            data : {groupNo : groupNo, type : type},
 	            success: function(data) {
 	                // 게시글 리스트를 비우고 새로운 게시글 추가
 	                $('.board-list').empty();
@@ -256,27 +285,206 @@
 	                            <div class="board-bot">
 	                                <div class="right-box">
 	                                    <div class="like-box">
-	                                        <span class="material-icons">favorite_border</span><span>좋아요 </span><span>${board.likeCount}</span>
+	                                        <span class="material-icons likebtn" onclick="likePush(this,${board.groupBoardNo},0);">${board.isLike == 0 ? 'favorite_border' : 'favorite'}</span><span>좋아요 </span><span>${board.likeCount}</span>
 	                                    </div>
-	                                    <div class="comment-box">
+	                                    <div class="comment-box" onclick="viewComment(this,${board.groupBoardNo});">
 	                                        <span class="material-icons">chat</span><span>댓글 </span><span>${board.commentCount}</span>
 	                                    </div>
 	                                </div>
 	                                <div class="type">${board.type == 0 ? '자유글' : '공지'}</div>
+	                            </div>
+	                            <div class="comment-zone">
+	                            	
 	                            </div>
 	                            <div class="gray-zone"></div>
 	                        </div>
 	                    `;
 	                    $('.board-list').append(boardDiv);
 	                });
+	                $(".likebtn").css("color","red");
+	                
+	                
 	            },
 	            error: function(xhr, status, error) {
 	                console.error('게시글을 불러오는 데 실패했습니다.', error);
 	            }
 	        });
+	        
 	    }
 		
-		$(".all").css("background-color","var(--main3)")
+		function likePush(obj,boardNo,type){
+			if($(obj).text() === "favorite_border"){
+				$(obj).text("favorite");
+				
+				$.ajax({
+					url: "/group/likePush",
+		            method: 'GET',
+		            data : {memberNo : memberNo, boardNo : boardNo , type : type},
+		            success : data => {
+		            	$(obj).siblings().last().text(data);
+		            	
+		            }
+				});
+				
+				
+			}
+		}
+		
+		
+		function viewComment(obj,boardNo){
+			const commentZone = $(obj).parent().parent().next();
+			console.log(commentZone);
+			
+			if(commentZone.children().length === 0){
+				$.ajax({
+					url : "/group/viewComment",
+					method : "post",
+					data : {boardNo : boardNo},
+					success : data => {
+						const inputZone = $("<div>");
+						inputZone.addClass("input-zone");
+						const textArea = $("<textarea>");
+						const submitBtn = $("<button>");
+						submitBtn.text("작성");
+						submitBtn.attr("onclick","commentSubmit(this,"+boardNo+");")
+						inputZone.append(textArea).append(submitBtn);
+						commentZone.append(inputZone);
+						
+						console.log(data.length);
+						for(let i=0; i<data.length; i++){
+							const comment = data[i];
+							
+							const cmt = $("<div>");
+							cmt.addClass("cmt-div");
+							
+							const topDiv = $("<div>");
+							topDiv.addClass("top-zone-div");
+							
+							const imgDiv = $("<div>");
+							const img = $("<img>");
+							if(comment.profileImg == null){
+								img.attr("src","/myimage/defaultProfile.png");	
+							}else{
+								img.attr("src","/profile/"+comment.profileImg);	
+							}
+							
+							img.css("width","100%");
+							
+							imgDiv.append(img);
+							imgDiv.addClass("img-div")
+							
+							const lDiv = $("<div>");
+							lDiv.addClass("l-div");
+							lDiv.append(imgDiv);
+							
+							const nameDiv = $("<div>");
+							nameDiv.addClass("name-div");
+							nameDiv.text(comment.memberNickname);
+							lDiv.append(nameDiv);
+							
+							const dateDiv = $("<div>");
+							dateDiv.text(comment.groupBoardCommentWriteDate);
+							
+							topDiv.append(lDiv);
+							topDiv.append(dateDiv);
+							
+							const botDiv = $("<div>");
+							botDiv.addClass("bot-div");
+							
+							botDiv.text(comment.groupBoardCommentContent);
+							
+							
+							
+							
+							cmt.append(topDiv);
+							cmt.append(botDiv);
+							
+							commentZone.append(cmt);
+							
+						}
+						
+						$(".cmt-div").last().css("border-bottom","none").css("margin-bottom","0");
+					}
+				});
+			}else{
+				commentZone.children().remove();
+			}
+			
+			
+		}
+		
+		function commentSubmit(obj,boardNo){
+			const commentZone = $(obj).parent().parent();
+			const content = $(obj).siblings().val();
+			if(content.length !== 0){
+				$.ajax({
+					url : "/group/insertComment",
+					method : "post",
+					data : {content : content, boardNo : boardNo},
+					success : data => {
+						const comment = data[0];
+						
+						const cmt = $("<div>");
+						cmt.addClass("cmt-div");
+						
+						const topDiv = $("<div>");
+						topDiv.addClass("top-zone-div");
+						
+						const imgDiv = $("<div>");
+						const img = $("<img>");
+						if(comment.profileImg == null){
+							img.attr("src","/myimage/defaultProfile.png");	
+						}else{
+							img.attr("src","/profile/"+comment.profileImg);	
+						}
+						
+						img.css("width","100%");
+						
+						imgDiv.append(img);
+						imgDiv.addClass("img-div")
+						
+						const lDiv = $("<div>");
+						lDiv.addClass("l-div");
+						lDiv.append(imgDiv);
+						
+						const nameDiv = $("<div>");
+						nameDiv.addClass("name-div");
+						nameDiv.text(comment.memberNickname);
+						lDiv.append(nameDiv);
+						
+						const dateDiv = $("<div>");
+						dateDiv.text(comment.groupBoardCommentWriteDate);
+						
+						topDiv.append(lDiv);
+						topDiv.append(dateDiv);
+						
+						const botDiv = $("<div>");
+						botDiv.addClass("bot-div");
+						
+						botDiv.text(comment.groupBoardCommentContent);
+						
+						
+						
+						
+						cmt.append(topDiv);
+						cmt.append(botDiv);
+						
+						commentZone.append(cmt);
+						
+						$(obj).siblings().val("");
+						$(obj).parent().parent().prev().children().eq(0).children().eq(1).children().eq(2).text(data[1]);
+						$(".cmt-div").last().css("border-bottom","none").css("margin-bottom","0");
+					}
+				});
+			}
+		}
+		
+		
+		
+		
+		
+		const all = $(".all");
+		filterPosts(gn,-1,all);
 	</script>
 	
 	<th:block th:include="common/footer"></th:block>

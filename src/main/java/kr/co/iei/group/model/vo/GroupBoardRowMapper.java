@@ -16,12 +16,13 @@ public class GroupBoardRowMapper implements RowMapper<GroupBoard>{
 		groupBoard.setMemberNo(rs.getInt("member_no"));
 		groupBoard.setGroupBoardContent(rs.getString("group_board_content"));
 		groupBoard.setWriteDate(rs.getString("write_date"));
-		groupBoard.setGroupBoardNo(rs.getInt("group_no"));
+		groupBoard.setGroupNo(rs.getInt("group_no"));
 		groupBoard.setType(rs.getInt("type"));
 		groupBoard.setMemberNickname(rs.getString("member_nickname"));
 		groupBoard.setProfileImg(rs.getString("profile_img"));
 		groupBoard.setCommentCount(rs.getInt("comment_count"));
 		groupBoard.setLikeCount(rs.getInt("like_count"));
+		groupBoard.setIsLike(rs.getInt("is_like"));
 		return groupBoard;
 	}
 

@@ -12,6 +12,7 @@ import kr.co.iei.group.model.dao.GroupDao;
 import kr.co.iei.group.model.vo.Category;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.group.model.vo.GroupBoard;
+import kr.co.iei.group.model.vo.GroupBoardComment;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.member.model.vo.Member;
 
@@ -105,15 +106,58 @@ public class GroupService {
 		return result;
 	}
 
-	public List selectGroupBoard(int groupNo) {
-		List list = groupDao.selectGroupBoard(groupNo); 
+	public List selectGroupBoardType(int groupNo, int type, int memberNo) {
+		List list = groupDao.selectGroupBoardType(groupNo,type,memberNo);
 		return list;
 	}
 
-	public List selectGroupBoardType(int groupNo, int type) {
-		List list = groupDao.selectGroupBoardType(groupNo,type);
+	@Transactional
+	public int insertLike(int memberNo, int boardNo, int type) {
+		int result = groupDao.insertLike(memberNo,boardNo,type);
+		return result;
+	}
+
+	public int selectCurrentLikeCount(int boardNo, int type) {
+		int currLike = groupDao.selectCurrentLikeCount(boardNo,type);
+		return currLike;
+	}
+
+	@Transactional
+	public int updateReadCount(int groupNo) {
+		int result = groupDao.updateReadCount(groupNo);
+		return result;
+	}
+
+	public List selectCommentList(int boardNo) {
+		List list = groupDao.selectCommentList(boardNo);
 		return list;
 	}
+
+	@Transactional
+	public int insertComment(int commentNo, String content,int memberNo, int boardNo) {
+		int result = groupDao.insertComment(commentNo,content,memberNo,boardNo);
+		return result;
+	}
+
+	public int selectCommentSeq() {
+		int commentSeq = groupDao.selectCommentSeq();
+		return commentSeq;
+	}
+
+	public GroupBoardComment selectOneComment(int commentNo) {
+		List list = groupDao.selectOneComment(commentNo);
+		GroupBoardComment groupBoardComment = (GroupBoardComment)list.get(0);
+		return groupBoardComment;
+	}
+
+	public int selectCommentCount(int boardNo) {
+		int commentCount = groupDao.selectCommentCount(boardNo);
+		return commentCount;
+	}
+
+	
+
+	
 
 	
 }
