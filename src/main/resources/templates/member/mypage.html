@@ -8,24 +8,51 @@
 	*{
 	font-family: ptd;
 	}
+	.mypage-container{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 	.mypage-wrap{
-		width: 500px;
+		width: 700px;
 		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
 	}
-
-
-	.test-box{
-		background-color: red;
-		width: 100px;
-		height: 100px;
+	.page-title{
+		font-family: ptd_bl;
+		text-align: center;
+		font-size: 40px;
+		color: var(--gray1);
+		padding: 20px 0;
 	}
+	.profile-img-box{
+		width: 250px; 
+	    height: 250px;
+	    border-radius: 50%; 
+	    overflow: hidden; 
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    margin: 0 auto;
+	}
+	.profile-img-box img{
+		width: 100%;
+    	height: 100%;
+    	object-fit: cover; /* 이미지가 div를 꽉 채우도록 */
+	}
+	.mypage-tbl{
+		margin: 0 auto;
+		width: 500px;
+	}
+	
+	
+
 	.region-api-div{
 		display: flex;
 		flex-direction: row;
 	}
 	.region-api-div>div{
 		text-align : center;
-		border : 1px solid black;
+		border : 1px solid var(--line1);
 		width : 150px;
 		height: 120px;
 		overflow-y: scroll;
@@ -41,7 +68,16 @@
 		color : black;
 		font-weight: 900;
 	}
-	
+	.input-item>input{
+		border-radius: 10px;
+		border: 1px solid var(--line1);
+	}
+	label{
+		font-size: 20px;
+		color: var(--gray1);
+		padding-bottom: 5px;
+	}
+
 	
 	    .gender-toggle-box {
             display: flex;
@@ -62,6 +98,7 @@
         .gender-selected {
             background: white;
             font-weight: bold;
+            color: var(--gray1)
         }
         
         .profile-img-box{
@@ -75,7 +112,7 @@
 </style>
 <body>
 	<th:block th:include="common/header"></th:block>
-		<main class="content">
+		<main class="content mypage-container">
 			<section class="mypage-wrap rounded">
 				<div class="page-title">Mypage</div>
 				<a href="/member/mypage2">모임호스트의 운영진관리</a>
@@ -84,99 +121,99 @@
 					<div class="profile-img-box">
 						<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
 						<img th:src="'/profile/'+${session.member.profileImg}" class="profile-img" th:if="${session.member.profileImg != null}">
+					</div>
+					<div>
 						<input type="file" class="profile-input" name="upfile" accept="image/*">
 						<input type="checkbox" name="defaultProfileUse" class="defaultProfileUse" value="defaultProfileUse"> 기본 이미지 사용
 					</div>
-					<table class="mypage-tbl">
-						<tr>
-							<th>닉네임</th>
-							<td class="left">
-								<input class="input-box rounded" name="memberNickname" th:value="${session.member.memberNickname}">
-							</td>
-						</tr>
-						<tr>
-							<th>소개</th>
-							<td class="left">
-								<input class="input-box rounded" name="memberIntro" th:value="${session.member.memberIntro}">
-							</td>
-						</tr>
-						<tr>
-							<th>MBTI</th>
-							<td class="left">
-								<input class="input-box rounded" name="memberMbti" th:value="${session.member.memberMbti}">
-							</td>
-						</tr>
-						<tr>
-							<th>지역</th>
-							<td>
-								<div class="text-box rounded" th:text="${session.member.memberAddr}"></div>
-								<div class="group-location">
-								<div class="region-api-div">
-									<div class="sido">
+					<div class="tbl-wrap">
+						<table class="mypage-tbl">
+							<tr>
+								<th class="p-3">닉네임</th>
+								<td class="input-item">
+									<input class="input-box rounded p-3" name="memberNickname" th:value="${session.member.memberNickname}">
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">소개</th>
+								<td class="input-item">
+									<input class="input-box rounded p-3" name="memberIntro" th:value="${session.member.memberIntro}">
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">MBTI</th>
+								<td class="input-item">
+									<input class="input-box rounded p-3" name="memberMbti" th:value="${session.member.memberMbti}">
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">지역</th>
+								<td class="input-item">
+									<div class="text-box rounded p-3" th:text="${session.member.memberAddr}"></div>
+									<div class="group-location">
+									<div class="region-api-div">
+										<div class="sido">
+											
+										</div>
+										<div class="sigungu">
 										
+										</div>
 									</div>
-									<div class="sigungu">
-									
-									</div>
+									<input type="hidden" id="groupLocation" name="memberAddr">
 								</div>
-								<input type="hidden" id="groupLocation" name="memberAddr">
-							</div>
-							</td>
-						</tr>
-						<tr>
-							<th>성별</th>
-							<td class="left">	
-							<div th:text="${session.member.memberGender}"></div>							
-					        	<th:block th:if="${session.member.memberGender==null}">
-						        	<div class="gender-toggle-box">
-							            <div id="toggle-button maleBtn" class="toggle-button">남</div>
-							            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
-						        	</div>
-						        </th:block>
-						        <th:block th:if="${session.member.memberGender!=null}">
-						        <th:block th:switch="${session.member.memberGender}">
-						        	<div class="gender-toggle-box" th:case="남">
-							            <div id="toggle-button maleBtn" class="toggle-button gender-selected">남</div>
-							            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
-						        	</div>
-						        	<div class="gender-toggle-box" th:case="여">
-							            <div id="toggle-button maleBtn" class="toggle-button">남</div>
-							            <div id="toggle-button femaleBtn" class="toggle-button gender-selected">여</div>
-						        	</div>
-						        </th:block>
-						        </th:block>
-						        	<input type="hidden" name="memberGender" id="gender">				        					      
-							</td>
-						</tr>
-				
-					</table>
-				
-					<div class="blank"></div>
-					
-					<table class="mypage-tbl mine">
-						<tr>
-							<th>아이디</th>
-							<td class="left">
-								<div class="text-box rounded" th:text="${session.member.memberId}"></div>
-							</td>
-						</tr>
-						<tr>
-							<th>비밀번호</th>
-							<td class="left">
-								<input type="password" class="input-box rounded" name="memberPw" th:value="${session.member.memberPw}">
-							</td>
-						</tr>
-						<tr>
-							<th>전화번호</th>
-							<td class="left">
-								<input class="input-box rounded" name="memberPhone" th:value="${session.member.memberPhone}">
-							</td>
-						</tr>
-					
-					</table>
-					<div class="btn-box">
-						<button type="submit">수정완료</button>
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">성별</th>
+								<td class="left">	
+								<div th:text="${session.member.memberGender}"></div>							
+						        	<th:block th:if="${session.member.memberGender==null}">
+							        	<div class="gender-toggle-box">
+								            <div id="toggle-button maleBtn" class="toggle-button">남</div>
+								            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
+							        	</div>
+							        </th:block>
+							        <th:block th:if="${session.member.memberGender!=null}">
+								        <th:block th:switch="${session.member.memberGender}">
+								        	<div class="gender-toggle-box" th:case="남">
+									            <div id="toggle-button maleBtn" class="toggle-button gender-selected">남</div>
+									            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
+								        	</div>
+								        	<div class="gender-toggle-box" th:case="여">
+									            <div id="toggle-button maleBtn" class="toggle-button">남</div>
+									            <div id="toggle-button femaleBtn" class="toggle-button gender-selected">여</div>
+								        	</div>
+								        </th:block>
+							        </th:block>
+							        	<input type="hidden" name="memberGender" id="gender">				        					      
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">아이디</th>
+								<td class="left ">
+									<div class="text-box rounded p-3" th:text="${session.member.memberId}"></div>
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">비밀번호</th>
+								<td class="input-item">
+									<input type="password" class="input-box rounded p-3" name="memberPw" th:value="${session.member.memberPw}">
+								</td>
+							</tr>
+							<tr>
+								<th class="p-3">전화번호</th>
+								<td class="input-item">
+									<input class="input-box rounded p-3" name="memberPhone" th:value="${session.member.memberPhone}">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">수정완료</button>
+								</td>
+							</tr>
+						</table>
 					</div>
+					
 				</form>
 			</section>
 		</main>

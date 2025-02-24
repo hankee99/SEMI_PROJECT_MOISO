@@ -161,9 +161,8 @@ public class MemberController {
 	}
 	
 	@GetMapping(value="/mypage")
-	public String mypage(@SessionAttribute Member member) {
-		System.out.println(member);
-		return "member/mypage";
+	public String mypage() {
+		return "member/defaultProfile";
 	}
 	
 	@PostMapping(value="/update")
@@ -200,7 +199,7 @@ public class MemberController {
 			model.addAttribute("title", "작성완료");
 			model.addAttribute("text", "마이페이지가 수정되었습니다.");
 			model.addAttribute("icon", "success");
-			model.addAttribute("loc", "/member/myPage");
+			model.addAttribute("loc", "/member/mypage");
 			return "common/msg";	
 		}else {
 			model.addAttribute("title", "수정실패");
