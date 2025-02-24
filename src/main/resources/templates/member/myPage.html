@@ -112,9 +112,9 @@
 						<tr>
 							<th>지역</th>
 							<td>
-								<div class="test-box rounded current-location" th:value="${session.member.}">
+								<!-- <div class="test-box rounded current-location" th:value="${session.member.}">
 									
-								</div>
+								</div> -->
 								
 								<div class="group-location">
 								<div class="title">
@@ -146,6 +146,28 @@
 					</table>
 				
 					<div class="blank"></div>
+					
+					<table class="mypage-tbl mine">
+						<tr>
+							<th>아이디</th>
+							<td class="left">
+								<div class="text-box rounded" th:text="${session.member.memberId}"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td class="left">
+								<input type="password" class="input-box rounded" th:value="${session.member.memberPw}">
+							</td>
+						</tr>
+						<tr>
+							<th>전화번호</th>
+							<td class="left">
+								<input class="input-box rounded" th:value="${session.member.memberPhone}">
+							</td>
+						</tr>
+					
+					</table>
 					<button type="submit">수정완료</button>
 				</form>
 			</section>
