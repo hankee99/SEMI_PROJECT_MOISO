@@ -163,6 +163,12 @@ public class GroupService {
 		int result2 = groupDao.insertGroupMember(pay.getMemberNo(), pay.getGroupNo(), 3);
 		return result+result2;
 	}
+
+	@Transactional
+	public int insertRecentGroup(int memberNo, int groupNo) {
+		int result = groupDao.insertRecentGroup(memberNo,groupNo);
+		return result;
+	}
 	
 	
 

@@ -282,10 +282,10 @@
 						</div>
 						<div class="btn-zone">
 							<div class="btn-box">
-								<button class="join-btn" th:onclick="joinGroup([[${session.member}]],[[${group.groupNo}]]);"  th:if="${!flag}">가입하기</button>
+								<button class="join-btn" th:onclick="joinGroup([[${session.member}]],[[${group.groupNo}]]);"  th:if="${!flag && numOfMembers < group.maxNum}">가입하기</button>
 								<a th:href="${'/group/groupBoard?groupNo='+group.groupNo}"  th:if="${flag}"><button>소통게시판</button></a>
 							</div>
-							<div class="join-fee"   th:if="${!flag}">
+							<div class="join-fee"   th:if="${!flag && numOfMembers < group.maxNum}">
 								<span>가입비: </span>
 								<span th:text="${group.joinFee}" class="price"></span>
 								<span>원</span>
