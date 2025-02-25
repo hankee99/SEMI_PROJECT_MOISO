@@ -276,7 +276,7 @@
 	                                <div class="right-box">
 	                                    <div class="hidden-box">
 	                                        <div class="profile-box">
-	                                            <img src="/myimage/defaultProfile.png" ${board.profileImg == null ? '' : `src="/profile/${board.profileImg}"`}>
+	                                        	<img src="${board.profileImg ? `/profile/${board.profileImg}` : '/myimage/defaultProfile.png'}">
 	                                        </div>
 	                                    </div>
 	                                    <div class="nickname">${board.memberNickname}</div>
@@ -366,7 +366,7 @@
 							
 							const imgDiv = $("<div>");
 							const img = $("<img>");
-							if(comment.profileImg == null){
+							if(comment.profileImg == ""){
 								img.attr("src","/myimage/defaultProfile.png");	
 							}else{
 								img.attr("src","/profile/"+comment.profileImg);	

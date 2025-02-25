@@ -243,7 +243,6 @@ public class GroupController {
 		int memberNo = member.getMemberNo();
 		groupBoard.setMemberNo(memberNo);
 		int result = groupService.insertGroupBoard(groupBoard);
-		System.out.println(groupBoard.toString());
 		return "redirect:/group/groupBoard?groupNo="+groupBoard.getGroupNo();
 	}
 	
@@ -258,7 +257,6 @@ public class GroupController {
 	@ResponseBody
 	@GetMapping(value="/likePush")
 	public int likePush(int memberNo, int boardNo, int type) {
-		System.out.println(boardNo);
 		int result = groupService.insertLike(memberNo,boardNo,type);
 		int currLike = groupService.selectCurrentLikeCount(boardNo,type);
 		return currLike;
