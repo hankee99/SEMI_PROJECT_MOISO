@@ -39,7 +39,7 @@
 		border-bottom: 2px solid var(--main1);
 	}
 	#category{
-		font-size : 20px;
+		font-size : 18px;
 		width: 150px;
 		border: 2px solid var(--main1);
 		color: black;
@@ -85,13 +85,19 @@
 		color : black;
 		font-weight: 900;
 	}
+	
+	.thumb-title{
+		margin-right: 10px;
+	}
 	[name=imageFile]{
 		font-size: 15px;
+		width: 200px;
+		border : none;
 	}
 	.image-zone{
 		margin-top : 20px;
 		width: 300px;
-		height: 300px;
+		min-height: 300px;
 	}
 	.join-fee>span>input{
 		margin-right: 5px;
@@ -106,6 +112,16 @@
 		font-family: ptd_bl;
 		font-size: 22px;
 	}
+	.join-fee>label{
+		color : black;
+		font-family: ptd_bl;
+		font-size: 26px;
+	}
+	.join-fee>input{
+		width: 80px;
+		text-align: center;
+	}
+	
 </style>
 </head>
 <body>
@@ -163,12 +179,12 @@
 							</div>
 						</div>
 						<div class="max-num">
-							<span class="title">
-								<label for="maxNum">인원제한</label>
-							</span>
-							<span>
+							
+								<label for="maxNum" class="title">인원제한</label>
+							
+							
 								<input type="text" id="maxNum" name="maxNum" value="20">
-							</span>
+							
 						</div>
 						
 						<div class="group-location">
@@ -194,15 +210,16 @@
 						</div>
 						<div class="thumb-image">
 							<div class="title">
-							<span>썸네일</span>
-							<span><input type="file" name="imageFile" accept="image/*" onchange="loadImg(this);"></span>
+							<span class="thumb-title">썸네일</span>
+							<span><input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="loadImg(this);"></span>
 							</div>
 							<div class="image-zone">
 								<img id="img-view" src="/myimage/default.png" style="width: 100%;">
 							</div>
 						</div>
 						<div class="join-fee">
-							<span class="title">가입비: </span><span><input type="text" id="joinFee" name="joinFee" value="1000"></span><span style="color: black;">원</span>
+							<label for="joinFee">가입비:</label>
+							<input type="text" id="joinFee" name="joinFee" value="1000"><span style="color: black;">원</span>
 						</div>
 						
 						
@@ -293,10 +310,10 @@
 			
 			const name = $("#groupName").val().length > 0;
 			const info = $("#groupInfo").val().length > 0;
-			const maxnum = $("#maxNum").val() > 1;
+			const maxnum = $("#maxNum").val().length > 0 && $("#maxNum").val() > 1;
 			const location = arr.length === 2;
 			const meetingDate = $("#meetingDate").val() !== "";
-			const joinFee = $("#joinFee").val() >= 0;
+			const joinFee = $("#joinFee").val().length > 0 && $("#joinFee").val() >= 0;
 			
 			if(name && info && maxnum && location && meetingDate && joinFee){
 				const addr = arr.eq(0).text() + "/" + arr.eq(1).text();

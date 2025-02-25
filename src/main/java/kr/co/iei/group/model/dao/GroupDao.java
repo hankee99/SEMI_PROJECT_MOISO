@@ -308,6 +308,13 @@ public class GroupDao {
 		return result;
 	}
 
+	public int insertRecentGroup(int memberNo, int groupNo) {
+		String query = "insert into recent_group values(recent_group_seq.nextval,?,?)";
+		Object[] params = {memberNo,groupNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
 	
 
 	

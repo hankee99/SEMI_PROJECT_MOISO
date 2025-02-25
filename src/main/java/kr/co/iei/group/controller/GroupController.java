@@ -170,13 +170,14 @@ public class GroupController {
 		Category category = groupService.selectOneCategory(group);
 		List groupMembers = groupService.selectGroupMembers(groupNo);
 		int numOfMembers = groupService.selectGroupMemberCount(groupNo);
-		
 		int result = groupService.updateReadCount(groupNo);
+		int rst = 0;
 				
 		boolean flag = false;
 		if(session.getAttribute("member") != null) {
 			Member member = (Member)session.getAttribute("member");
 			int memberNo = member.getMemberNo();
+			rst = groupService.insertRecentGroup(memberNo,groupNo);
 			
 			for(GroupMember gm : (ArrayList<GroupMember>)groupMembers) {
 				if(gm.getMemberNo() == memberNo) {
