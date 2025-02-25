@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.iei.board.service.MainPageService;
 import kr.co.iei.group.model.vo.Group;
+import kr.co.iei.member.model.vo.Member;
 
 @Controller
 @RequestMapping(value="/mainPage")
@@ -44,6 +46,20 @@ public class MainPageController {
 	@GetMapping("/dateGroup")
 	public List selectDateGroup(String date, int dateStart, int amount) {
 		List list = mainPageService.selectDateGroup(date, dateStart,amount);
+		System.out.println(list);
+		return list;
+	}
+	
+	@ResponseBody
+	@GetMapping("/recentGroup")
+	public List selectRecentGroup(int recentStart, int amount, HttpSession session) {
+		List list = null;
+		if(session.getAttribute("member") != null) {
+			Member member = (Member)session.getAttribute("member"); 
+			int memberNo = member.getMemberNo();
+			list = mainPageService.selectRecentGroup(memberNo,recentStart,amount);
+		}
+		
 		System.out.println(list);
 		return list;
 	}

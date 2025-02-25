@@ -34,4 +34,9 @@ public class MainPageService {
 		return totalCount;
 	}
 
+	public List selectRecentGroup(int memberNo, int recentStart, int amount) {
+		int end = recentStart + amount -1;
+		List list = mainPageDao.selectRecentGroup(memberNo, recentStart,end);
+		return list;
+	}
 }
