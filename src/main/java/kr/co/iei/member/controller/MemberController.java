@@ -162,7 +162,32 @@ public class MemberController {
 	
 	@GetMapping(value="/mypage")
 	public String mypage() {
-		return "member/defaultProfile";
+		return "member/mypage";
+	}
+	
+	@GetMapping(value="/updateMypage")
+	public String updateMypage() {
+		return "member/updateMypage";
+	}
+	
+	@GetMapping(value="/mygroup")
+	public String mygroup() {
+		return "member/mygroup";
+	}
+	
+	@GetMapping(value="/mypayment")
+	public String mypayment() {
+		return "member/mypayment";
+	}
+	
+	@GetMapping(value="/mysettlement")
+	public String mysettlement() {
+		return "member/mysettlement";
+	}
+	
+	@GetMapping(value="/managerPage")
+	public String managerPage() {
+		return "member/managerPage";
 	}
 	
 	@PostMapping(value="/update")
@@ -207,10 +232,7 @@ public class MemberController {
 			model.addAttribute("icon", "error");
 			model.addAttribute("loc", "/member/mypage");
 			return "common/msg";
-		}
-
-		
-	    
+		}	
 	}
 	
 	
@@ -230,11 +252,11 @@ public class MemberController {
 	}
 	
 	
-	@GetMapping(value="/mypage2")
+	@GetMapping(value="/groupLevelManage")
 	public String hostLevelMng(Model model) {
 		List list = memberService.selectGroupMemebr();
 		model.addAttribute("list", list);
-		return "member/mypage2";
+		return "member/groupLevelManage";
 	}
 	
 	

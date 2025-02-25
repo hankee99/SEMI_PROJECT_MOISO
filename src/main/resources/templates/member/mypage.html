@@ -2,320 +2,150 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Mypage</title>
+<title>Insert title here</title>
 </head>
 <style>
-	*{
-	font-family: ptd;
+	/* 전체 스타일 */
+	body {
+	    font-family: Arial, sans-serif;
+	    margin: 0;
+	    padding: 0;
 	}
-	.mypage-container{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.mypage-wrap{
-		width: 700px;
-		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
-	}
-	.page-title{
-		font-family: ptd_bl;
-		text-align: center;
-		font-size: 40px;
-		color: var(--gray1);
-		padding: 20px 0;
-	}
-	.profile-img-box{
-		width: 250px; 
-	    height: 250px;
-	    border-radius: 50%; 
-	    overflow: hidden; 
+	
+	/* 마이페이지 레이아웃 */
+	.mypage-container {
 	    display: flex;
-	    justify-content: center;
+	    margin: 20px;
+	}
+	
+	/* 사이드바 스타일 */
+	.sidebar {
+	    width: 200px;
+	    display: flex;
+	    flex-direction: column;
+	    gap: 10px;
+	}
+	
+	.tab-btn {
+	    padding: 10px;
+	    background-color: #fff;
+	    border: 1px solid #ccc;
+	    cursor: pointer;
+	}
+	
+	.tab-btn.active {
+	    background-color: #f77;
+	    color: white;
+	}
+	
+	/* 컨텐츠 영역 */
+	.content {
+	    flex-grow: 1;
+	    padding: 20px;
+	    border: 1px solid #ccc;
+	    border-radius: 10px;
+	}
+	
+	/* 프로필 스타일 */
+	.profile-header {
+	    display: flex;
 	    align-items: center;
-	    margin: 0 auto;
-	}
-	.profile-img-box img{
-		width: 100%;
-    	height: 100%;
-    	object-fit: cover; /* 이미지가 div를 꽉 채우도록 */
-	}
-	.mypage-tbl{
-		margin: 0 auto;
-		width: 500px;
 	}
 	
+	.profile-image {
+	    width: 100px;
+	    height: 100px;
+	    border-radius: 50%;
+	    overflow: hidden;
+	    margin-right: 20px;
+	}
 	
-
-	.region-api-div{
-		display: flex;
-		flex-direction: row;
+	.profile-image img {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
 	}
-	.region-api-div>div{
-		text-align : center;
-		border : 1px solid var(--line1);
-		width : 150px;
-		height: 120px;
-		overflow-y: scroll;
-	}
-	.region-api-div>div:first-child{
-		border-right: 0;
-	}
-	.region-api-div>div>div{
-		cursor : pointer;
-		margin-bottom: 7px;
-	}
-	.selected{
-		color : black;
-		font-weight: 900;
-	}
-	.input-item>input{
-		border-radius: 10px;
-		border: 1px solid var(--line1);
-	}
-	label{
-		font-size: 20px;
-		color: var(--gray1);
-		padding-bottom: 5px;
-	}
-
 	
-	    .gender-toggle-box {
-            display: flex;
-            align-items: center;
-            background: #eee;
-            border-radius: 20px;
-            padding: 5px;
-            width: 100px;
-            justify-content: space-between;
-        }
-
-        .toggle-button {
-            padding: 5px 10px;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-
-        .gender-selected {
-            background: white;
-            font-weight: bold;
-            color: var(--gray1)
-        }
-        
-        .profile-img-box{
-        	width: 250px;
-        	border-radius: 50%;
-        	cursor: pointer;
-        }
-        .profile-img{
-        	width: 100%;
-        }
+	.profile-info h2 {
+	    margin: 0;
+	}
+	
+	.profile-info .tag {
+	    background-color: lightgray;
+	    padding: 5px;
+	    border-radius: 5px;
+	}
+	
+	.tags span {
+	    display: inline-block;
+	    margin-right: 5px;
+	    background-color: #ddd;
+	    padding: 5px;
+	    border-radius: 5px;
+	}
+	
+	/* 편집 버튼 */
+	.edit-btn {
+	    display: block;
+	    margin-top: 20px;
+	    padding: 10px;
+	    background-color: black;
+	    color: white;
+	    border: none;
+	    cursor: pointer;
+	}
+	
+	/* 탭 컨텐츠 숨김 */
+	.tab-content {
+	    display: none;
+	}
+	
+	.tab-content.active {
+	    display: block;
+	}
 </style>
 <body>
+
 	<th:block th:include="common/header"></th:block>
-		<main class="content mypage-container">
-			<section class="mypage-wrap rounded">
-				<div class="page-title">Mypage</div>
-				<a href="/member/mypage2">모임호스트의 운영진관리</a>
-				
-				<form action="/member/update" method="post" autocomplete="off" enctype = "multipart/form-data">
-					<div class="profile-img-box">
-						<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
-						<img th:src="'/profile/'+${session.member.profileImg}" class="profile-img" th:if="${session.member.profileImg != null}">
-					</div>
-					<div>
-						<input type="file" class="profile-input" name="upfile" accept="image/*">
-						<input type="checkbox" name="defaultProfileUse" class="defaultProfileUse" value="defaultProfileUse"> 기본 이미지 사용
-					</div>
-					<div class="tbl-wrap">
-						<table class="mypage-tbl">
-							<tr>
-								<th class="p-3">닉네임</th>
-								<td class="input-item">
-									<input class="input-box rounded p-3" name="memberNickname" th:value="${session.member.memberNickname}">
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">소개</th>
-								<td class="input-item">
-									<input class="input-box rounded p-3" name="memberIntro" th:value="${session.member.memberIntro}">
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">MBTI</th>
-								<td class="input-item">
-									<input class="input-box rounded p-3" name="memberMbti" th:value="${session.member.memberMbti}">
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">지역</th>
-								<td class="input-item">
-									<div class="text-box rounded p-3" th:text="${session.member.memberAddr}"></div>
-									<div class="group-location">
-									<div class="region-api-div">
-										<div class="sido">
-											
-										</div>
-										<div class="sigungu">
-										
-										</div>
-									</div>
-									<input type="hidden" id="groupLocation" name="memberAddr">
-								</div>
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">성별</th>
-								<td class="left">	
-								<div th:text="${session.member.memberGender}"></div>							
-						        	<th:block th:if="${session.member.memberGender==null}">
-							        	<div class="gender-toggle-box">
-								            <div id="toggle-button maleBtn" class="toggle-button">남</div>
-								            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
-							        	</div>
-							        </th:block>
-							        <th:block th:if="${session.member.memberGender!=null}">
-								        <th:block th:switch="${session.member.memberGender}">
-								        	<div class="gender-toggle-box" th:case="남">
-									            <div id="toggle-button maleBtn" class="toggle-button gender-selected">남</div>
-									            <div id="toggle-button femaleBtn" class="toggle-button">여</div>
-								        	</div>
-								        	<div class="gender-toggle-box" th:case="여">
-									            <div id="toggle-button maleBtn" class="toggle-button">남</div>
-									            <div id="toggle-button femaleBtn" class="toggle-button gender-selected">여</div>
-								        	</div>
-								        </th:block>
-							        </th:block>
-							        	<input type="hidden" name="memberGender" id="gender">				        					      
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">아이디</th>
-								<td class="left ">
-									<div class="text-box rounded p-3" th:text="${session.member.memberId}"></div>
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">비밀번호</th>
-								<td class="input-item">
-									<input type="password" class="input-box rounded p-3" name="memberPw" th:value="${session.member.memberPw}">
-								</td>
-							</tr>
-							<tr>
-								<th class="p-3">전화번호</th>
-								<td class="input-item">
-									<input class="input-box rounded p-3" name="memberPhone" th:value="${session.member.memberPhone}">
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">수정완료</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-					
-				</form>
-			</section>
-		</main>
-				
+	<div class="profile-container">
+        <!-- 사이드바 -->
+	        <aside class="sidebar">
+	            <a href="/member/updateMypage" class="tab-btn active" data-target="profile">프로필</a>
+	            <a href="/member/mygroup" class="tab-btn" data-target="my-groups">나의모임</a>
+	            <a href="/member/mypayment" class="tab-btn" data-target="payment-history">결제내역</a>
+	            <a href="/member/mysettlement" class="tab-btn" data-target="settlement-history">정산내역</a>
+	        </aside>
 
+        <!-- 메인 컨텐츠 -->
+        <section class="content">
+            <div id="profile" class="tab-content active">
+                <div class="profile-header">
+                    <div class="profile-image">
+                        <img src="profile.jpg" alt="프로필 사진">
+                    </div>
+                    <div class="profile-info">
+                        <h2>오렌지레인 <span class="tag">ENTP</span></h2>
+                        <p>서울특별시</p>
+                        <p>늘 배우고 성장하는 것이 가장 큰 목표에요!!!^^</p>
+                        <div class="tags">
+                            <span>운동/스포츠</span>
+                            <span>사고/인맥</span>
+                            <span>인문/독서</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="/member/updateMypage" id="edit-profile" class="edit-btn">프로필/계정 편집</a>
+            </div>
 
-	<th:block th:include="common/footer"></th:block>
+            <div id="my-groups" class="tab-content">나의 모임 내용</div>
+            <div id="payment-history" class="tab-content">결제 내역 내용</div>
+            <div id="settlement-history" class="tab-content">정산 내역 내용</div>
+        </section>
+    </div>
+    <th:block th:include="common/footer"></th:block>
 
-	<script>
-	
-	
-	$.ajax({
-		url : "/member/sido",
-		type : "get",
-		success : data => {
-			
-			for(let i=0; i<data.length; i++){
-				const sido = data[i];
-				const div = $("<div>");
-				div.text(sido);
-				$(".sido").append(div);
-				
-				div.on("click", function() {
-					printSigungu(this,sido);
-				})
-			}
-			$(".sido>div:first-child").click();
-			
-		}
-	});
-		
-	function printSigungu(obj,sido){
-		$.ajax({
-			url : "/member/sigungu",
-			type : "get",
-			data : {sido : sido},
-			success : data => {
-				$(".sido>div").removeClass("selected");
-				$(obj).addClass("selected");
-				const sggDiv = $(".sigungu");
-				sggDiv.children().remove();
-				
-				for(let i=0; i<data.length; i++){
-					const sigungu = data[i];
-					const div = $("<div>");
-					div.text(sigungu);
-					sggDiv.append(div);
-					
-					div.on("click", function() {
-						$(".sigungu>div").removeClass("selected");
-						$(this).addClass("selected");
-					})
-				}	
-			}
-		});
-	}
-	
-	$(".btn-box>button").on("click", (e) => {
-		const arr = $(".selected");
-		const location = arr.length === 2;
-		
-		if(location){
-			const addr = arr.eq(0).text() + "/" + arr.eq(1).text();
-			$("#groupLocation").val(addr);
-		}else{
-			alert("지역 정보를 확인해주세요!");
-			e.preventDefault();
-		}
-		
-	});
-	
-	
-	$(".toggle-button").click(function () {
-        $(".toggle-button").removeClass("gender-selected");
-        $(this).addClass("gender-selected");
-        $("#gender").val($(this).text());
-		
-	});
-	
-	$(".defaultProfileUse").click(function(){
-		 if(this.checked) {
-				$(".profile-input").attr("disabled",true);
-				$(".profile-img-box img:first").attr("src", "/myimage/defaultProfile.png");
-				
-		    } else {
-		    	$(".profile-input").removeAttr("disabled");
-		    }
-	});
-	
-	
-	
-	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
 
 
 
