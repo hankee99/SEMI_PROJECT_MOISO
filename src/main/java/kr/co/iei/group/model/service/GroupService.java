@@ -166,8 +166,13 @@ public class GroupService {
 
 	@Transactional
 	public int insertRecentGroup(int memberNo, int groupNo) {
+		int result2 = 0;
+		List list = groupDao.selectRecentGroup(memberNo,groupNo);
+		if(!list.isEmpty()) {
+			result2 = groupDao.deleteRecentGroup(memberNo,groupNo);
+		}
 		int result = groupDao.insertRecentGroup(memberNo,groupNo);
-		return result;
+		return result+result2;
 	}
 	
 	

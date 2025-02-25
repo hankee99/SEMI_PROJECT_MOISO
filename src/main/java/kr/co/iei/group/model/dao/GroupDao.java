@@ -16,6 +16,7 @@ import kr.co.iei.group.model.vo.GroupBoardRowMapper;
 import kr.co.iei.group.model.vo.GroupMemberRowMapper;
 import kr.co.iei.group.model.vo.GroupRowMapper;
 import kr.co.iei.group.model.vo.Pay;
+import kr.co.iei.group.model.vo.RecentGroupRowMapper;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.group.model.vo.RegionRowMapper;
 import kr.co.iei.group.model.vo.SidoRowMapper;
@@ -40,6 +41,8 @@ public class GroupDao {
 	private GroupBoardRowMapper groupBoardRowMapper;
 	@Autowired
 	private GroupBoardCommentRowMapper groupBoardCommentRowMapper;
+	@Autowired
+	private RecentGroupRowMapper recentGroupRowMapper;
 	@Autowired
 	private JdbcTemplate jdbc;
 
@@ -310,6 +313,20 @@ public class GroupDao {
 
 	public int insertRecentGroup(int memberNo, int groupNo) {
 		String query = "insert into recent_group values(recent_group_seq.nextval,?,?)";
+		Object[] params = {memberNo,groupNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectRecentGroup(int memberNo, int groupNo) {
+		String query ="select * from recent_group where member_no =? and group_no = ?";
+		Object[] params = {memberNo,groupNo};
+		List list = jdbc.query(query, recentGroupRowMapper, params);
+		return list;
+	}
+
+	public int deleteRecentGroup(int memberNo, int groupNo) {
+		String query = "delete from recent_group where member_no=? and group_no =?";
 		Object[] params = {memberNo,groupNo};
 		int result = jdbc.update(query,params);
 		return result;
