@@ -18,4 +18,5 @@ public class Group {
 	private int categoryNo;
 	private int joinFee;
 	private int readCount;
+	private String categoryName;
 }

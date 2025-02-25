@@ -191,6 +191,14 @@
 		height: 20px;
 		overflow: hidden;
 	}
+	.category-div{
+		color : rgba(0, 0, 0,0.5);
+		width : 170px;
+		height: 20px;
+		overflow: hidden;
+		font-size: 14px;
+		font-weight: 900;
+	}
 </style>
     <body>
 
@@ -251,7 +259,7 @@
         	</div> 
 		</div>        
 
-		<div class="home-title">
+		<div class="home-title" th:if="${session.member!=null}">
             <div class="header-title animated bounceInDown">
                 <h2>최근 본 모임</h2>
             </div>    
@@ -298,7 +306,7 @@
        		
             }      
         }
-
+	
                 
 		let currentCount = 0;
 		let start = 1;	
@@ -364,11 +372,17 @@
 						locationDiv.addClass("location-div")
 						locationDiv.text(group.groupLocation);
 						
+						const categoryName = $("<div>");
+						categoryName.addClass("category-div")
+						categoryName.text(group.categoryName);
+						
+						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
 						groupBox.append(infoDiv);
 						groupBox.append(dateDiv);
 						groupBox.append(locationDiv);
+						groupBox.append(categoryName);
 						
 						$(".group-list-box").append(groupBox);
 						
@@ -473,11 +487,16 @@
 						locationDiv.addClass("location-div")
 						locationDiv.text(group.groupLocation);
 						
+						const categoryName = $("<div>");
+						categoryName.addClass("category-div")
+						categoryName.text(group.categoryName);
+						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
 						groupBox.append(infoDiv);
 						groupBox.append(dateDiv);
 						groupBox.append(locationDiv);
+						groupBox.append(categoryName);
 						
 						$(".group-list-box-date").append(groupBox);
 						
@@ -555,11 +574,16 @@
 						locationDiv.addClass("location-div")
 						locationDiv.text(group.groupLocation);
 						
+						const categoryName = $("<div>");
+						categoryName.addClass("category-div")
+						categoryName.text(group.categoryName);
+						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
 						groupBox.append(infoDiv);
 						groupBox.append(dateDiv);
 						groupBox.append(locationDiv);
+						groupBox.append(categoryName);
 						
 						$(".recent-list-box").append(groupBox);
 						

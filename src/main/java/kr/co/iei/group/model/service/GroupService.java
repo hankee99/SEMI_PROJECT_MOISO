@@ -169,6 +169,7 @@ public class GroupService {
 		int result = groupDao.insertRecentGroup(memberNo,groupNo);
 		return result;
 	}
+
 	
 	
 

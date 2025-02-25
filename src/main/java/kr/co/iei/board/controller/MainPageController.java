@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import jakarta.servlet.http.HttpSession;
 import kr.co.iei.board.service.MainPageService;
+import kr.co.iei.group.model.service.GroupService;
 import kr.co.iei.group.model.vo.Group;
 import kr.co.iei.member.model.vo.Member;
 
@@ -19,6 +22,8 @@ import kr.co.iei.member.model.vo.Member;
 public class MainPageController {
 	@Autowired
 	private MainPageService mainPageService;
+	@Autowired
+	private GroupService groupService;
 	
 	@ResponseBody
 	@GetMapping("/readCountTotalCount")
@@ -62,5 +67,20 @@ public class MainPageController {
 		
 		System.out.println(list);
 		return list;
+	}
+	
+	
+	@GetMapping(value="toGroupSearchList")
+	public String toGroupSearchList(String groupSearch, Model model) {
+		model.addAttribute("groupSearch",groupSearch);
+		return "groupSearchList";
+	}
+	
+	//모임 검색 리스트
+	@ResponseBody
+	@GetMapping(value="/groupSearchList")
+	public List groupSearchList(String groupSearch, int start, int amount) {
+		List groupSearchList = mainPageService.selectGroupSearchList(groupSearch,start,amount);
+		return groupSearchList;
 	}
 }

@@ -46,7 +46,26 @@ public class BoardController {
 		BoardListData bld = boardService.selectBoardList(reqPage, memberNickname, noticeCount);	
 		model.addAttribute("boardList",bld.getList());
 		model.addAttribute("pageNavi",bld.getPageNavi());
-		return "board/boardlist";
+		return "board/boardList";
+	}
+	
+	//게시글 검색
+	@GetMapping(value="/boardSearchList")
+	public String boardSearchList(String boardSearch, int reqPage, @SessionAttribute(required=false) Member member, Model model) {
+		String memberNickname = null;
+		if(member != null) {
+			memberNickname = member.getMemberNickname();
+		}
+		List noticeList = boardService.selectBoardNoticeSearchList(boardSearch, memberNickname);			
+		int noticeCount = noticeList.size();
+		if(reqPage == 1) {
+			model.addAttribute("noticeList",noticeList);
+		}
+		BoardListData bld = boardService.selectBoardSearchList(boardSearch, reqPage, memberNickname, noticeCount);	
+		model.addAttribute("boardList",bld.getList());
+		model.addAttribute("pageNavi",bld.getPageNavi());
+		model.addAttribute("boardSerach",boardSearch);
+		return "board/boardSearchList";
 	}
 	
 	//게시글
@@ -69,6 +88,7 @@ public class BoardController {
 			return "board/board";
 		}
 	}
+	
 	
 	//게시글 쓰기
 	@GetMapping(value="/boardWriteFrm")
@@ -184,5 +204,6 @@ public class BoardController {
 		int result = boardService.likepushComment(bc,member.getMemberNickname());
 		return result;
 	}
+	
 	
 }

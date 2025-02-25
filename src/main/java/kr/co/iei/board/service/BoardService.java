@@ -129,9 +129,79 @@ public class BoardService {
 		return bld;
 		
 	}
+	//게시판리스트 검색
+	public BoardListData selectBoardSearchList(String boardSearch, int reqPage, String memberNickname, int noticeCount) {
+		int numPerPage = 10;
+		if(noticeCount != 0) {
+			if(reqPage == 1 && noticeCount % 2 != 0) {
+				numPerPage = 9;
+			}
+		}
+		int end = reqPage * numPerPage;//9, 20
+		int start = end - numPerPage + 1;//0, 11	
+		if(noticeCount % 2 != 0 && reqPage != 1) {
+			System.out.println(end + " " + start);
+			end = end - 1;//19 //29
+			start = start - 1;//10 //20
+			System.out.println(end + " " + start);
+		}
+		List list = boardDao.selectBoardSearchList(boardSearch,start,end,memberNickname);
+		
+		int totalCount = boardDao.selectBoardSearchTotalCount(boardSearch);
 
+		int totalPage = totalCount / 10;
+		if(totalCount%10 != 0) {
+			totalPage += 1;
+		}
+		int pageNaviSize = 5;
+
+		int pageNo = ((reqPage - 1)/pageNaviSize)*pageNaviSize + 1;
+
+		String pageNavi = "<ul class=\"pagination justify-content-center\">";
+
+		if(pageNo != 1) {
+			pageNavi += "<li class=\"page-item \">";
+			pageNavi += "<a class=\"page-link\" href='/board/boardSearchList?reqPage="+(pageNo-1)+"&boardSearch="+boardSearch+"'>";
+			pageNavi += "Previous</a></li>";
+		}else {
+			pageNavi += "<li class=\"page-item disabled\">";
+			pageNavi += "<a class=\"page-link\" href='/board/boardSearchList?reqPage="+(pageNo-1)+"&boardSearch="+boardSearch+"'>";
+			pageNavi += "Previous</a></li>";
+		}
+		for(int i=0;i<pageNaviSize;i++) {
+			pageNavi += "<li class=\"page-item\">";
+				pageNavi += "<a class=\"page-link\" href='/board/boardSearchList?reqPage="+pageNo+"&boardSearch="+boardSearch+"'>";
+			
+			pageNavi += pageNo;
+			pageNavi += "</a></li>";
+			pageNo++;
+
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+		if(pageNo <= totalPage) {
+			pageNavi += "<li class=\"page-item\">";
+			pageNavi += "<a class=\"page-link\" href='/board/boardSearchList?reqPage="+pageNo+"&boardSearch="+boardSearch+"'>";
+			pageNavi += "Next</a></li>";
+		}else {
+			pageNavi += "<li class=\"page-item disabled\">";
+			pageNavi += "<a class=\"page-link\" href='/board/boardSearchList?reqPage="+pageNo+"&boardSearch="+boardSearch+"'>";
+			pageNavi += "Next</a></li>";
+		}
+		pageNavi += "</ul>";
+		
+		BoardListData bld = new BoardListData(list, pageNavi);
+		return bld;
+	}
+	//공지사항리스트
 	public List selectBoardNoticeList(String memberNickname) {
 		List list = boardDao.selectBoardNoticeList(memberNickname);
+		return list;
+	}
+	//공지사항리스트 검색
+	public List selectBoardNoticeSearchList(String boardSearch, String memberNickname) {
+		List list = boardDao.selectBoardNoticeSearchList(boardSearch, memberNickname);
 		return list;
 	}
 	
@@ -207,6 +277,8 @@ public class BoardService {
 		int likeCount = boardDao.selectCommentLikeCount(bc.getCommentNo());
 		return likeCount;
 	}
+
+
 
 
 }

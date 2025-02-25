@@ -39,4 +39,11 @@ public class MainPageService {
 		List list = mainPageDao.selectRecentGroup(memberNo, recentStart,end);
 		return list;
 	}
+
+	//모임 검색 리스트
+	public List selectGroupSearchList(String groupSearch, int start, int amount) {
+		int end = start + amount -1;
+		List list = mainPageDao.selectGroupSearchList(groupSearch,start,end);
+		return list;
+	}
 }
