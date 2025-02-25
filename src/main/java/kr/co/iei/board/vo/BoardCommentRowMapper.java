@@ -21,6 +21,7 @@ public class BoardCommentRowMapper implements RowMapper<BoardComment> {
 		bc.setCommentRef(rs.getInt("comment_ref"));
 		bc.setIsLike(rs.getInt("is_like"));
 		bc.setLikeCount(rs.getInt("like_count"));
+		bc.setProfileImg(rs.getString("profile_img"));
 		return bc;
 	}
 }

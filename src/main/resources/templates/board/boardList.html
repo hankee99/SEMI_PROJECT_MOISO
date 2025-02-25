@@ -268,7 +268,10 @@
                         <p th:text="${n.boardDate}"></p>
                     </div>
                     <div class="user">
-                        <div><img src="/myimage/defaultProfile.png"></div><div><p th:text="${n.memberNickname}"></p></div>
+                        <div>
+                       		<img src="/myimage/defaultProfile.png" th:if="${n.profileImg == null}">
+                        	<img th:src="${'/profile/'+n.profileImg}" th:if="${n.profileImg != null}">
+                        </div><div><p th:text="${n.memberNickname}"></p></div>
                         	<span th:if="${n.isLike == 1}" class="material-icons islike">favorite</span>
 							<span th:if="${session.member != null && n.isLike == 0}" class="material-icons">favorite</span>
 							<span th:if="${session.member == null && n.isLike == 0}" class="material-icons">favorite</span>
@@ -295,7 +298,10 @@
                         <p th:text="${b.boardDate}"></p>
                     </div>
                     <div class="user">
-                        <div><img src="/myimage/defaultProfile.png"></div><div><p th:text="${b.memberNickname}"></p></div>
+                        <div>
+                        	<img src="/myimage/defaultProfile.png" th:if="${b.profileImg == null}">
+                        	<img th:src="${'/profile/'+b.profileImg}" th:if="${b.profileImg != null}">
+                        	</div><div><p th:text="${b.memberNickname}"></p></div>
                         	<span th:if="${b.isLike == 1}" class="material-icons islike">favorite</span>
 							<span th:if="${session.member != null && b.isLike == 0}" class="material-icons">favorite</span>
 							<span th:if="${session.member == null && b.isLike == 0}" class="material-icons">favorite</span>

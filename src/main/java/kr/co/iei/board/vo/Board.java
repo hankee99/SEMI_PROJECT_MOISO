@@ -23,4 +23,5 @@ public class Board {
 	private int likeCount;
 	private int isLike;
 	private int commentCount;
+	private String profileImg;
 }

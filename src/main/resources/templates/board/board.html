@@ -503,7 +503,8 @@
 	                </div>
 	
 	                <div class="board-info-img">
-	                    <img src="/myimage/defaultProfile.png">
+	                    <img src="/myimage/defaultProfile.png" th:if="${b.profileImg == null}">
+                        <img th:src="${'/profile/'+b.profileImg}" th:if="${b.profileImg != null}">
 	                </div>
 	
 	                <div class="board-content-wrap">
@@ -557,7 +558,8 @@
                         </div>
                         <div class="board-user">
                             <div class="board-user-img">
-                                <img src="/myimage/defaultProfile.png">
+                                <img src="/myimage/defaultProfile.png" th:if="${b.profileImg == null}">
+                        		<img th:src="${'/profile/'+b.profileImg}" th:if="${b.profileImg != null}">
                             </div>
                             <div class="board-user-info">
                                 <div class="board-user-name" th:text="${b.memberNickname}"></div>
@@ -573,7 +575,8 @@
 	                <div class="board-comment-write">
 	                    <div class="comment-img-box">
 	                        <div class="comment-img">
-	                            <img src="/myimage/defaultProfile.png">
+	                            <img src="/myimage/defaultProfile.png" th:if="${session.member.profileImg == null}">
+	                            <img th:src="${'/profile/'+session.member.profileImg}" th:if="${session.member.profileImg != null}">
 	                        </div>
 	                    </div>
 	                    <div class="comment-content">
@@ -600,7 +603,8 @@
 	                <div class="board-comment-read" id="board-comment">
 	                    <div class="read-comment-img-box">
 	                        <div class="read-comment-img">
-	                            <img src="/myimage/defaultProfile.png">
+	                            <img src="/myimage/defaultProfile.png" th:if="${bc.profileImg == null}">
+                        		<img th:src="${'/profile/'+bc.profileImg}" th:if="${bc.profileImg != null}">
 	                        </div>
 	                    </div>
 	                    <div class="read-comment-content">
@@ -643,7 +647,8 @@
 	                <div class="board-comment-read reBoard-comment-read">
 	                    <div class="read-comment-img-box">
 	                        <div class="read-comment-img">
-	                            <img src="/myimage/defaultProfile.png">
+	                            <img src="/myimage/defaultProfile.png" th:if="${bcc.profileImg == null}">
+                        		<img th:src="${'/profile/'+bcc.profileImg}" th:if="${bcc.profileImg != null}">
 	                        </div>
 	                    </div>
 	                    <div class="read-comment-content reRead-comment-content">
@@ -683,7 +688,8 @@
 		                <div class="board-recomment-write">
 		                    <div class="recomment-img-box">
 		                        <div class="recomment-img">
-		                            <img src="/myimage/defaultProfile.png">
+		                            <img src="/myimage/defaultProfile.png" th:if="${session.member.profileImg == null}">
+	                            	<img th:src="${'/profile/'+session.member.profileImg}" th:if="${session.member.profileImg != null}">
 		                        </div>
 		                    </div>
 		                    <div class="recomment-content">

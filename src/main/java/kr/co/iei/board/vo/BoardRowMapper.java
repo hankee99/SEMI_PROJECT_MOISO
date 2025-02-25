@@ -24,7 +24,8 @@ public class BoardRowMapper implements RowMapper<Board> {
 		b.setIsLike(rs.getInt("is_like"));
 		b.setLikeCount(rs.getInt("like_count"));
 		b.setCommentCount(rs.getInt("comment_count"));
+		b.setProfileImg(rs.getString("profile_img"));
 		return b;
 	}
-}
+} 
 

@@ -39,12 +39,12 @@ public class BoardDao {
 
 	//게시글리스트
 	public List selectBoardList(int start, int end, String memberNickname) {
-		String query = "select * \r\n"
-				+ "from (select rownum as rnum, b.*,\r\n"
+		String query = "select *\r\n"
+				+ "    from (select rownum as rnum, b.*,\r\n"
 				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
 				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
 				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
-				+ "from (select * from board where category_name != '공지사항' order by board_no desc)b) where rnum between ? and ?";
+				+ "from (select bd.*, m.profile_img from board bd join member m on bd.member_nickname = m.member_nickname where category_name != '공지사항' order by board_no desc)b) where rnum between ? and ?";
 		Object[] params = {memberNickname,start,end};
 		List list = jdbc.query(query,boardRowMapper,params);
 		return list;
@@ -52,37 +52,35 @@ public class BoardDao {
 	//게시글리스트 검색
 	public List selectBoardSearchList(String boardSearch, int start, int end, String memberNickname) {
 		String query = "select *\r\n"
-				+ "	from (select rownum as rnum, b.*,\r\n"
-				+ "        (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
-				+ "        (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
-				+ "        (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
-				+ "	from (select * from board where category_name != '공지사항' and board_title like '%'||?||'%' order by board_no desc)b)\r\n"
-				+ "    where rnum between ? and ?";
+				+ "    from (select rownum as rnum, b.*,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
+				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
+				+ "from (select bd.*, m.profile_img from board bd join member m on bd.member_nickname = m.member_nickname where category_name != '공지사항' and board_title like '%'||?||'%' order by board_no desc)b) where rnum between ? and ?";
 		Object[] params = {memberNickname,boardSearch,start,end};
 		List list = jdbc.query(query,boardRowMapper,params);
 		return list;
 	}
 	//공지사항리스트
 	public List selectBoardNoticeList(String memberNickname) {
-		String query = "select\r\n"
-				+ "b.*,\r\n"
+		String query = "select *\r\n"
+				+ "    from (select rownum as rnum, b.*,\r\n"
 				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
 				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
 				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
-				+ "from board b where category_name = '공지사항' order by b.board_no desc";
+				+ "from (select bd.*, m.profile_img from board bd join member m on bd.member_nickname = m.member_nickname where category_name = '공지사항' order by board_no desc)b)";
 		Object[] params = {memberNickname};
 		List list = jdbc.query(query,boardRowMapper,params);
 		return list;
 	}
 	//공지사항리스트 검색
 	public List selectBoardNoticeSearchList(String boardSearch, String memberNickname) {
-		String query = "select * \r\n"
-				+ "	from (select rownum as rnum, b.*,\r\n"
-				+ "		(select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
-				+ "		(select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
-				+ "		(select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
-				+ "    from (select * from board where category_name = '공지사항' order by board_no desc)b)\r\n"
-				+ "    where board_title like '%'||?||'%'";
+		String query = "select *\r\n"
+				+ "    from (select rownum as rnum, b.*,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
+				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
+				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
+				+ "from (select bd.*, m.profile_img from board bd join member m on bd.member_nickname = m.member_nickname where category_name = '공지사항' and board_title like '%'||?||'%' order by board_no desc)b)";
 		Object[] params = {memberNickname, boardSearch};
 		List list = jdbc.query(query,boardRowMapper,params);
 		return list;
@@ -103,11 +101,11 @@ public class BoardDao {
 	
 	public Board selectOneBoard(int boardNo, String memberNickname) {
 		String query = "select \r\n"
-				+ "    b.*,\r\n"
-				+ "    (select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
-				+ "    (select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
-				+ "    (select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
-				+ "from board b where board_no = ?";
+				+ "b.*, b.profile_img,\r\n"
+				+ "(select count(*) from board_like where board_no = b.board_no) like_count,\r\n"
+				+ "(select count(*) from board_like where board_no = b.board_no and member_nickname = ?) is_like,\r\n"
+				+ "(select count(*) from board_comment where board_no = b.board_no) comment_count\r\n"
+				+ "from (select bd.*, m.profile_img from board bd join member m on bd.member_nickname = m.member_nickname)b where b.board_no = ?";
 		Object[] params = {memberNickname, boardNo};
 		List list = jdbc.query(query,boardRowMapper,params);
 		if(list.isEmpty()) {
@@ -146,21 +144,21 @@ public class BoardDao {
 		return result;
 	}
 	public List selectBoardCommentList(int boardNo, String memberNickname) {
-		String query = "select \r\n"
-				+ "    bc.*,\r\n"
-				+ "    (select count(*) from comment_like where comment_no = bc.comment_no) like_count,\r\n"
-				+ "    (select count(*) from comment_like where comment_no = bc.comment_no and member_nickname = ?) is_like\r\n"
-				+ "from board_comment bc where board_no = ? and comment_ref is null";
+		String query = "select\r\n"
+				+ "bcc.*,\r\n"
+				+ "(select count(*) from comment_like where comment_no = bcc.comment_no) like_count,\r\n"
+				+ "(select count(*) from comment_like where comment_no = bcc.comment_no and member_nickname = ?) is_like\r\n"
+				+ "from (select bc.*, m.profile_img from board_comment bc join member m on bc.member_nickname = m.member_nickname) bcc where bcc.board_no = ? and bcc.comment_ref is null";
 		Object[] params = {memberNickname, boardNo};
 		List list = jdbc.query(query,boardCommentRowMapper,params);
 		return list;
 	}
 	public List selectBoardReCommentList(int boardNo, String memberNickname) {
-		String query = "select \r\n"
-				+ "    bc.*,\r\n"
-				+ "    (select count(*) from comment_like where comment_no = bc.comment_no) like_count,\r\n"
-				+ "    (select count(*) from comment_like where comment_no = bc.comment_no and member_nickname = ?) is_like\r\n"
-				+ "from board_comment bc where board_no = ? and comment_ref is not null";
+		String query = "select\r\n"
+				+ "bcc.*,\r\n"
+				+ "(select count(*) from comment_like where comment_no = bcc.comment_no) like_count,\r\n"
+				+ "(select count(*) from comment_like where comment_no = bcc.comment_no and member_nickname = ?) is_like\r\n"
+				+ "from (select bc.*, m.profile_img from board_comment bc join member m on bc.member_nickname = m.member_nickname) bcc where bcc.board_no = ? and bcc.comment_ref is not null";
 		Object[] params = {memberNickname,boardNo};
 		List list = jdbc.query(query,boardCommentRowMapper,params);
 		return list;

@@ -16,4 +16,5 @@ public class BoardComment {
 	private int commentRef;
 	private int isLike;
 	private int likeCount;
+	private String profileImg;
 }
