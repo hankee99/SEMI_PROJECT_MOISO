@@ -220,7 +220,9 @@ public class MemberController {
 		int result = memberService.updateMypage(m);
 		if(result > 0) {
 			member.setMemberAddr(m.getMemberAddr());
-			member.setMemberGender(m.getMemberGender());
+			if(!m.getMemberGender().equals("")) {
+				member.setMemberGender(m.getMemberGender());
+			}
 			member.setMemberIntro(m.getMemberIntro());
 			member.setMemberMbti(m.getMemberMbti());
 			member.setMemberNickname(m.getMemberNickname());

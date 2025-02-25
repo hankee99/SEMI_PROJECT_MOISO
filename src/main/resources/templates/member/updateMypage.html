@@ -71,6 +71,7 @@
 	.input-item>input{
 		border-radius: 10px;
 		border: 1px solid var(--line1);
+		width: 100%;
 	}
 	label{
 		font-size: 20px;
@@ -137,7 +138,6 @@
 	        </aside>
 		
 		
-		
 			<section class="mypage-wrap rounded">
 				<div class="page-title">Mypage</div>				
 				<form action="/member/update" method="post" autocomplete="off" enctype = "multipart/form-data">
@@ -189,7 +189,7 @@
 							<tr>
 								<th class="p-3">성별</th>
 								<td class="left">	
-								<div th:text="${session.member.memberGender}"></div>							
+				
 						        	<th:block th:if="${session.member.memberGender==null}">
 							        	<div class="gender-toggle-box">
 								            <div id="toggle-button maleBtn" class="toggle-button">남</div>
@@ -208,7 +208,7 @@
 								        	</div>
 								        </th:block>
 							        </th:block>
-							        	<input type="hidden" name="memberGender" id="gender">				        					      
+							        	<input type="hidden" name="memberGender" id="gender" th:value="${session.member.memberGender}">				        					      
 								</td>
 							</tr>
 							<tr>
