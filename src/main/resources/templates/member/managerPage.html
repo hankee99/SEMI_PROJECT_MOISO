@@ -14,15 +14,15 @@
             <div class="stats-box">
                 <div class="stat-item">
                     <span class="stat-label">전체 회원수</span>
-                    <span class="stat-value">30,000명</span>
+                    <span class="stat-value" th:text="${ts.totalMember}"></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">전체 모임수</span>
-                    <span class="stat-value">5,000회</span>
+                    <span class="stat-value" th:text="${ts.totalGroup}"></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">전체 게시글 수</span>
-                    <span class="stat-value">10,000회</span>
+                    <span class="stat-value" th:text="${ts.totalBoard}"></span>
                 </div>
             </div>
         </section>
@@ -31,19 +31,20 @@
         <section class="summary">
             <h3>일자별 요약</h3>
             <table>
-                <thead>
                     <tr>
                         <th>일자</th>
                         <th>모임수</th>
                         <th>매출액</th>
                         <th>가입</th>
-                        <th>문의</th>
                         <th>게시글</th>
                     </tr>
-                </thead>
-                <tbody id="summary-data">
-                    <!-- 데이터가 jQuery를 통해 삽입됨 -->
-                </tbody>
+                    <tr th:each="os : ${list}">
+                    	<td th:text="${os.dataDate}"></td>
+                    	<td th:text="${os.joinCount}"></td>
+                    	<td th:text="${os.paySum}"></td>
+                    	<td th:text="${os.enrollCount}"></td>
+                    	<td th:text="${os.boardCount}"></td>
+                    </tr>
             </table>
         </section>
     </div>

@@ -1,5 +1,6 @@
 package kr.co.iei.member.model.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.iei.member.model.dao.MemberDao;
+import kr.co.iei.member.model.vo.ManagerPageStat;
 import kr.co.iei.member.model.vo.Member;
+import kr.co.iei.member.model.vo.TotalStat;
 
 @Service
 public class MemberService {
@@ -52,8 +55,6 @@ public class MemberService {
 		return list;
 	}
 
-
-
 	@Transactional
 	public int updateMypage(Member m) {
 		int result = memberDao.updateMypage(m);// TODO Auto-generated method stub
@@ -63,6 +64,17 @@ public class MemberService {
 	public List selectGroupMemebr() {
 		List list = memberDao.selectGroupMember();
 		return list;
+	}
+
+	public ManagerPageStat managerPageStat() {
+		TotalStat totalStat = memberDao.selectTotalStat();
+		List operationStat = memberDao.OperationStat();
+		
+		//service가 가지고 있는것중에 되돌려줘야 할것 -> totalStat, list
+		//java의 메소드는 1개의 자료형만 리턴이 가능 -> 2개를 되돌려줘야 함 객체, List
+		//List와 객체를 속성으로 가지고 있는 객체 생성
+		ManagerPageStat mps = new ManagerPageStat(operationStat, totalStat);
+		return mps;
 	}
 
 	
