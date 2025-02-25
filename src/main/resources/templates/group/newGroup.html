@@ -4,9 +4,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	body>.footer{
+		padding-top : 50px;
+		margin-top: 20px;
+	}
+	section>div:first-child{
+		margin-bottom: 20px;
+	}
+
 	input{
-		outline: none;
-		border: 2px solid var(--main1);
+		border: 2px solid var(--gray2);
 		border-radius: 4px;
 	}
 
@@ -15,54 +22,65 @@
 		font-size: 48px;
 		margin-bottom: 50px;
 	}
+	
+	
 	.content{
 		
 	}
 	.new-group-box{
-		width: 400px;
+		padding : 50px 60px;;
+		box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+		border-radius : 20px;
+		width: 800px;
 		margin: 0 auto;
+		padding-bottom: 20px;
 	}
 	.title{
 		color : black;
-		font-family: ptd_bl;
+		font-family: ptd;
+		font-weight : 600;
 		font-size: 26px;
 		margin-bottom: 15px;
-		margin-right: 15px;
+		margin-right: 8px;
 	}
 	.new-group-box>div{
 		margin-bottom: 50px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 	.group-name-box>input{
 		outline : none;
-		width : 400px;
+		width : 500px;
 		border : none;
-		border-bottom: 2px solid var(--main1);
+		border-bottom: 2px solid var(--gray2);
+		border-radius: 0px;
 	}
 	#category{
 		font-size : 18px;
 		width: 150px;
-		border: 2px solid var(--main1);
+		border: 2px solid var(--gray2);
 		color: black;
 		border-radius: 4px;
 	}
 	
 	#groupInfo{
 		resize: none;
-		width: 400px;
+		width: 700px;
 		height: 200px;
 		outline: none;
-		border : 2px solid var(--main1);
+		border : 2px solid var(--gray2);
 		border-radius: 4px;
 	}
 	
 	#maxNum{
 		text-align : center;
-		width: 70px;
+		width: 80px;
 	}
 	
 	.region-api-div{
 		width : 300px;
-		border : 2px solid var(--main1);
+		border : 2px solid var(--gray2);
 		border-radius: 4px;
 		display: flex;
 		flex-direction: row;
@@ -97,10 +115,11 @@
 	.image-zone{
 		margin-top : 20px;
 		width: 300px;
-		min-height: 300px;
+		min-height: 200px;
 	}
-	.join-fee>span>input{
-		margin-right: 5px;
+	.btn-box{
+		width: 100px;
+		margin: 0 auto;
 	}
 	.btn-box>button{
 		width : 100px;
@@ -112,14 +131,12 @@
 		font-family: ptd_bl;
 		font-size: 22px;
 	}
-	.join-fee>label{
-		color : black;
-		font-family: ptd_bl;
-		font-size: 26px;
-	}
 	.join-fee>input{
 		width: 80px;
 		text-align: center;
+	}
+	.meeting-date>input{
+		height: 30px;
 	}
 	
 </style>
@@ -141,92 +158,115 @@
 			<div class="content">
 				<form action="/group/makeNewGroup" method="post" enctype="multipart/form-data">
 					<div class="new-group-box">
-						<div class="category">
+						<div>
+							<div class="group-title">
+								<div class="title">
+									<label for="groupName">모임 이름</label>
+								</div>
+								<div class="group-name-box">
+									<input type="text" id="groupName" name="groupName">
+								</div>
+							</div>
+							
+							<div class="category">
 							<div class="title">
 								<label for="category">카테고리</label>
 							</div>
-							<div class="category-select-box">
-								<select id="category" name="categoryNo">
-								    <option value="1">운동/스포츠</option>
-								    <option value="2">사교/인맥</option>
-								    <option value="3">인문/독서</option>
-								    <option value="4">게임/오락</option>
-								    <option value="5">외국/언어</option>
-								    <option value="6">공예/만들기</option>
-								    <option value="7">아웃도어/여행</option>
-								    <option value="8">음악/악기</option>
-								    <option value="9">업종/직무</option>
-								    <option value="10">댄스/무용</option>
-								    <option value="11">사진/영상</option>
-								    <option value="12">반려동물</option>
-								  </select>
+								<div class="category-select-box">
+									<select id="category" name="categoryNo">
+									    <option value="1">운동/스포츠</option>
+									    <option value="2">사교/인맥</option>
+									    <option value="3">인문/독서</option>
+									    <option value="4">게임/오락</option>
+									    <option value="5">외국/언어</option>
+									    <option value="6">공예/만들기</option>
+									    <option value="7">아웃도어/여행</option>
+									    <option value="8">음악/악기</option>
+									    <option value="9">업종/직무</option>
+									    <option value="10">댄스/무용</option>
+									    <option value="11">사진/영상</option>
+									    <option value="12">반려동물</option>
+									  </select>
+								</div>
 							</div>
 						</div>
-						<div class="group-title">
-							<div class="title">
-								<label for="groupName">모임 이름</label>
+					
+						
+						<div>
+							<div class="thumb-image">
+								<div class="title">
+								<span class="thumb-title">썸네일</span>
+								<span><input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="loadImg(this);"></span>
+								</div>
+								<div class="image-zone">
+									<img id="img-view" src="/myimage/default.png" style="width: 100%;">
+								</div>
 							</div>
-							<div class="group-name-box">
-								<input type="text" id="groupName" name="groupName">
-							</div>
-						</div>
-						<div class="group-info">
-							<div class="title">
-								<label for="groupInfo">모임 소개</label>
-							</div>
-							<div>
-								<textarea id="groupInfo" name="groupInfo"></textarea>
-							</div>
-						</div>
-						<div class="max-num">
-							
-								<label for="maxNum" class="title">인원제한</label>
-							
-							
-								<input type="text" id="maxNum" name="maxNum" value="20">
-							
 						</div>
 						
-						<div class="group-location">
-							<div class="title">
-								<label for="region">지역</label>
+						
+						<div>
+							<div class="group-info">
+								<div class="title">
+									<label for="groupInfo">모임 소개</label>
+								</div>
+								<div>
+									<textarea id="groupInfo" name="groupInfo"></textarea>
+								</div>
 							</div>
-							<div class="region-api-div">
-								<div class="sido">
+						</div>
+						
+						
+						
+						
+						
+						<div>
+							<div class="group-location">
+								<div class="title">
+									<label for="region">지역</label>
+								</div>
+								<div class="region-api-div">
+									<div class="sido">
+										
+									</div>
+									<div class="sigungu">
 									
+									</div>
 								</div>
-								<div class="sigungu">
-								
-								</div>
+								<input type="hidden" id="groupLocation" name="groupLocation">
 							</div>
-							<input type="hidden" id="groupLocation" name="groupLocation">
 						</div>
 						
-						<div class="meeting-date">
-							<div class="title">일정</div>
-							<div>
+						
+						
+						<div>
+							<div class="meeting-date">
+								<label for="meetingDate" class="title">일정</label>
 								<input type="date" id="meetingDate" name="meetingDate">
+								
+							</div>
+							
+							<div class="max-num">
+								<label for="maxNum" class="title">인원제한</label>
+								<input type="text" id="maxNum" name="maxNum" placeholder="최소 2명">
+							</div>
+							
+							<div>
+								<div class="join-fee">
+									<label for="joinFee" class="title">가입비</label>
+									<input type="text" id="joinFee" name="joinFee" value="1000"><span style="color: black;">원</span>
+								</div>
 							</div>
 						</div>
-						<div class="thumb-image">
-							<div class="title">
-							<span class="thumb-title">썸네일</span>
-							<span><input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="loadImg(this);"></span>
-							</div>
-							<div class="image-zone">
-								<img id="img-view" src="/myimage/default.png" style="width: 100%;">
+						
+						<div>
+							<div class="btn-box">
+								<button type="submit">만들기</button>
 							</div>
 						</div>
-						<div class="join-fee">
-							<label for="joinFee">가입비:</label>
-							<input type="text" id="joinFee" name="joinFee" value="1000"><span style="color: black;">원</span>
-						</div>
+												
 						
 						
-						
-						<div class="btn-box">
-							<button type="submit">만들기</button>
-						</div>
 					</div>
 				</form>
 			</div>
@@ -299,7 +339,7 @@
 					$("#img-view").attr("src", e.target.result);
 				}
 			}else{
-				$("#img-view").attr("src", "/image/default.png");
+				$("#img-view").attr("src", "/myImage/default.png");
 			}
 		}
 
