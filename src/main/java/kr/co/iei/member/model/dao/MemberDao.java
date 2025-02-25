@@ -13,6 +13,9 @@ import kr.co.iei.member.model.vo.GroupAllMemberRowMapper;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.member.model.vo.MemberIdRowMapper;
 import kr.co.iei.member.model.vo.MemberRowMapper;
+import kr.co.iei.member.model.vo.OperationStatRowMapper;
+import kr.co.iei.member.model.vo.TotalStat;
+import kr.co.iei.member.model.vo.TotalStatRowMapper;
 
 @Repository
 public class MemberDao {
@@ -28,6 +31,10 @@ public class MemberDao {
 	private SigunguRowMapper sigunguRowMapper;
 	@Autowired
 	private GroupAllMemberRowMapper groupAllMemberRowMapper;
+	@Autowired
+	private TotalStatRowMapper totalStatRowMapper;
+	@Autowired
+	private OperationStatRowMapper operationStatRowMapper;
 	
 	public Member selectOneMember(Member m) {
 		String query = "Select * from member where member_id=? and member_pw=?";
@@ -110,6 +117,30 @@ public class MemberDao {
 		List list = jdbc.query(query, groupAllMemberRowMapper);
 		return list;
 	}
+
+	public TotalStat selectTotalStat() {
+		String query = "select (select count(member_no) from member) as total_member,"
+					+ "(select count(group_no) from group_tbl) as total_group,"
+					+ "(select count(board_no) from board) as total_board from dual";
+		List  list= jdbc.query(query, totalStatRowMapper);
+		TotalStat totalStat = (TotalStat)list.get(0);
+		return totalStat;
+	}
+
+	public List OperationStat() {
+		String query = "select\r\n"
+				+ "    data_date,\r\n"
+				+ "    (select count(*) from group_member where join_date=data_date) join_count,\r\n"
+				+ "    (select nvl(sum(price),0) from pay where pay_date=data_date) pay_sum,\r\n"
+				+ "    (select count(*) from member where enroll_date=data_date) enroll_count,\r\n"
+				+ "    (select count(*) from board where board_date=data_date) board_count\r\n"
+				+ "from\r\n"
+				+ "(select to_char(sysdate - rownum + 1,'yyyy-mm-dd') as data_date from dual connect by rownum <= 7)";
+		List list = jdbc.query(query, operationStatRowMapper);
+		return list;
+	}
+	
+
 	
 	
 }
