@@ -124,13 +124,20 @@
 		flex-flow: row wrap;
 		justify-content: flex-start;
 	}
+	.recent-list-box{
+		width : 1320px;
+		margin : 0 auto;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+	}
 	.group-box{
 		border-radius : 20px;
 		cursor : pointer;
 		box-sizing : border-box;
 		box-shadow: 0 0 15px rgba(0, 0, 0, .15);
 		width : 250px;
-		height : 350px;
+		height : 360px;
 		margin: 20px 40px;
 		padding: 20px 40px;
 	}
@@ -155,6 +162,7 @@
 		overflow : hidden;
 		text-align : center;
 		height: 40px;
+		margin-bottom: 10px;
 	}
 	.title-div>h3{
 		line-height: 40px;
@@ -162,18 +170,26 @@
 		
 	}
 	.info-div{
-		height : 48px;
+		height : 54px;
 		word-break: break-all; 
 		overflow: hidden;
 	}
 	.info-div>p{
+		font-size : 18px;
+		font-family : ptd;
 		color: black;
+		margin-bottom: 0;
 	}
-	.cate-div{
-		color : #373737;
-		width : 50px;
+	.date-div{
+		color : var(--main2);
+		width : 150px;
 		height: 20px;
-		background-color: #cacaca;
+	}
+	.location-div{
+		color : rgba(0, 0, 0,0.5);
+		width : 170px;
+		height: 20px;
+		overflow: hidden;
 	}
 </style>
     <body>
@@ -234,6 +250,20 @@
             	<div class="read-btn" th:onclick="dateMoreClick();">더보기</div>
         	</div> 
 		</div>        
+
+		<div class="home-title">
+            <div class="header-title animated bounceInDown">
+                <h2>최근 본 모임</h2>
+            </div>    
+        </div>
+
+		<div class="content">
+			<div class="recent-list-box">
+					
+			</div>
+			
+		</div>
+
 
 	<script>
    		$(".navbar-nav").children().eq(0).addClass("active");
@@ -326,14 +356,19 @@
 						p.text(group.groupInfo);
 						infoDiv.append(p);
 						
-						const cateDiv = $("<div>");
-						cateDiv.addClass("cate-div")
-						cateDiv.text("hihi");
+						const dateDiv = $("<div>");
+						dateDiv.addClass("date-div")
+						dateDiv.text(group.meetingDate);
+						
+						const locationDiv = $("<div>");
+						locationDiv.addClass("location-div")
+						locationDiv.text(group.groupLocation);
 						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
 						groupBox.append(infoDiv);
-						groupBox.append(cateDiv);
+						groupBox.append(dateDiv);
+						groupBox.append(locationDiv);
 						
 						$(".group-list-box").append(groupBox);
 						
@@ -430,14 +465,19 @@
 						p.text(group.groupInfo);
 						infoDiv.append(p);
 						
-						const cateDiv = $("<div>");
-						cateDiv.addClass("cate-div")
-						cateDiv.text("hihi");
+						const dateDiv = $("<div>");
+						dateDiv.addClass("date-div")
+						dateDiv.text(group.meetingDate);
+						
+						const locationDiv = $("<div>");
+						locationDiv.addClass("location-div")
+						locationDiv.text(group.groupLocation);
 						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
 						groupBox.append(infoDiv);
-						groupBox.append(cateDiv);
+						groupBox.append(dateDiv);
+						groupBox.append(locationDiv);
 						
 						$(".group-list-box-date").append(groupBox);
 						
@@ -466,9 +506,79 @@
 			});
 		}
 		
+		let recentStart = 1;
+		
+		function recentGrouplist(){
+			const amount = 8;
+			$.ajax({
+				url : "/mainPage/recentGroup",
+				type : "get",
+				data : {recentStart : recentStart, amount : amount},
+				success : data => {
+					console.log(data);
+					
+					for(let i=0; i<data.length; i++){
+						
+						const group = data[i];
+						
+						const groupBox = $("<div>");
+						groupBox.addClass("group-box").addClass("rounded");
+						
+						const imgDiv = $("<div>");
+						imgDiv.addClass("img-div");
+						const img = $("<img>");
+						if(group.thumbImage != null){
+							img.attr("src","/groupThumb/"+group.thumbImage).css("width","100%");
+							imgDiv.append(img);
+						}else{
+							img.attr("src","/myimage/defaultProfile.png").css("width","100%");
+							imgDiv.append(img);
+						}
+										
+						const titleDiv = $("<div>");
+						titleDiv.addClass("title-div");
+						const h3 = $("<h3>");
+						h3.text(group.groupName);
+						titleDiv.append(h3);
+						
+						const infoDiv = $("<div>");
+						infoDiv.addClass("info-div");
+						const p = $("<p>");
+						p.text(group.groupInfo);
+						infoDiv.append(p);
+						
+						const dateDiv = $("<div>");
+						dateDiv.addClass("date-div")
+						dateDiv.text(group.meetingDate);
+						
+						const locationDiv = $("<div>");
+						locationDiv.addClass("location-div")
+						locationDiv.text(group.groupLocation);
+						
+						groupBox.append(imgDiv);
+						groupBox.append(titleDiv);
+						groupBox.append(infoDiv);
+						groupBox.append(dateDiv);
+						groupBox.append(locationDiv);
+						
+						$(".recent-list-box").append(groupBox);
+						
+						
+						groupBox.on("click", () => {
+							const no = group.groupNo;
+							console.log(no);
+							const url = "/group/groupInfoPage?groupNo="+no;
+							location.href = url;
+						});
+					}		
+				}
+			});
+		}		
+		
 		const fst = $(".date-box>div:first-child");
 		dateList(fst,1);
 		moreClick();
+		recentGrouplist();
 	</script>
 
 

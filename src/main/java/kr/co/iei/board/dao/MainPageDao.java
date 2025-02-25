@@ -43,4 +43,11 @@ public class MainPageDao {
 		return list;
 	}
 
+	public List selectRecentGroup(int memberNo, int recentStart, int end) {
+		String query = "select * from (select rownum as rnum, r.* from (select * from  group_tbl  join  recent_group using (group_no) where member_no = ? order by recent_no desc) r) where rnum between ? and ?";
+		Object[] params = {memberNo, recentStart,end};
+		List list = jdbc.query(query, groupRowMapper, params);
+		return list;
+	}
+
 }

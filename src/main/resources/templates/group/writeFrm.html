@@ -35,8 +35,6 @@
 	}
 	
 	.content{
-		border-right : 1px solid rgba(0, 0, 0, 0.05);
-		border-left : 1px solid rgba(0, 0, 0, 0.05);
 		width: 800px;
 		height: 650px;
 		margin: 0 auto;
@@ -53,6 +51,12 @@
 	.input-box>textarea{
 		width: 100%;
 	}
+	.select-zone{
+		margin-bottom: 5px;
+	}
+	.select{
+		text-align: right;
+	}
 </style>
 </head>
 <body>
@@ -66,6 +70,7 @@
 				<div class="container text-center animated bounceInDown">
 					<h1 class="board-head">글쓰기</h1>
 					<div class="top-div">
+						<p style="margin-right: 325px;">멤버들과 소통해보세요!</p>
 						<div class="to-list"><a th:href="${'/group/groupBoard?groupNo='+groupNo}">취소</a></div>
 						<div class="complete">작성</div>
 					</div>
@@ -77,9 +82,6 @@
 			<div class="content">
 				<form action="/group/write" method="post" class="frm">
 					<div class="title"><h1>내용을 입력하세요</h1></div>
-					<div class="input-box">
-						<textarea class="write-content" name="groupBoardContent"></textarea>
-					</div>
 					<div class="select-zone">
 						<div class="select">
 							<select id="type" name="type">
@@ -88,6 +90,10 @@
 							</select>
 						</div>
 					</div>
+					<div class="input-box">
+						<textarea class="write-content" name="groupBoardContent"></textarea>
+					</div>
+					
 					<input type="hidden" id="groupNo" name="groupNo" th:value="${groupNo}">
 				</form>
 				

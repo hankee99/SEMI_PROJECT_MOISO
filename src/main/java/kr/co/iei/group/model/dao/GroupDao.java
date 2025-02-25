@@ -16,6 +16,7 @@ import kr.co.iei.group.model.vo.GroupBoardRowMapper;
 import kr.co.iei.group.model.vo.GroupMemberRowMapper;
 import kr.co.iei.group.model.vo.GroupRowMapper;
 import kr.co.iei.group.model.vo.Pay;
+import kr.co.iei.group.model.vo.RecentGroupRowMapper;
 import kr.co.iei.group.model.vo.Region;
 import kr.co.iei.group.model.vo.RegionRowMapper;
 import kr.co.iei.group.model.vo.SidoRowMapper;
@@ -40,6 +41,8 @@ public class GroupDao {
 	private GroupBoardRowMapper groupBoardRowMapper;
 	@Autowired
 	private GroupBoardCommentRowMapper groupBoardCommentRowMapper;
+	@Autowired
+	private RecentGroupRowMapper recentGroupRowMapper;
 	@Autowired
 	private JdbcTemplate jdbc;
 
@@ -129,7 +132,7 @@ public class GroupDao {
 	}
 
 	public List selectGroupMembers(int groupNo) {
-		String query = "select group_no,member_no,group_member_level,join_date,member_nickname from group_member join MEMBER using(member_no) where group_no = ? order by member_no";
+		String query = "select group_no,member_no,group_member_level,join_date,member_nickname from group_member join MEMBER using(member_no) where group_no = ? order by group_member_level";
 		Object[] params = {groupNo};
 		List list = jdbc.query(query, groupMemberRowMapper, params);
 		return list;
@@ -304,6 +307,27 @@ public class GroupDao {
 	public int insertPay(Pay pay) {
 		String query = "insert into pay values(pay_seq.nextval,?,?,?,to_char(sysdate,'yyyy-mm-dd'))";
 		Object[] params = {pay.getMemberNo(),pay.getMemberNo(),pay.getPrice()};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public int insertRecentGroup(int memberNo, int groupNo) {
+		String query = "insert into recent_group values(recent_group_seq.nextval,?,?)";
+		Object[] params = {memberNo,groupNo};
+		int result = jdbc.update(query,params);
+		return result;
+	}
+
+	public List selectRecentGroup(int memberNo, int groupNo) {
+		String query ="select * from recent_group where member_no =? and group_no = ?";
+		Object[] params = {memberNo,groupNo};
+		List list = jdbc.query(query, recentGroupRowMapper, params);
+		return list;
+	}
+
+	public int deleteRecentGroup(int memberNo, int groupNo) {
+		String query = "delete from recent_group where member_no=? and group_no =?";
+		Object[] params = {memberNo,groupNo};
 		int result = jdbc.update(query,params);
 		return result;
 	}
