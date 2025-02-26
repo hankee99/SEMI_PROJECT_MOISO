@@ -266,6 +266,15 @@ public class MemberController {
 		return "member/groupLevelManage";
 	}
 	
+	@RequestMapping(value="/loginMsg")
+	public String loginMsg(Model model) {
+		model.addAttribute("title", "로그인 확인");
+		model.addAttribute("text", "로그인 후 이용 가능합니다");
+		model.addAttribute("icon", "info");
+		model.addAttribute("loc", "/member/loginFrm");
+		return "common/msg";
+	}
+	
 	
 	
 	
