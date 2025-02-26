@@ -50,7 +50,9 @@ public class WebConfig implements WebMvcConfigurer{
 						"/member/**")
 		.excludePathPatterns("/member/loginMsg",
 								"/member/loginFrm",
-								"/member/login"
+								"/member/login",
+								"/member/joinFrm",
+								"/member/join"
 				);
 		
 	}
