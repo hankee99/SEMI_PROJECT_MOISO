@@ -148,7 +148,7 @@
 								<div class="group-card p-3" th:each="mygroup : ${mygroup}">
 		                    		<div class="thumb-image">
 		                    			<img src="/myimage/defaultProfile.png" class="thumb-image" th:if="${mygroup.thumbImage == null}">
-										<img th:src="'/groupThumb/'+${mygroup.thumbImage}" class="profile-img" th:if="${mygroup.thumbImage != null}">
+										<img th:src="'/groupThumb/'+${mygroup.thumbImage}" class="thumb-image" th:if="${mygroup.thumbImage != null}">
 		                    		</div>
 				                    <div class="group-info">
 				                        <span class="group-status" th:text="${mygroup.categoryName}">공예(후불제)</span>

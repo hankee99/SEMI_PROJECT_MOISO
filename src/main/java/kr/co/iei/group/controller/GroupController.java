@@ -84,8 +84,8 @@ public class GroupController {
 		}
 		int[] result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
 		
-		model.addAttribute("title", "가입 성공");
-		model.addAttribute("text", "가입이 완료되었습니다");
+		model.addAttribute("title", "모임 생성 성공");
+		model.addAttribute("text", "모임이 생성되었습니다");
 		model.addAttribute("icon", "success");
 		model.addAttribute("loc", "/group/groupInfoPage?groupNo="+result[0]);
 		
