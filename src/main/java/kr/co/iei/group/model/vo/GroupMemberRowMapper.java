@@ -17,6 +17,7 @@ public class GroupMemberRowMapper implements RowMapper<GroupMember>{
 		groupMember.setGroupMemberLevel(rs.getInt("group_member_level"));
 		groupMember.setJoinDate(rs.getString("join_date"));
 		groupMember.setMemberNickname(rs.getString("member_nickname"));
+		groupMember.setProfileImg(rs.getString("profile_img"));
 		return groupMember;
 	}
 

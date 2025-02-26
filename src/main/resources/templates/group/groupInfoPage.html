@@ -305,7 +305,8 @@
 							<div class="staff-info" th:each="gm : ${groupMembers}" th:if="${gm.groupMemberLevel<3}">
 								<div class="staff-img">
 									<div class="profile-img-box">
-										<img src="/myimage/defaultProfile.png">
+										<img src="/myimage/defaultProfile.png" th:if="${gm.profileImg == null}">
+										<img th:src="${'/profile/' + gm.profileImg}" th:if="${gm.profileImg != null}">
 									</div>
 								</div>
 								<div class="grade" th:text="${gm.groupMemberLevel == 1 ? '모임장' : '운영자'}"></div>
@@ -320,7 +321,8 @@
 							<div class="member-box" th:each="gm : ${groupMembers}">
 								<div class="profile-hidden-box">
 									<div class="profile-box">
-										<img src="/myimage/defaultProfile.png">
+										<img src="/myimage/defaultProfile.png" th:if="${gm.profileImg == null}">
+										<img th:src="${'/profile/' + gm.profileImg}" th:if="${gm.profileImg != null}">
 									</div>
 								</div>
 								<div class="nick-box"><p th:text="${gm.memberNickname}"></p></div>

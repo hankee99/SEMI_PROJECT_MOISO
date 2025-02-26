@@ -132,7 +132,7 @@ public class GroupDao {
 	}
 
 	public List selectGroupMembers(int groupNo) {
-		String query = "select group_no,member_no,group_member_level,join_date,member_nickname from group_member join MEMBER using(member_no) where group_no = ? order by group_member_level";
+		String query = "select group_no,member_no,group_member_level,join_date,member_nickname,profile_img from group_member join MEMBER using(member_no) where group_no = ? order by group_member_level";
 		Object[] params = {groupNo};
 		List list = jdbc.query(query, groupMemberRowMapper, params);
 		return list;

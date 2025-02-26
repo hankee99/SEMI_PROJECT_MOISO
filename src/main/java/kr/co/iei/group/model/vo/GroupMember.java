@@ -13,4 +13,5 @@ public class GroupMember {
 	private int groupMemberLevel;
 	private String joinDate;
 	private String memberNickname;
+	private String profileImg;
 }

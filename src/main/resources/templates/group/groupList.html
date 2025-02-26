@@ -173,10 +173,14 @@
 		let start = 1;	
 		
 		function groupList(categoryNo,obj){
+			
+			console.log(categoryPage,"str");
 			$(".category").css("font-family","ptd").css("color","rgba(0,0,0,0.7)");
 			$(obj).css("font-family","ptd_bl").css("color","black");
 			console.log(categoryNo);
 			if(categoryPage !== categoryNo){
+				window.removeEventListener("scroll",onScroll);
+				console.log(111);
 				$.ajax({
 					url : "/group/totalCount",
 					type : "get",
@@ -185,27 +189,27 @@
 						$(".group-list-box>div").remove();
 						categoryPage = categoryNo;
 						
+						
 						start = 1;
 						currentCount = 0;
 						totalCnt = data;
 						
 						moreClick(categoryNo);
+						
 					}
 					
 				});
+				
 				
 			}
 			
 		}
 		
-		$(window).scroll(function() {
-		    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 400) {
-		        moreClick(categoryPage);
-		    }
-		});
+		
 		
 		
 		function moreClick(categoryNo){
+			console.log(categoryPage,start);
 			const amount = 8;
 			$.ajax({
 				url : "/group/categoryGroup",
@@ -273,10 +277,17 @@
 						
 					}
 					
-					start += amount;
+					start += data.length;
 					currentCount += data.length;
+					if(start === 1+data.length){
+	
+						window.addEventListener("scroll",onScroll);
+	
+					}
+					console.log(totalCnt," total ", currentCount);
 					if(currentCount === totalCnt){
-						
+						console.log(1111);
+						window.removeEventListener("scroll",onScroll);
 					}
 					
 					
@@ -285,7 +296,11 @@
 		}
 		
 		
-		
+		function onScroll(){
+			if ($(window).scrollTop() + $(window).height() >= $(document).height() - 800) {
+		        moreClick(categoryPage);
+		    }
+		}
 		const fst = $(".category:first-child");
 		groupList(1,fst);
 	</script>

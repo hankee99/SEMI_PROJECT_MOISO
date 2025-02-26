@@ -105,7 +105,7 @@
 					</div>
 
 					<div class="join-button-box">
-						<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">회원가입</button>
+						<button type="submit" id="sbm" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">회원가입</button>
 					</div>	
 
 				</form>
@@ -113,6 +113,12 @@
 		
 		</main>
 		<script>
+			let idBool = false;
+			let pwBool = false;
+			let pwreBool = false;
+			let nickBool = false;
+			let emailBool = false;
+		
 			$("#memberId").on("keyup", function(){
 				$(".id-check-msg").removeClass("invalid").removeClass("valid");
 				//정규표현식(영어 대/소문자/숫자로 4~20글자)
@@ -127,9 +133,11 @@
 							if(result){
 								$(".id-check-msg").text("사용 가능한 아이디입니다.");
 								$(".id-check-msg").addClass("valid");
+								idBool = true;
 							}else{
 								$(".id-check-msg").text("이미 사용 중인 아이디입니다.");
 								$(".id-check-msg").addClass("invalid");
+								idBool = false;
 							}
 						},
 						error : function(){
@@ -140,6 +148,7 @@
 					//정규표현식에 만족하지 못하면 메세지 출력
 					$(".id-check-msg").text("아이디는 영어 대/소문자, 숫자로 4~20글자입니다.");
 					$(".id-check-msg").addClass("invalid");
+					idBool = false;
 				}	
 			});	
 			
@@ -153,25 +162,31 @@
 				if(lengthCheck.test(pw) && characterCheck.test(pw)){
 					$(".pw-msg").text("사용 가능한 비밀번호입니다.");
 					$(".pw-msg").addClass("valid");
+					pwBool = true;
 				}else{
 					$(".pw-msg").text("비밀번호는 영어,숫자,특수문자로 8자리 이상입니다.");
 					$(".pw-msg").addClass("invalid");
+					pwBool = false;
 				}			
 				
 				$(".pw-check-msg").removeClass("valid").removeClass("invalid");
 				if(pwRe.length === 0){
 					$(".pw-check-msg").text("");
 					$(".pw-check-msg").addClass("invalid");
+					pwreBool = false;
 				}else if(pw === pwRe){
 					$(".pw-check-msg").text("비밀번호가 일치합니다.");
 					$(".pw-check-msg").addClass("valid");
+					pwreBool = true;
 				}else{
 					$(".pw-check-msg").text("비밀번호가 일치하지 않습니다.");
 					$(".pw-check-msg").addClass("invalid");
+					pwreBool = false;
 				}
 				
 				if(pw.length === 0){
 					$(".pw-msg").text("");
+					pwreBool = false;
 				}
 			});
 			
@@ -182,12 +197,15 @@
 				if(pwRe.length === 0){
 					$(".pw-check-msg").text("");
 					$(".pw-check-msg").addClass("invalid");
+					pwreBool = false;
 				}else if(pw === pwRe){
 					$(".pw-check-msg").text("비밀번호가 일치합니다.");
 					$(".pw-check-msg").addClass("valid");
+					pwreBool = true;
 				}else{
 					$(".pw-check-msg").text("비밀번호가 일치하지 않습니다.");
 					$(".pw-check-msg").addClass("invalid");
+					pwreBool = false;
 				}			
 			});
 				
@@ -204,9 +222,11 @@
 							if(result){
 								$(".nickname-check-msg").text("사용 가능한 닉네임입니다.");
 								$(".nickname-check-msg").addClass("valid");
+								nickBool = true;
 							}else{
 								$(".nickname-check-msg").text("이미 사용 중인 닉네임입니다.");
 								$(".nickname-check-msg").addClass("invalid");
+								nickBool = false;
 							}
 						},
 						error : function(){
@@ -217,23 +237,36 @@
 					//정규표현식에 만족하지 못하면 메세지 출력
 					$(".nickname-check-msg").text("닉네임은 영어 대/소문자, 숫자, 한글로 1~10글자입니다.");
 					$(".nickname-check-msg").addClass("invalid");
+					nickBool = false;
 				}
 				
 			});
-			
+			 
 			$("#memberEmail").on("keyup", () => {
 				$(".email-check-msg").addClass("invalid");
 				const email = $("#memberEmail").val();
 				
 				if(email.includes('@') || email.length === 0){
 					$(".email-check-msg").text("");
+					emailBool = true;
 				}else{
 					$(".email-check-msg").text("이메일 양식에 맞지 않습니다.");
+					emailBool = false;
 				}
 				
 			});
-		
-		
+			
+			$("#sbm").on("click", (e) => {
+					
+				if(idBool&&pwBool&&pwreBool&&nickBool&&emailBool){
+					
+				}else{
+					e.preventDefault();
+					alert("입력 정보를 확인하세요");
+				}
+				
+			});
+			
 			
 		</script>
 		
