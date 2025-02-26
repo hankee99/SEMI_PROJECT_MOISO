@@ -276,6 +276,14 @@ public class MemberController {
 	}
 	
 	
+	@RequestMapping(value="/adminMsg")
+	public String aminMsg(Model model) {
+		model.addAttribute("title", "권한 없음");
+		model.addAttribute("text", "관리자에게 문의하세요.");
+		model.addAttribute("icon", "info");
+		model.addAttribute("loc", "/member/mypage");
+		return "common/msg";
+	}
 	
 	
 }
