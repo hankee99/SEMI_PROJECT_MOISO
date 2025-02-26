@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.iei.group.model.vo.Pay;
 import kr.co.iei.member.model.dao.MemberDao;
+import kr.co.iei.member.model.vo.GroupList;
 import kr.co.iei.member.model.vo.ManagerPageStat;
 import kr.co.iei.member.model.vo.Member;
+import kr.co.iei.member.model.vo.MypaymentData;
 import kr.co.iei.member.model.vo.TotalStat;
 
 @Service
@@ -76,6 +79,22 @@ public class MemberService {
 		ManagerPageStat mps = new ManagerPageStat(operationStat, totalStat);
 		return mps;
 	}
+
+	public MypaymentData mypaymentData(int memberNo) {
+		Pay pay = memberDao.selectPayData(memberNo);
+		List list = memberDao.selectGroupData(memberNo);
+		MypaymentData md = new MypaymentData(list, pay); 
+		return md;
+	}
+
+	public GroupList mygroup(int memberNo) {
+		List mygroup = memberDao.selectGroupData(memberNo);	
+		List myHostGroup = memberDao.selectHostGroup(memberNo);
+		//각기 다른 값이 담겨있는(but rowmapper는 같음) 리스트 2개 전달은 어떻게?
+		GroupList gl = new GroupList(mygroup, myHostGroup);
+		return gl;
+	}
+
 
 	
 
