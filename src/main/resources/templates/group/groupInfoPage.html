@@ -353,35 +353,39 @@
 		});
 		
 		function joinGroup(member,groupNo,joinFee){
-			if(joinFee>0){
-				const date = new Date();
-				const dateString = date.getFullYear() + "" + (date.getMonth()+1) + ""+date.getDate() + "" + date.getHours() + "" + date.getMinutes() + "" + date.getSeconds();
-				IMP.init("imp38620780");
-				
-				IMP.request_pay(
-						  {
-						    channelKey: "channel-key-94ea925a-a556-4122-b3fb-7a320bfbe8df", //필수
-						    pay_method: "card", //필수
-						    merchant_uid: "order_no_"+dateString, //상점에서 생성한 고유 주문번호 필수
-						    name: "주문명:결제테스트",
-						    amount: joinFee, //필수
-						    buyer_email: member.memberEmail,
-						    buyer_name: member.memberNickname,
-						    buyer_tel: member.memberPhone, //필수 파라미터 입니다.
-						  },
-						  function (rsp) {
-							  if(rsp.success){
-								  //데이터베이스에 기록할 데이터를 취합해서 insert하는 로직
-								  alert("가입성공!");
-								  location.href="/group/successPay?memberNo="+member.memberNo+"&groupNo="+groupNo+"&price="+joinFee;
-							  }
-						    // callback 로직
-						    //* ...중략... *//
-						  },
-				);
+			if(member != null){
+				if(joinFee>0){
+					const date = new Date();
+					const dateString = date.getFullYear() + "" + (date.getMonth()+1) + ""+date.getDate() + "" + date.getHours() + "" + date.getMinutes() + "" + date.getSeconds();
+					IMP.init("imp38620780");
+					
+					IMP.request_pay(
+							  {
+							    channelKey: "channel-key-94ea925a-a556-4122-b3fb-7a320bfbe8df", //필수
+							    pay_method: "card", //필수
+							    merchant_uid: "order_no_"+dateString, //상점에서 생성한 고유 주문번호 필수
+							    name: "주문명:결제테스트",
+							    amount: joinFee, //필수
+							    buyer_email: member.memberEmail,
+							    buyer_name: member.memberNickname,
+							    buyer_tel: member.memberPhone, //필수 파라미터 입니다.
+							  },
+							  function (rsp) {
+								  if(rsp.success){
+									  //데이터베이스에 기록할 데이터를 취합해서 insert하는 로직
+									  alert("가입성공!");
+									  location.href="/group/successPay?memberNo="+member.memberNo+"&groupNo="+groupNo+"&price="+joinFee;
+								  }
+							    // callback 로직
+							    //* ...중략... *//
+							  },
+					);
+				}else{
+					alert("가입성공!");
+					location.href="/group/successPay?memberNo="+member.memberNo+"&groupNo="+groupNo+"&price="+joinFee;
+				}
 			}else{
-				alert("가입성공!");
-				location.href="/group/successPay?memberNo="+member.memberNo+"&groupNo="+groupNo+"&price="+joinFee;
+				location.href= "/member/loginMsg";
 			}
 			
 		}

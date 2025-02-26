@@ -477,10 +477,14 @@
 						
 						$(obj).siblings().val("");
 						$(obj).parent().parent().prev().children().eq(0).children().eq(1).children().eq(2).text(data[1]);
+						
+						$(".cmt-div").last().prev().css("border-bottom","1px solid rgba(0,0,0,0.1)").css("margin-bottom","20px;");
 						$(".cmt-div").last().css("border-bottom","none").css("margin-bottom","0");
 					}
 				});
+				
 			}
+			
 		}
 		
 		

@@ -563,156 +563,161 @@
                             </div>
                             <div class="board-user-info">
                                 <div class="board-user-name" th:text="${b.memberNickname}"></div>
-                                <div class="board-user-text">함께 그리고 혼자서 할 수 있는 홈베이킹을 좋아해요. 베이킹 일정 진행 & 협업관련은 메세지 주세요 😇ㅋㅋㅋㅋㅋㅋㅋ</div>
                             </div>
                         </div>
                     </div>
                 
-
-			<!-- 댓글 입력 -->
-            <div class="board-comment" th:if="${session.member != null}">
-            	<form action="/board/insertComment" method="post">
-	                <div class="board-comment-write">
-	                    <div class="comment-img-box">
-	                        <div class="comment-img">
-	                            <img src="/myimage/defaultProfile.png" th:if="${session.member.profileImg == null}">
-	                            <img th:src="${'/profile/'+session.member.profileImg}" th:if="${session.member.profileImg != null}">
-	                        </div>
-	                    </div>
-	                    <div class="comment-content">
-	                    
-							<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
-							<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
-	                        
-	                        <div class="comment-text">
-	                            <textarea name="commentContent"></textarea>
-	                            <div contenteditable="true" class="comment-write"></div>
-	                        </div>
-	                        <div class="submit-box">
-
-	                            <button type="submit" class="btn-primary-comment">댓글</button>
-	                        </div>
-	                    </div>
-	                </div>
-                </form>
-            </div>
-
-			<!-- 댓글 출력 -->
-			<th:block th:each="bc : ${b.commentList}">
-	            <div class="board-comment">
-	                <div class="board-comment-read" id="board-comment">
-	                    <div class="read-comment-img-box">
-	                        <div class="read-comment-img">
-	                            <img src="/myimage/defaultProfile.png" th:if="${bc.profileImg == null}">
-                        		<img th:src="${'/profile/'+bc.profileImg}" th:if="${bc.profileImg != null}">
-	                        </div>
-	                    </div>
-	                    <div class="read-comment-content">
-	                        <div class="read-comment-user-name">
-	                            <div th:text="${bc.memberNickname}"></div>
-	                        </div>
-	                        <div class="read-comment-user-date">
-	                            <div th:text="${bc.commentDate}"></div>
-	                        </div>
-	                        <div class="read-comment-text">
-	                            <p class="comment-read" th:text="${bc.commentContent}"></p>
-	                            <textarea name="commentContent"></textarea>
-	                            <div contenteditable="true" class="comment-write"></div>
-	                           
-	                        </div>
-	                        <div class="comment-like-box">
-	                            <div class="comment-like">
-									<span th:if="${bc.isLike == 1}" class="material-icons islike" th:onclick="likepushComment(this,[[${bc.commentNo}]]);">favorite</span>
-									<span th:if="${session.member != null && bc.isLike == 0}" class="material-icons" th:onclick="likepushComment(this,[[${bc.commentNo}]]);">favorite</span>
-									<span th:if="${session.member == null && bc.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
-	                                <span th:text="${bc.likeCount}"></span>
-	                            </div>
-	                        </div>
-	                        <div class="read-submit-box">
-	                        <th:block th:if="${session.member != null}">
-		                            <button type="button" class="btn-primary-recomment">답글</button>
-		                        <th:block th:if="${session.member.memberNickname == bc.memberNickname}">
-		                            <button type="button" class="btn-primary-comment-up" th:onclick="modifyComment(this,[[${b.boardNo}]],[[${bc.commentNo}]])">수정</button>
-		                            <button type="button" class="btn-primary-del" th:onclick="deleteComment([[${b.boardNo}]],[[${bc.commentNo}]]);">삭제</button>
-		                        </th:block>  
-	                        </th:block>    
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	            
-	            
-	            <!-- 대댓글 출력 -->
-				<div class="board-comment" th:each="bcc : ${b.reCommentList}" th:if="${bc.commentNo == bcc.commentRef}">
-	                <div class="board-comment-read reBoard-comment-read">
-	                    <div class="read-comment-img-box">
-	                        <div class="read-comment-img">
-	                            <img src="/myimage/defaultProfile.png" th:if="${bcc.profileImg == null}">
-                        		<img th:src="${'/profile/'+bcc.profileImg}" th:if="${bcc.profileImg != null}">
-	                        </div>
-	                    </div>
-	                    <div class="read-comment-content reRead-comment-content">
-	                        <div class="read-comment-user-name">
-	                            <div th:text="${bcc.memberNickname}"></div>
-	                        </div>
-	                        <div class="read-comment-user-date">
-	                            <div th:text="${bcc.commentDate}"></div>
-	                        </div>
-	                        <div class="read-comment-text reRead-comment-text">
-	                            <p class="comment-read reComment-read" th:text="${bcc.commentContent}"></p>
-	                            <textarea name="commentContent"></textarea>
-		                        <div contenteditable="true" class="recomment-write"></div>
-	                        </div>
-	                        <div class="comment-like-box">
-	                            <div class="comment-like">
-	                                <span th:if="${bcc.isLike == 1}" class="material-icons islike" th:onclick="likepushComment(this,[[${bcc.commentNo}]]);">favorite</span>
-									<span th:if="${session.member != null && bcc.isLike == 0}" class="material-icons" th:onclick="likepushComment(this,[[${bcc.commentNo}]]);">favorite</span>
-									<span th:if="${session.member == null && bcc.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
-	                                <span th:text="${bcc.likeCount}"></span>
-	                            </div>
-	                        </div>
-	                        <div class="reRead-submit-box">
-	                        <th:block th:if="${session.member != null && session.member.memberNickname == bcc.memberNickname}">
-	                            <button type="button" class="btn-primary-reComment-up" th:onclick="modifyComment(this,[[${b.boardNo}]],[[${bcc.commentNo}]])">수정</button>
-	                            <button type="button" class="btn-primary-del" th:onclick="deleteComment([[${b.boardNo}]],[[${bcc.commentNo}]]);">삭제</button>
-	                        </th:block>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>	            
-	            
-
-			<!-- 대댓글 입력 -->
-	            <div class="board-recomment" th:if="${session.member != null}">
+			
+			<div style="margin-top: 50px;">
+				<!-- 댓글 입력 -->
+	            <div class="board-comment" th:if="${session.member != null}">
 	            	<form action="/board/insertComment" method="post">
-		                <div class="board-recomment-write">
-		                    <div class="recomment-img-box">
-		                        <div class="recomment-img">
+		                <div class="board-comment-write">
+		                    <div class="comment-img-box">
+		                        <div class="comment-img">
 		                            <img src="/myimage/defaultProfile.png" th:if="${session.member.profileImg == null}">
-	                            	<img th:src="${'/profile/'+session.member.profileImg}" th:if="${session.member.profileImg != null}">
+		                            <img th:src="${'/profile/'+session.member.profileImg}" th:if="${session.member.profileImg != null}">
 		                        </div>
 		                    </div>
-		                    <div class="recomment-content">
+		                    <div class="comment-content">
 		                    
-							<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
-							<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
-							<input type="hidden" name="commentRef" th:value="${bc.CommentNo}">		
-		
-		                        <div class="recomment-text reRecomment-text">
+								<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
+								<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
+		                        
+		                        <div class="comment-text">
 		                            <textarea name="commentContent"></textarea>
-		                            <div contenteditable="true" class="recomment-write"></div>
+		                            <div contenteditable="true" id="comment-content" class="comment-write"></div>
 		                        </div>
-		                        <div class="comment-submit-box reComment-submit-box">
-		                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
-		                            <button type="submit" class="btn-primary-comment">댓글</button>
+		                        <div class="submit-box">
+	
+		                            <button type="submit" id="comment-submit" class="btn-primary-comment">댓글</button>
 		                        </div>
 		                    </div>
 		                </div>
 	                </form>
 	            </div>
-            </th:block>
+				
+				
+				<!-- 댓글 출력 -->
+				<th:block th:each="bc : ${b.commentList}">
+		            <div class="board-comment">
+		                <div class="board-comment-read" id="board-comment">
+		                    <div class="read-comment-img-box">
+		                        <div class="read-comment-img">
+		                            <img src="/myimage/defaultProfile.png" th:if="${bc.profileImg == null}">
+	                        		<img th:src="${'/profile/'+bc.profileImg}" th:if="${bc.profileImg != null}">
+		                        </div>
+		                    </div>
+		                    <div class="read-comment-content">
+		                        <div class="read-comment-user-name">
+		                            <div th:text="${bc.memberNickname}"></div>
+		                        </div>
+		                        <div class="read-comment-user-date">
+		                            <div th:text="${bc.commentDate}"></div>
+		                        </div>
+		                        <div class="read-comment-text">
+		                            <p class="comment-read" th:text="${bc.commentContent}"></p>
+		                            <textarea name="commentContent"></textarea>
+		                            <div contenteditable="true" class="comment-write"></div>
+		                           
+		                        </div>
+		                        <div class="comment-like-box">
+		                            <div class="comment-like">
+										<span th:if="${bc.isLike == 1}" class="material-icons islike" th:onclick="likepushComment(this,[[${bc.commentNo}]]);">favorite</span>
+										<span th:if="${session.member != null && bc.isLike == 0}" class="material-icons" th:onclick="likepushComment(this,[[${bc.commentNo}]]);">favorite</span>
+										<span th:if="${session.member == null && bc.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
+		                                <span th:text="${bc.likeCount}"></span>
+		                            </div>
+		                        </div>
+		                        <div class="read-submit-box">
+		                        <th:block th:if="${session.member != null}">
+			                            <button type="button" class="btn-primary-recomment">답글</button>
+			                        <th:block th:if="${session.member.memberNickname == bc.memberNickname}">
+			                            <button type="button" class="btn-primary-comment-up" th:onclick="modifyComment(this,[[${b.boardNo}]],[[${bc.commentNo}]])">수정</button>
+			                            <button type="button" class="btn-primary-del" th:onclick="deleteComment([[${b.boardNo}]],[[${bc.commentNo}]]);">삭제</button>
+			                        </th:block>  
+		                        </th:block>    
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		            
+		            
+		            <!-- 대댓글 출력 -->
+					<div class="board-comment" th:each="bcc : ${b.reCommentList}" th:if="${bc.commentNo == bcc.commentRef}">
+		                <div class="board-comment-read reBoard-comment-read">
+		                    <div class="read-comment-img-box">
+		                        <div class="read-comment-img">
+		                            <img src="/myimage/defaultProfile.png" th:if="${bcc.profileImg == null}">
+	                        		<img th:src="${'/profile/'+bcc.profileImg}" th:if="${bcc.profileImg != null}">
+		                        </div>
+		                    </div>
+		                    <div class="read-comment-content reRead-comment-content">
+		                        <div class="read-comment-user-name">
+		                            <div th:text="${bcc.memberNickname}"></div>
+		                        </div>
+		                        <div class="read-comment-user-date">
+		                            <div th:text="${bcc.commentDate}"></div>
+		                        </div>
+		                        <div class="read-comment-text reRead-comment-text">
+		                            <p class="comment-read reComment-read" th:text="${bcc.commentContent}"></p>
+		                            <textarea name="commentContent"></textarea>
+			                        <div contenteditable="true" class="recomment-write"></div>
+		                        </div>
+		                        <div class="comment-like-box">
+		                            <div class="comment-like">
+		                                <span th:if="${bcc.isLike == 1}" class="material-icons islike" th:onclick="likepushComment(this,[[${bcc.commentNo}]]);">favorite</span>
+										<span th:if="${session.member != null && bcc.isLike == 0}" class="material-icons" th:onclick="likepushComment(this,[[${bcc.commentNo}]]);">favorite</span>
+										<span th:if="${session.member == null && bcc.isLike == 0}" class="material-icons" onclick="loginMsg();">favorite</span>
+		                                <span th:text="${bcc.likeCount}"></span>
+		                            </div>
+		                        </div>
+		                        <div class="reRead-submit-box">
+		                        <th:block th:if="${session.member != null && session.member.memberNickname == bcc.memberNickname}">
+		                            <button type="button" class="btn-primary-reComment-up" th:onclick="modifyComment(this,[[${b.boardNo}]],[[${bcc.commentNo}]])">수정</button>
+		                            <button type="button" class="btn-primary-del" th:onclick="deleteComment([[${b.boardNo}]],[[${bcc.commentNo}]]);">삭제</button>
+		                        </th:block>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>	            
+		            
+	
+				<!-- 대댓글 입력 -->
+		            <div class="board-recomment" th:if="${session.member != null}">
+		            	<form action="/board/insertComment" method="post">
+			                <div class="board-recomment-write">
+			                    <div class="recomment-img-box">
+			                        <div class="recomment-img">
+			                            <img src="/myimage/defaultProfile.png" th:if="${session.member.profileImg == null}">
+		                            	<img th:src="${'/profile/'+session.member.profileImg}" th:if="${session.member.profileImg != null}">
+			                        </div>
+			                    </div>
+			                    <div class="recomment-content">
+			                    
+								<input type="hidden" name="memberNickname" th:value="${session.member.memberNickname}">
+								<input type="hidden" name="boardNo" th:value="${b.boardNo}">	
+								<input type="hidden" name="commentRef" th:value="${bc.CommentNo}">		
+			
+			                        <div class="recomment-text reRecomment-text">
+			                            <textarea name="commentContent"></textarea>
+			                            <div contenteditable="true" id="recomment-content" class="recomment-write"></div>
+			                        </div>
+			                        <div class="comment-submit-box reComment-submit-box">
+			                            <button type="button" class="btn-primary-comment-can btn-primary-recomment-can">취소</button>
+			                            <button type="submit" id="recomment-submit" class="btn-primary-comment">댓글</button>
+			                        </div>
+			                    </div>
+			                </div>
+		                </form>
+		            </div>
+	            </th:block>
+			</div>
+			
+			
+			
             
-        </div>   
+        
         
 	        
         <th:block th:include="common/footer"></th:block>
@@ -900,6 +905,20 @@
 			})	
 		}
 	
+		$("#comment-submit").on("click", e => {
+			const commentContent = $("#comment-content").text();
+			if(commentContent.length === 0){
+				e.preventDefault();
+			}
+		});
+		
+		$("#recomment-submit").on("click", e => {
+			const recommentContent = $("#recomment-content").text();
+			if(recommentContent.length === 0){
+				e.preventDefault();
+			}
+		});
+		
 		
 		
         /*
