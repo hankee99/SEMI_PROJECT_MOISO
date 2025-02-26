@@ -89,6 +89,14 @@
 		font-size: 14px;
 		font-weight: 900;
 	}	
+	.category-div{
+		color : rgba(255,30,30,0.5);
+		width : 170px;
+		height: 20px;
+		overflow: hidden;
+		font-size: 14px;
+		font-weight: 900;
+	}	
 </style>
 </head>
 <body>
@@ -204,7 +212,7 @@
 						
 						const categoryName = $("<div>");
 						categoryName.addClass("category-div")
-						categoryName.text(group.categoryName);
+						categoryName.text("#"+group.categoryName);
 						
 						groupBox.append(imgDiv);
 						groupBox.append(titleDiv);
