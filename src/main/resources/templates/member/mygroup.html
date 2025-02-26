@@ -15,9 +15,6 @@
 		align-items: center;
 		margin: 0 auto;
 	}
-	.mypage-container{
-		
-	}
 	.mygroup-wrap{
 		width: 700px;
 		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
@@ -58,7 +55,7 @@
 		color: var(--gray1);
 		padding: 20px 0;
 	}
-	.profile-info{
+	.content-info{
 		padding-left: 30px;
 	}
 	
@@ -105,7 +102,7 @@
 </style>
 <body>
 	<th:block th:include="common/header"></th:block>
-	<main class="content mypage-container">
+	<main class="mypage-container">
 		<div class="mygroup-container">
 	        <!-- 사이드바 -->
 		        <aside class="sidebar">
@@ -115,12 +112,12 @@
 	
 	        <!-- 메인 컨텐츠 -->
 	        <section class="mygroup-wrap rounded">
-	            <div id="profile" class="tab-content">
-	                <div class="profile p-3">
+	            <div class="tab-content">
+	                <div class="content p-3">
 	                    <div class="title-box">
 							나의 모임
 						</div>
-						<div class="profile-info">
+						<div class="content-info">
 							<div class="info-title">
 								<h3>진행모임</h3>
 			               		<p class="sub-text">내가 모임장으로 진행하는 모임 목록입니다.</p>

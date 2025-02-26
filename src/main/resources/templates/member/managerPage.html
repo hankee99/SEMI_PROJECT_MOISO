@@ -4,50 +4,146 @@
 <meta charset="UTF-8">
 <title>관리자페이지</title>
 </head>
+<style>
+	*{
+	font-family: ptd;
+	}
+	.admin-container{
+		width: 800px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
+	}
+
+	.stats-wrap{
+		width: 700px;
+		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
+		
+	}
+	/* 컨텐츠 영역 */
+	.title-box{
+		font-family: ptd_bl;
+		text-align: center;
+		font-size: 40px;
+		color: var(--gray1);
+		padding: 20px 0;
+	}
+	.stats-box{
+		width: 510px;
+		margin: 0 auto;
+		overflow: hidden;
+	}
+	.stats-box>.stat-item{
+		float: left;
+		width: 170px;
+		overflow: hidden;
+	}
+	.stat-item>div{
+		float: left;
+	}
+	.stat-title{
+		padding-left: 50px;
+	}
+
+	.admin-tbl{
+		width: 650px;
+		margin: 0 auto;
+		
+	}
+	.icon-box{
+		width: 70px;
+
+	}
+	.stat-box{
+		width: 100px;
+		padding-left:5px;
+	}
+	.stat-box>span{
+		display: inline-block;
+	}
+	.material-icons{
+		width: 70px;
+		color: var(--main2);
+	}
+	.stat-value{
+		font-family: ptd_bl;
+		font-size: 40px;
+		line-height: 60px;
+		color: var(--main1)
+	}
+	.admin-tbl{
+		text-align: center;
+	}
+	.admin-tbl th{
+		padding : 10px 0;
+	}
+	.admin-tbl td{
+		padding : 5px 0;
+	}
+</style>
 <body>
 	<th:block th:include="common/header"></th:block>
-	<div class="admin-container">
-        <!-- 운영 통계 -->
-        <section class="stats">
-            <h2>관리자페이지</h2>
-            <p>홈페이지의 운영현황을 관리할 수 있는 페이지입니다.</p>
-            <div class="stats-box">
-                <div class="stat-item">
-                    <span class="stat-label">전체 회원수</span>
-                    <span class="stat-value" th:text="${ts.totalMember}"></span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">전체 모임수</span>
-                    <span class="stat-value" th:text="${ts.totalGroup}"></span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">전체 게시글 수</span>
-                    <span class="stat-value" th:text="${ts.totalBoard}"></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- 일자별 요약 -->
-        <section class="summary">
-            <h3>일자별 요약</h3>
-            <table>
-                    <tr>
-                        <th>일자</th>
-                        <th>모임수</th>
-                        <th>매출액</th>
-                        <th>가입</th>
-                        <th>게시글</th>
-                    </tr>
-                    <tr th:each="os : ${list}">
-                    	<td th:text="${os.dataDate}"></td>
-                    	<td th:text="${os.joinCount}"></td>
-                    	<td th:text="${os.paySum}"></td>
-                    	<td th:text="${os.enrollCount}"></td>
-                    	<td th:text="${os.boardCount}"></td>
-                    </tr>
-            </table>
-        </section>
-    </div>
+	<main class="admin-container">
+		<div class="stat-container">
+			<section class="stats-wrap rounded p-3">
+		        <!-- 운영 통계 -->
+		        <div class="title-box">운영 통계</div>
+		        <div class="stats mb-4">
+		        	<div class="stat-title">
+			            <h3>전체 지표</h3>
+			            <p>홈페이지의 운영현황을 확인할 수 있습니다.</p>
+			        </div>
+		            <div class="stats-box">
+		                <div class="stat-item">
+		                	<div class="icon-box"><span class="material-icons" style="font-size: 70px;">group_add</span></div>
+			                <div class="stat-box">
+			                	<span class="stat-label">전체 회원수</span>
+			                    <span class="stat-value" th:text="${ts.totalMember}"></span><span>명</span>
+			                </div>
+		                </div>
+		                <div class="stat-item">
+		                	<div class="icon-box"><span class="material-icons" style="font-size: 70px;">diversity_3</span></div>
+			                <div class="stat-box">
+			                    <span class="stat-label">전체 모임수</span>
+			                    <span class="stat-value" th:text="${ts.totalGroup}"></span><span>개</span>
+			                </div>
+		                </div>
+		                <div class="stat-item">
+		                <div class="icon-box"><span class="material-icons" style="font-size: 70px;">view_list</span></div>
+			                <div class="stat-box">
+			                    <span class="stat-label">전체 게시글 수</span>
+			                    <span class="stat-value" th:text="${ts.totalBoard}"></span><span>개</span>
+			                </div>
+		                </div>
+		            </div>         
+		        </div>
+		
+		        <!-- 일자별 요약 -->
+		        <div class="summary mb-4">
+		        	<div class="stat-title">
+			            <h3>일자별 요약</h3>
+			            <p>일자별 주요 성과지표를 확인할 수 있습니다.</p>
+		            </div>
+		            <table class="admin-tbl">
+		                    <tr>
+		                        <th style="width:28%;">일자</th>
+		                        <th style="width:18%;">모임수</th>
+		                        <th style="width:18%;">매출액</th>
+		                        <th style="width:18%;">가입</th>
+		                        <th style="width:18%;">게시글</th>
+		                    </tr>
+		                    <tr th:each="os : ${list}">
+		                    	<td th:text="${os.dataDate}"></td>
+		                    	<td th:text="${os.joinCount}"></td>
+		                    	<td th:text="${os.paySum}"></td>
+		                    	<td th:text="${os.enrollCount}"></td>
+		                    	<td th:text="${os.boardCount}"></td>
+		                    </tr>
+		            </table>
+		        </div>
+		   </section>
+    </main>
 	<th:block th:include="common/footer"></th:block>
 </body>
 </html>
