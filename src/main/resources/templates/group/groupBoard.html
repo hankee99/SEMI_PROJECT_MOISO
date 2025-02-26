@@ -354,7 +354,6 @@
 						inputZone.append(textArea).append(submitBtn);
 						commentZone.append(inputZone);
 						
-						console.log(data.length);
 						for(let i=0; i<data.length; i++){
 							const comment = data[i];
 							
@@ -366,7 +365,7 @@
 							
 							const imgDiv = $("<div>");
 							const img = $("<img>");
-							if(comment.profileImg == ""){
+							if(comment.profileImg == null){
 								img.attr("src","/myimage/defaultProfile.png");	
 							}else{
 								img.attr("src","/profile/"+comment.profileImg);	

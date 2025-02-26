@@ -306,7 +306,7 @@ public class GroupDao {
 
 	public int insertPay(Pay pay) {
 		String query = "insert into pay values(pay_seq.nextval,?,?,?,to_char(sysdate,'yyyy-mm-dd'))";
-		Object[] params = {pay.getMemberNo(),pay.getMemberNo(),pay.getPrice()};
+		Object[] params = {pay.getMemberNo(),pay.getGroupNo(),pay.getPrice()};
 		int result = jdbc.update(query,params);
 		return result;
 	}
