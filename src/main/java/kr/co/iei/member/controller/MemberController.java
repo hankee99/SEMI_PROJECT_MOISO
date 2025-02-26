@@ -1,5 +1,6 @@
 package kr.co.iei.member.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +23,7 @@ import kr.co.iei.member.model.vo.GroupList;
 import kr.co.iei.member.model.vo.ManagerPageStat;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.member.model.vo.MypaymentData;
+import kr.co.iei.member.model.vo.OperationStat;
 import kr.co.iei.util.EmailSender;
 import kr.co.iei.util.FileUtils;
 
@@ -190,6 +192,9 @@ public class MemberController {
 	public String managerPage(Model model) {
 		ManagerPageStat mps = memberService.managerPageStat();
 		model.addAttribute("list", mps.getList());		//오퍼리스트
+		for(OperationStat op : (ArrayList<OperationStat>)mps.getList()) {
+			System.out.println(op.toString());
+		}
 		model.addAttribute("ts", mps.getTotalStat());	//토탈스탯 객체
 		return "member/managerPage";
 	}	

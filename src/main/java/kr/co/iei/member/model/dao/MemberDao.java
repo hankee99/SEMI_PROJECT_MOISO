@@ -140,7 +140,7 @@ public class MemberDao {
 				+ "    (select count(*) from group_member where join_date=data_date) join_count,\r\n"
 				+ "    (select nvl(sum(price),0) from pay where pay_date=data_date) pay_sum,\r\n"
 				+ "    (select count(*) from member where enroll_date=data_date) enroll_count,\r\n"
-				+ "    (select count(*) from board where board_date=data_date) board_count\r\n"
+				+ "    (select count(*) from board where substr(board_date,1,10)=data_date) board_count\r\n"
 				+ "from\r\n"
 				+ "(select to_char(sysdate - rownum + 1,'yyyy-mm-dd') as data_date from dual connect by rownum <= 7)";
 		List list = jdbc.query(query, operationStatRowMapper);
