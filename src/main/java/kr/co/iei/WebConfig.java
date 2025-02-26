@@ -53,7 +53,11 @@ public class WebConfig implements WebMvcConfigurer{
 								"/member/loginFrm",
 								"/member/login",
 								"/member/joinFrm",
-								"/member/join"
+								"/member/join",
+								"/member/findAccountFrm",
+								"/member/idSelect",
+								"/member/sendCode",
+								"/member/ajaxCheckNickname"
 				);
 		registry.addInterceptor(new AdminInterceptor())
 		.addPathPatterns("/member/managerPage");
