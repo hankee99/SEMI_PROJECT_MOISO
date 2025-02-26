@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Mypage</title>
+<title>updateMypage</title>
 </head>
 <style>
 	*{
@@ -112,17 +112,38 @@
         }
         
         
-        .tab-btn {
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-
-.tab-btn.active {
-    background-color: #f77;
-    color: white;
-}
+	/* 사이드바 스타일 */
+	.sidebar {
+	    width: 100px;
+	    display: flex;
+	    flex-direction: column;
+	    gap: 10px;
+	}
+	
+	.tab-btn {
+	    padding: 10px;
+	    background-color: #fff;
+	    border: none;
+	    cursor: pointer;
+	    box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
+	}
+	.tab-btn:hover {
+		 background-color: var(--main1);
+		 color: #fff;
+	}
+	
+	.active {
+	    background-color: var(--main1);
+	    color: white;
+	    box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
+	}
+	
+	.file-input{
+		text-align: center;
+	}
+	.tbl-btn-box{
+		text-align: center;
+	}
         
 </style>
 <body>
@@ -133,8 +154,6 @@
 	        <aside class="sidebar">
 	            <a href="/member/updateMypage" class="tab-btn active" data-target="profile">프로필</a>
 	            <a href="/member/mygroup" class="tab-btn" data-target="my-groups">나의모임</a>
-	            <a href="/member/mypayment" class="tab-btn" data-target="payment-history">결제내역</a>
-	            <a href="/member/mysettlement" class="tab-btn" data-target="settlement-history">정산내역</a>
 	        </aside>
 		
 		
@@ -145,7 +164,7 @@
 						<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
 						<img th:src="'/profile/'+${session.member.profileImg}" class="profile-img" th:if="${session.member.profileImg != null}">
 					</div>
-					<div>
+					<div class="file-input">
 						<input type="file" class="profile-input" name="upfile" accept="image/*">
 						<input type="checkbox" name="defaultProfileUse" class="defaultProfileUse" value="defaultProfileUse"> 기본 이미지 사용
 					</div>
@@ -182,7 +201,7 @@
 										
 										</div>
 									</div>
-									<input type="hidden" id="groupLocation" name="memberAddr">
+									<input type="hidden" id="groupLocation" name="memberAddr" >
 								</div>
 								</td>
 							</tr>
@@ -231,9 +250,10 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">수정완료</button>
-									<a href="#" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">회원탈퇴</a>
-									<a href="/member/managerPage" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">관리자페이지</a>
+									<div class="tbl-btn-box">
+										<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">수정완료</button>
+										<a href="/member/managerPage" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">관리자페이지</a>
+									</div>	
 								</td>
 							</tr>
 						</table>
@@ -296,10 +316,10 @@
 		});
 	}
 	
-	$(".btn-box>button").on("click", (e) => {
+	$(".tbl-btn-box>button").on("click", (e) => {
 		const arr = $(".selected");
 		const location = arr.length === 2;
-		
+		console.log(location);
 		if(location){
 			const addr = arr.eq(0).text() + "/" + arr.eq(1).text();
 			$("#groupLocation").val(addr);

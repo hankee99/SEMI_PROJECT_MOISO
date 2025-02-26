@@ -5,22 +5,44 @@
 <title>Insert title here</title>
 </head>
 <style>
-	/* 전체 스타일 */
-	body {
-	    font-family: Arial, sans-serif;
-	    margin: 0;
-	    padding: 0;
+	*{
+	font-family: ptd;
 	}
-	
-	/* 마이페이지 레이아웃 */
-	.mypage-container {
+	.profile-container{
+		width: 800px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto;
+	}
+	.mypage-container{
+		
+	}
+	.mypage-wrap{
+		width: 700px;
+		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
+	}
+	.page-title{
+		font-family: ptd_bl;
+		text-align: center;
+		font-size: 40px;
+		color: var(--gray1);
+		padding: 20px 0;
+	}
+	.profile-img-box{
+		width: 250px; 
+	    height: 250px;
+	    border-radius: 50%; 
+	    overflow: hidden; 
 	    display: flex;
-	    margin: 20px;
+	    justify-content: center;
+	    align-items: center;
+	    margin: 0 auto;
 	}
 	
 	/* 사이드바 스타일 */
 	.sidebar {
-	    width: 200px;
+	    width: 100px;
 	    display: flex;
 	    flex-direction: column;
 	    gap: 10px;
@@ -29,119 +51,83 @@
 	.tab-btn {
 	    padding: 10px;
 	    background-color: #fff;
-	    border: 1px solid #ccc;
+	    border: none;
 	    cursor: pointer;
+	    box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
+	}
+	.tab-btn:hover {
+		 background-color: var(--main1);
+		 color: #fff;
 	}
 	
-	.tab-btn.active {
-	    background-color: #f77;
+	.active {
+	    background-color: var(--main1);
 	    color: white;
+	    box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
 	}
 	
 	/* 컨텐츠 영역 */
-	.content {
-	    flex-grow: 1;
-	    padding: 20px;
-	    border: 1px solid #ccc;
-	    border-radius: 10px;
+	.nickname {
+	   color: var(--gray1);
+	   font-size: 35px;
+	   font-family: ptd_bl;
+	}
+	.profile-info{
+		padding-left: 30px;
+	}
+	.mbti{
+		color: var(--main1);
 	}
 	
-	/* 프로필 스타일 */
-	.profile-header {
-	    display: flex;
-	    align-items: center;
-	}
-	
-	.profile-image {
-	    width: 100px;
-	    height: 100px;
-	    border-radius: 50%;
-	    overflow: hidden;
-	    margin-right: 20px;
-	}
-	
-	.profile-image img {
-	    width: 100%;
-	    height: 100%;
-	    object-fit: cover;
-	}
-	
-	.profile-info h2 {
-	    margin: 0;
-	}
-	
-	.profile-info .tag {
-	    background-color: lightgray;
-	    padding: 5px;
-	    border-radius: 5px;
-	}
-	
-	.tags span {
-	    display: inline-block;
-	    margin-right: 5px;
-	    background-color: #ddd;
-	    padding: 5px;
-	    border-radius: 5px;
-	}
-	
+
 	/* 편집 버튼 */
 	.edit-btn {
 	    display: block;
 	    margin-top: 20px;
 	    padding: 10px;
-	    background-color: black;
+	    background-color: var(--main2);
 	    color: white;
 	    border: none;
 	    cursor: pointer;
+	    text-align: center;
+	}
+	.edit-btn:hover{
+		background: var(--main3);
+		color:#fff;
 	}
 	
-	/* 탭 컨텐츠 숨김 */
-	.tab-content {
-	    display: none;
-	}
-	
-	.tab-content.active {
-	    display: block;
-	}
 </style>
 <body>
 
 	<th:block th:include="common/header"></th:block>
-	<div class="profile-container">
-        <!-- 사이드바 -->
-	        <aside class="sidebar">
-	            <a href="/member/updateMypage" class="tab-btn active" data-target="profile">프로필</a>
-	            <a href="/member/mygroup" class="tab-btn" data-target="my-groups">나의모임</a>
-	            <a href="/member/mypayment" class="tab-btn" data-target="payment-history">결제내역</a>
-	            <a href="/member/mysettlement" class="tab-btn" data-target="settlement-history">정산내역</a>
-	        </aside>
-
-        <!-- 메인 컨텐츠 -->
-        <section class="content">
-            <div id="profile" class="tab-content active">
-                <div class="profile-header">
-                    <div class="profile-image">
-                        <img src="profile.jpg" alt="프로필 사진">
-                    </div>
-                    <div class="profile-info">
-                        <h2>오렌지레인 <span class="tag">ENTP</span></h2>
-                        <p>서울특별시</p>
-                        <p>늘 배우고 성장하는 것이 가장 큰 목표에요!!!^^</p>
-                        <div class="tags">
-                            <span>운동/스포츠</span>
-                            <span>사고/인맥</span>
-                            <span>인문/독서</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="/member/updateMypage" id="edit-profile" class="edit-btn">프로필/계정 편집</a>
-            </div>
-
-            <div id="my-groups" class="tab-content">나의 모임 내용</div>
-            <div id="payment-history" class="tab-content">결제 내역 내용</div>
-            <div id="settlement-history" class="tab-content">정산 내역 내용</div>
-        </section>
-    </div>
+	<main class="content mypage-container">
+		<div class="profile-container">
+	        <!-- 사이드바 -->
+		        <aside class="sidebar">
+		            <a href="/member/updateMypage" class="tab-btn active" data-target="profile">프로필</a>
+		            <a href="/member/mygroup" class="tab-btn" data-target="my-groups">나의모임</a>
+		        </aside>
+	
+	        <!-- 메인 컨텐츠 -->
+	        <section class="mypage-wrap rounded">
+	            <div id="profile" class="tab-content">
+	                <div class="profile p-3">
+	                    <div class="profile-img-box mb-4">
+							<img src="/myimage/defaultProfile.png" class="profile-img" th:if="${session.member.profileImg == null}">
+							<img th:src="'/profile/'+${session.member.profileImg}" class="profile-img" th:if="${session.member.profileImg != null}">
+						</div>
+						<div class="profile-info">
+							<div th:text="${session.member.memberNickname}" class="nickname mb-4"></div>
+							<div th:text="${session.member.memberMbti}" class="mbti" th:if="${session.member.memberMbti != null}"></div>
+	                        <div th:text="${session.member.memberAddr}" class="member-addr mb-4" th:if="${session.member.memberAddr != null}"></div>
+	                        <div th:text="${session.member.memberIntro}" class="member-intro mb-4" th:if="${session.member.memberIntro != null}"></div>
+	                    </div>
+	                </div>
+	                <a href="/member/updateMypage" id="edit-profile" class="edit-btn">프로필/계정 편집</a>
+	            </div>
+	        </section>
+	    </div>
+    </main>
     <th:block th:include="common/footer"></th:block>
 
 </body>

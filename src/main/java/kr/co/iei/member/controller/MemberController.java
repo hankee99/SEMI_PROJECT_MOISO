@@ -18,8 +18,10 @@ import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpSession;
 import kr.co.iei.member.model.service.MemberService;
+import kr.co.iei.member.model.vo.GroupList;
 import kr.co.iei.member.model.vo.ManagerPageStat;
 import kr.co.iei.member.model.vo.Member;
+import kr.co.iei.member.model.vo.MypaymentData;
 import kr.co.iei.util.EmailSender;
 import kr.co.iei.util.FileUtils;
 
@@ -171,29 +173,26 @@ public class MemberController {
 		return "member/updateMypage";
 	}
 	
+	//나의 그룹 조회
 	@GetMapping(value="/mygroup")
-	public String mygroup() {
+	public String mygroup(Model model, @SessionAttribute(required=false) Member member) {
+		int memberNo = 0;
+		if(member != null) {
+			memberNo = member.getMemberNo();
+		}
+		GroupList list = memberService.mygroup(memberNo);
+		model.addAttribute("mygroup", list.getMygroup());
+		model.addAttribute("myHostGroup", list.getMyHostGroup());
 		return "member/mygroup";
-	}
-	
-	@GetMapping(value="/mypayment")
-	public String mypayment() {
-		return "member/mypayment";
-	}
-	
-	@GetMapping(value="/mysettlement")
-	public String mysettlement() {
-		return "member/mysettlement";
 	}
 	
 	@GetMapping(value="/managerPage")
 	public String managerPage(Model model) {
 		ManagerPageStat mps = memberService.managerPageStat();
-		model.addAttribute("list", mps.getList());				//오퍼리스트
+		model.addAttribute("list", mps.getList());		//오퍼리스트
 		model.addAttribute("ts", mps.getTotalStat());	//토탈스탯 객체
 		return "member/managerPage";
-	}
-	
+	}	
 	
 	
 	@PostMapping(value="/update")

@@ -7,13 +7,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.iei.group.model.vo.Pay;
 import kr.co.iei.group.model.vo.SidoRowMapper;
 import kr.co.iei.group.model.vo.SigunguRowMapper;
 import kr.co.iei.member.model.vo.GroupAllMemberRowMapper;
+import kr.co.iei.member.model.vo.GroupDataRowMapper;
 import kr.co.iei.member.model.vo.Member;
 import kr.co.iei.member.model.vo.MemberIdRowMapper;
 import kr.co.iei.member.model.vo.MemberRowMapper;
 import kr.co.iei.member.model.vo.OperationStatRowMapper;
+import kr.co.iei.member.model.vo.PayDataRowMapper;
 import kr.co.iei.member.model.vo.TotalStat;
 import kr.co.iei.member.model.vo.TotalStatRowMapper;
 
@@ -35,6 +38,10 @@ public class MemberDao {
 	private TotalStatRowMapper totalStatRowMapper;
 	@Autowired
 	private OperationStatRowMapper operationStatRowMapper;
+	@Autowired
+	private PayDataRowMapper payDataRowMapper;
+	@Autowired
+	private GroupDataRowMapper groupDataRowMapper;
 	
 	public Member selectOneMember(Member m) {
 		String query = "Select * from member where member_id=? and member_pw=?";
@@ -139,6 +146,35 @@ public class MemberDao {
 		List list = jdbc.query(query, operationStatRowMapper);
 		return list;
 	}
+
+	public Pay selectPayData(int memberNo) {
+		String query = "select pay_date, pay_no, price from pay where member_no=?";
+		Object[] params = {memberNo};
+		List list = jdbc.query(query, payDataRowMapper ,params);
+		Pay pay = (Pay)list.get(0);
+		return pay;
+	}
+
+	public List selectGroupData(int memberNo) {
+		String query = "select thumb_image, category_name, max_num, group_name, meeting_date, group_location \r\n"
+				+ "from group_tbl t join category c on (t.category_no = c.category_no) \r\n"
+				+ "where group_no in (select group_no from group_member where member_no=?)";
+		Object[] params = {memberNo};
+		List list = jdbc.query(query, groupDataRowMapper, params);
+		return list;
+	}
+
+	public List selectHostGroup(int memberNo) {
+		String query = "select thumb_image, category_name, max_num, group_name, meeting_date, group_location\r\n"
+				+ "from group_tbl g join category c on (g.category_no = c.category_no)\r\n"
+				+ "where group_no in (select group_no\r\n"
+				+ "from group_member\r\n"
+				+ "where group_member_level=1 and member_no=?)";
+		Object[] params = {memberNo};
+		List list = jdbc.query(query, groupDataRowMapper, params);
+		return list;
+	}
+
 	
 
 	
