@@ -76,14 +76,20 @@ public class GroupController {
 	}
 	
 	@PostMapping("/makeNewGroup")
-	public String makeNewGroup(Group group, MultipartFile imageFile, HttpSession session) {
+	public String makeNewGroup(Group group, MultipartFile imageFile, HttpSession session, Model model) {
 		if(!imageFile.isEmpty()) {
 			String savepath = root + "/groupThumb/";
 			String filepath = fileUtils.upload(savepath, imageFile);
 			group.setThumbImage(filepath);
 		}
 		int[] result = groupService.insertGroup(group, (Member)session.getAttribute("member"));
-		return "redirect:/group/groupInfoPage?groupNo="+result[0];
+		
+		model.addAttribute("title", "가입 성공");
+		model.addAttribute("text", "가입이 완료되었습니다");
+		model.addAttribute("icon", "success");
+		model.addAttribute("loc", "/group/groupInfoPage?groupNo="+result[0]);
+		
+		return "common/msg";
 	}
 	
 //	@ResponseBody
