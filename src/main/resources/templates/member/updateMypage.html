@@ -252,7 +252,7 @@
 								<td colspan="2">
 									<div class="tbl-btn-box">
 										<button type="submit" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">수정완료</button>
-										<a href="/member/managerPage" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4">관리자페이지</a>
+										<a href="/member/managerPage" class="btn btn-primary py-2 px-4 d-xl-inline-block rounded-pill mb-4" th:if="${session.member.memberLevel==2}">관리자페이지</a>
 									</div>	
 								</td>
 							</tr>

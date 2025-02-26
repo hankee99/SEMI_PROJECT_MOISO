@@ -8,8 +8,10 @@
 		padding-top : 50px;
 		margin-top: 20px;
 	}
+	
+	
 	section>div:first-child{
-		margin-bottom: 20px;
+		margin-bottom: 0;
 	}
 
 	input{
@@ -146,11 +148,12 @@
 	<main>
 		<section>
 			<!-- Hero Start -->
-			<div class="container-fluid bg-light py-6 my-6 mt-0"
+			<div class="container-fluid bg-light py-6 my-6 mt-0 hd"
 				style="padding-bottom: 1rem;">
 				<div class="container text-center animated bounceInDown">
 					<h1 class="new-head">모임만들기</h1>
 					<p>생성할 모임의 정보를 입력하세요!</p>
+					<p style="color: red; font-size: 12px;">썸네일을 제외한 모든 정보는 필수입력입니다.</p>
 				</div>
 			</div>
 			<!-- Hero End -->
@@ -254,7 +257,7 @@
 							<div>
 								<div class="join-fee">
 									<label for="joinFee" class="title">가입비</label>
-									<input type="text" id="joinFee" name="joinFee" value="1000"><span style="color: black;">원</span>
+									<input type="text" id="joinFee" name="joinFee" placeholder="최소 0원"><span style="color: black;">원</span>
 								</div>
 							</div>
 						</div>

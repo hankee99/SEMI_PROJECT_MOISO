@@ -70,6 +70,7 @@
 	
 	.group-card{
 		overflow: hidden;
+		box-shadow: 0 0 45px rgba(0, 0, 0, .08);	
 	}
 	.group-card>div{
 		float: left;
@@ -128,7 +129,7 @@
 								<div class="group-card p-3" th:each="myHostGroup : ${myHostGroup}">
 		                    		<div class="thumb-image">
 		                    			<img src="/myimage/defaultProfile.png" class="thumb-image" th:if="${myHostGroup.thumbImage == null}">
-										<img th:src="'/groupThumb/'+${myHostGroup.thumbImage}" class="profile-img" th:if="${myHostGroup.thumbImage != null}">
+										<img th:src="'/groupThumb/'+${myHostGroup.thumbImage}" class="thumb-image" th:if="${myHostGroup.thumbImage != null}">
 		                    		</div>
 				                    <div class="group-info">
 				                        <span class="group-status" th:text="${myHostGroup.categoryName}">공예(후불제)</span>
